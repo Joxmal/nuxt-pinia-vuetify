@@ -6,8 +6,11 @@ import PocketBase from 'pocketbase'
 export const useConexionStore = defineStore('conexion', {
     state: ()=>{
         const PB_URL = useRuntimeConfig().public.POCKETBASE_URL
+        
         return{
-            pb_url: PB_URL
+
+            pb_url: PB_URL,
+            avatar:`${PB_URL}/api/files/_pb_users_auth_/`
         }
   },
 
@@ -15,13 +18,10 @@ export const useConexionStore = defineStore('conexion', {
 
   },
   actions:{
-        async saludo(){
+        async inciarSesion(credenciales){
+            console.log(credenciales)
             const pb = new PocketBase(this.pb_url);
-
-            const authData = await pb.collection('users').authWithPassword(
-                'joxmal',
-                '12345678',
-            );
+            const authData = await pb.collection('users').authWithPassword(credenciales.user,credenciales.password);
             console.log(authData);
         }
    
