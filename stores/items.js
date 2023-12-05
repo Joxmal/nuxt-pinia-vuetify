@@ -8,7 +8,7 @@ export const useItemsStore = defineStore('useItemsStore', {
         pb_url: useRuntimeConfig().public.POCKETBASE_URL,
         numero:0,
         itemsLista: '',
-        listaMapeada:null
+        listaMapeada:false
     }),
 
     getters:{
@@ -49,6 +49,7 @@ export const useItemsStore = defineStore('useItemsStore', {
                 sort: '-created',
             });
             this.itemsLista = records
+            this.mapearLista()
             console.log(this.itemsLista)
         },
 

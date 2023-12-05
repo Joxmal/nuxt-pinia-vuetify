@@ -1,10 +1,10 @@
 <template>
-    <tableData
+    <tableData 
     :titulos="titulos"
-    :lista-items="listaItems"
+    :lista-items="store.listaMapeada"
     />
     <v-btn @click="store.obtenerDatos()">obtener items</v-btn>
-    <v-btn @click="store.mapearLista()">mapearLista</v-btn>
+
     <v-divider></v-divider>
     <pre>
         {{ store.listaMapeada }}
@@ -41,7 +41,7 @@ const titulos = [
     sortable: false,
     title: 'CPU',
     },
-    { key: 'tajeta_madre', title: 'Tarjeta madre' },
+    { key: 'tarjeta_madre', title: 'Tarjeta madre' },
     { key: 'mem_ram_tipo', title: 'Mem_ram tipo' },
     { key: 'mem_ram_capacidad', title: 'Mem ram capacidad' },
     { key: 'case', title: 'Case' },
@@ -88,5 +88,9 @@ const listaItems= [
     creado:'2019-12-02',
     },
 ]
+
+onMounted(()=>{
+    store.obtenerDatos()
+})
 
 </script>
