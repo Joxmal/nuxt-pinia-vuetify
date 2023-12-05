@@ -37,7 +37,7 @@
 
             <v-list-item @click="MostrarMenu('inicio')" prepend-icon="mdi-view-dashboard" value="inicio"/>
 
-            <v-list-item @click="MostrarMenu('mensajes')" prepend-icon="mdi-forum" value="mensajes"/>
+            <v-list-item @click="MostrarMenu('listas')" prepend-icon="mdi-list-status" value="listas"/>
 
             <v-list-item @click="MostrarMenu('reporte')" prepend-icon="mdi-desktop-classic" value="reporte"/>
 
@@ -63,8 +63,13 @@
               <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
             </nuxt-link>
 
-            <!-- Reporte -->
+            <!-- Reportes -->
             <nuxt-link v-show="ViewMenu=='reporte'" :to="lista.path" v-for="lista in listaNavegacion.reportes" :key="lista.value" style="text-decoration: none;">
+              <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
+            </nuxt-link>
+
+            <!-- listado -->
+            <nuxt-link v-show="ViewMenu=='listas'" :to="lista.path" v-for="lista in listaNavegacion.listas" :key="lista.value" style="text-decoration: none;">
               <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
             </nuxt-link>
 
@@ -97,9 +102,9 @@ const listaNavegacion = {
     2:{ icon:'mdi-folder-plus', value:'numeros'}, 
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },
-  mensajes:{
-    1:{ icon:'mdi-office-building-cog-outline', value:'mensajes-departamentos', path:'/dashboard/general/noticias'},
-    2:{ icon:'mdi-folder-plus', value:'numeros'}, 
+  listas:{
+    1:{ icon:'mdi-office-building-cog-outline', value:'Items', path:'/dashboard/listas/items'},
+    2:{ icon:'mdi-folder-plus', value:'Reportes'}, 
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },
   reportes:{
