@@ -17,7 +17,7 @@
         theme="dark"
         rail
         permanent
-        @mouseover="drawer= true"
+        @mouseenter="drawer= true"
       >
         <v-list-item
           nav
@@ -51,7 +51,7 @@
       </v-navigation-drawer>
 
       <v-navigation-drawer permanent floating v-model="drawer" width="200"
-      @mouseover="drawer= true"
+      @mouseenter="drawer= true"
       @mouseleave="cerrarbarra"
       >
         <v-list>
@@ -118,7 +118,7 @@ const listaNavegacion = {
 function cerrarbarra() {
   setTimeout(() => {
     drawer.value = false
-  }, 700);
+  }, 500);
 }
 
 

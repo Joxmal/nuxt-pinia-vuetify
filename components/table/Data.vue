@@ -2,7 +2,7 @@
     <v-card
       flat
       title="Items guardados"
-      :height="440"
+      min-height="340"
     >
       <template v-slot:text>
         <v-text-field
@@ -20,6 +20,7 @@
         :expand-on-click="true"
         :hover="true"
         :hide-no-data="true"
+        
         :height="400"
         :fixed-header="true"
         density="compact"

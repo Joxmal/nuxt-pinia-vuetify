@@ -3,20 +3,14 @@
     :titulos="titulos"
     :lista-items="store.listaMapeada"
     />
-    <v-btn @click="store.obtenerDatos()">obtener items</v-btn>
-
     <v-divider></v-divider>
     <pre>
-        {{ store.listaMapeada }}
+        {{ store.itemsLista }}
 
     </pre>
     <v-divider></v-divider>
 
     <v-divider></v-divider>
-    <pre>
-        {{listaItems }}
-
-    </pre>
     <v-divider></v-divider>
     <!-- <div v-for="datos in store.itemsLista">
         <pre>
@@ -31,6 +25,10 @@
 
 <script setup>
 import {useItemsStore} from '~/stores/items'
+
+definePageMeta({
+    middleware:'autenticacion'
+})
 
 const store = useItemsStore()
 
@@ -50,6 +48,7 @@ const titulos = [
     { key: 'monitor', title: 'Monitor' },
     { key: 'creado', title: 'Creado' },
     { key: 'actions', title: 'Actions' },
+    { key: 'id', title: 'ID' },
 ]
 
 
@@ -89,7 +88,7 @@ const listaItems= [
     },
 ]
 
-onMounted(()=>{
+onBeforeMount(()=>{
     store.obtenerDatos()
 })
 

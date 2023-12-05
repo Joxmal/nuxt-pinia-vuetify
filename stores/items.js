@@ -27,7 +27,7 @@ export const useItemsStore = defineStore('useItemsStore', {
 
             const objetoFinal = this.itemsLista.map(item => {
                 return {
-                  cpu: item.cpu.replace(/\d/g, '').trim(),
+                  cpu: item.cpu.trim(),
                   tarjeta_madre: item.tarjeta_madre,
                   mem_ram_tipo: item.Memoria_ram_tipo,
                   mem_ram_capacidad: item.Memoria_ram_capacidad.memoria_ram.join(','),
@@ -35,7 +35,8 @@ export const useItemsStore = defineStore('useItemsStore', {
                   mouse: 'LOGITECH',
                   teclado: 'HP',
                   monitor: 'LG',
-                  creado: item.created.split(' ')[0]
+                  creado: item.created.split(' ')[0],
+                  id:item.id
                 };
               });
             console.log(objetoFinal)
