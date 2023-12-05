@@ -5,7 +5,7 @@ import PocketBase from 'pocketbase'
 
 export const useStoreConexion = defineStore('useStoreConexion', {
     state: () => ({
-        pb_url: useRuntimeConfig().public.POCKETBASE_URL,
+        pb_url: 'https://oficina-sgi.pockethost.io/',
         avatar:`/api/files/_pb_users_auth_/`,
         pb_Valid : '',
         errorInicio: false

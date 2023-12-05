@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   ],
   runtimeConfig:{
     public:{
-      POCKETBASE_URL: 'https://oficina-sgi.pockethost.io/'
+      POCKETBASE_URL: process.env.POCKETBASE_URL
     }
   },
 })
