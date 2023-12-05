@@ -18,7 +18,6 @@
         rail
         permanent
         @mouseover="drawer= true"
-        @mouseleave="drawer= false"
       >
         <v-list-item
           nav
@@ -31,48 +30,91 @@
         <v-divider></v-divider>
 
         <v-list
+        v-model:selected="categoria"
           density="compact"
           nav
         >
-          <v-list-item prepend-icon="mdi-view-dashboard" value="Inicio"></v-list-item>
-          <v-list-item prepend-icon="mdi-forum" value="mensajes"></v-list-item>
-          <v-list-item prepend-icon="mdi-desktop-classic" value="computadoras"></v-list-item>
-          <v-list-item prepend-icon="mdi-printer-outline" value="impresoras"></v-list-item>
-          <v-list-item prepend-icon="mdi-sitemap-outline" value="sistemas"></v-list-item>
+
+            <v-list-item @click="MostrarMenu('inicio')" prepend-icon="mdi-view-dashboard" value="inicio"/>
+
+            <v-list-item @click="MostrarMenu('mensajes')" prepend-icon="mdi-forum" value="mensajes"/>
+
+            <v-list-item @click="MostrarMenu('reporte')" prepend-icon="mdi-desktop-classic" value="reporte"/>
+
+            <v-list-item @click="MostrarMenu('impresoras')" prepend-icon="mdi-printer-outline" value="impresoras"/>
+
+            <v-list-item @click="MostrarMenu('sistemas')" prepend-icon="mdi-sitemap-outline" value="sistemas"/>
+
+
+
         </v-list>
       </v-navigation-drawer>
 
       <v-navigation-drawer permanent floating v-model="drawer" width="200"
       @mouseover="drawer= true"
-      @mouseleave="drawer= false"
+      @mouseleave="cerrarbarra"
       >
         <v-list>
-            <v-list-item-title height="60px" class="text-center text-h5 pt-3" inset>INICIO</v-list-item-title>
+            <v-list-item-title height="60px" class="text-center text-h3 pt-3 text-overline">{{ViewMenu}}</v-list-item-title>
             <v-divider/>
-          <v-list-item title="Home" value="home"></v-list-item>
-          <v-list-item title="Contacts" value="contacts"></v-list-item>
-          <v-list-item title="Settings" value="settings"></v-list-item>
+
+            <!-- General -->
+            <nuxt-link v-show="ViewMenu==='inicio'" :to="lista.path" v-for="lista in listaNavegacion.general" :key="lista.value" style="text-decoration: none;">
+              <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
+            </nuxt-link>
+
+            <!-- Reporte -->
+            <nuxt-link v-show="ViewMenu=='reporte'" :to="lista.path" v-for="lista in listaNavegacion.reportes" :key="lista.value" style="text-decoration: none;">
+              <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
+            </nuxt-link>
+
+
         </v-list>
 
       </v-navigation-drawer>
-
-
-
             <v-main app>
-
                 <v-container app>
                     <slot />
                 </v-container>
             </v-main>
         </v-layout>
-
     </v-app>
 </template>
 
 <script setup>
-
-
 const drawer = ref(false)
+const categoria = ref()
+const ViewMenu= ref('inicio')
+
+
+function MostrarMenu(valor){
+  ViewMenu.value = valor
+}
+
+const listaNavegacion = {
+  general:{
+    1:{ icon:'mdi-newspaper', value:'noticias', path:'/dashboard/general/noticias'},
+    2:{ icon:'mdi-folder-plus', value:'numeros'}, 
+    3:{ icon:'mdi-alert-decagram', value:'importante'}, 
+  },
+  mensajes:{
+    1:{ icon:'mdi-office-building-cog-outline', value:'mensajes-departamentos', path:'/dashboard/general/noticias'},
+    2:{ icon:'mdi-folder-plus', value:'numeros'}, 
+    3:{ icon:'mdi-alert-decagram', value:'importante'}, 
+  },
+  reportes:{
+    1:{ icon:'mdi-file-chart', value:'reportes', path:'/dashboard/reportes/generarReporte'},
+    2:{ icon:'mdi-folder-plus', value:'numeros'}, 
+    3:{ icon:'mdi-alert-decagram', value:'importante'}, 
+  }
+}
+
+
+function cerrarbarra() {
+  setTimeout(() => {
+    drawer.value = false
+  }, 700);
+}
 
 
 </script>

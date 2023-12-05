@@ -1,15 +1,22 @@
 <template>
-    <v-btn @click="store.inciarSesion(credenciales)">sdsds</v-btn>
+  <v-app>
+    <v-container class="d-flex justify-center">
+
+        <AlertError class="d-flex rounded-pill " style="position:fixed ;" v-if="store.errorInicio"/>
+        <Login/>
+
+    </v-container>
+  </v-app>
 </template>
   
   
 <script setup>
-import { useConexionStore } from '@/stores/conexion';
-const store = useConexionStore()
+import {useStoreConexion} from '@/stores/useStoreConexion'
+const store = useStoreConexion()
 
+definePageMeta({
+  middleware:'utenticado-en-login',
+  layout:false
+})
 
- const credenciales =reactive({
-   user:'joxmal',
-   password:'12345678'
- })
 </script>

@@ -1,0 +1,3 @@
+<template>
+    generar Reporte
+</template>

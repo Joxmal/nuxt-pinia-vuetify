@@ -9,6 +9,8 @@ export default defineNuxtConfig({
     transpile: ['vuetify']
   },
   modules:[
+    '@pinia-plugin-persistedstate/nuxt',
+    '@vueuse/nuxt',
     '@pinia/nuxt',
   ],
   runtimeConfig:{
