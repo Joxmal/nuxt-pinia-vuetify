@@ -1,26 +1,15 @@
 <template>
-    <tableData 
+    <tableData
     :titulos="titulos"
     :lista-items="store.listaMapeada"
-    />
-    <v-divider></v-divider>
+    >
+    </tableData>
+    <v-divider/>
     <pre>
         {{ store.itemsLista }}
-
     </pre>
     <v-divider></v-divider>
-
-    <v-divider></v-divider>
-    <v-divider></v-divider>
-    <!-- <div v-for="datos in store.itemsLista">
-        <pre>
-            {{datos }}
-        </pre>
-    </div> -->
-    <v-divider></v-divider>
     
-
-
 </template>
 
 <script setup>
@@ -33,11 +22,15 @@ definePageMeta({
 const store = useItemsStore()
 
 const titulos = [
+    { key: 'NRO_ITEM',
+     title: 'NRO_ITEM',
+     sortable:false,
+
+    },
     {
-    align: 'start',
-    key: 'cpu',
-    sortable: false,
-    title: 'CPU',
+        key: 'cpu',
+        sortable: false,
+        title: 'CPU',
     },
     { key: 'tarjeta_madre', title: 'Tarjeta madre' },
     { key: 'mem_ram_tipo', title: 'Mem_ram tipo' },

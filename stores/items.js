@@ -30,13 +30,14 @@ export const useItemsStore = defineStore('useItemsStore', {
                   cpu: item.cpu.trim(),
                   tarjeta_madre: item.tarjeta_madre,
                   mem_ram_tipo: item.Memoria_ram_tipo,
-                  mem_ram_capacidad: item.Memoria_ram_capacidad.memoria_ram.join(','),
+                  mem_ram_capacidad: item.Memoria_ram_capacidad,
                   case: 'HP',
                   mouse: 'LOGITECH',
                   teclado: 'HP',
                   monitor: 'LG',
                   creado: item.created.split(' ')[0],
-                  id:item.id
+                  id:item.id,
+                  NRO_ITEM:item.NRO_ITEM
                 };
               });
             console.log(objetoFinal)
