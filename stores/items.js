@@ -55,12 +55,12 @@ export const useItemsStore = defineStore('useItemsStore', {
             console.log(this.itemsLista)
         },
 
-        desconectar(){
+        async enviarItemsForm(data){
             const pb = new PocketBase(this.pb_url)
-            pb.authStore.clear();
-            this.pb_Valid = pb.authStore.isValid
+            console.log(data)
+            const record = await pb.collection('item').create(data);
 
-            navigateTo('/')
+            this.obtenerDatos()
         }
    
     },

@@ -21,7 +21,7 @@
       >
         <v-list-item
           nav
-          prepend-avatar="https://randomuser.me/api/portraits/women/75.jpg"
+          :prepend-avatar="store.avatarImagen || 'https://randomuser.me/api/portraits/women/75.jpg'"
           height="45"
           inset
         >
@@ -35,15 +35,15 @@
           nav
         >
 
-            <v-list-item @click="MostrarMenu('inicio')" prepend-icon="mdi-view-dashboard" value="inicio"/>
+            <v-list-item @click="MostrarMenu('inicio'),drawer= true" prepend-icon="mdi-view-dashboard" value="inicio"/>
 
-            <v-list-item @click="MostrarMenu('listas')" prepend-icon="mdi-list-status" value="listas"/>
+            <v-list-item @click="MostrarMenu('listas'),drawer= true" prepend-icon="mdi-list-status" value="listas"/>
 
-            <v-list-item @click="MostrarMenu('reporte')" prepend-icon="mdi-desktop-classic" value="reporte"/>
+            <v-list-item @click="MostrarMenu('reporte'),drawer= true" prepend-icon="mdi-desktop-classic" value="reporte"/>
 
-            <v-list-item @click="MostrarMenu('impresoras')" prepend-icon="mdi-printer-outline" value="impresoras"/>
+            <v-list-item @click="MostrarMenu('impresoras'),drawer= true" prepend-icon="mdi-printer-outline" value="impresoras"/>
 
-            <v-list-item @click="MostrarMenu('sistemas')" prepend-icon="mdi-sitemap-outline" value="sistemas"/>
+            <v-list-item @click="MostrarMenu('sistemas'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/>
 
 
 
@@ -87,6 +87,10 @@
 </template>
 
 <script setup>
+import {useStoreConexion} from '~/stores/useStoreConexion'
+
+const store = useStoreConexion()
+
 const drawer = ref(false)
 const categoria = ref()
 const ViewMenu= ref('inicio')

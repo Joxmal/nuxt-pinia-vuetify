@@ -59,6 +59,7 @@
                         <v-text-field
                           label="N° Item"
                           hint="Nro unico asignado por la alcaldia"
+                          v-model = data.NRO_ITEM
                           required
                         ></v-text-field>
                       </v-col>
@@ -71,6 +72,7 @@
                         <v-text-field
                           label="CPU"
                           hint="CPU del equipo"
+                          v-model = data.cpu
                         ></v-text-field>
                       </v-col>
 
@@ -82,6 +84,7 @@
                         <v-text-field
                           label="motherboard"
                           hint="tarjeta madre del equipo"
+                          v-model = data.tarjeta_madre
                           required
                         ></v-text-field>
                       </v-col>
@@ -94,6 +97,7 @@
                         <v-select
                           :items="['DDR1', 'DDR2', 'DDR3', 'DDR4']"
                           label="RAM TIPO"
+                          v-model = data.Memoria_ram_tipo
                           required
                         >
                         </v-select>
@@ -110,6 +114,7 @@
                           hint="cantidad de memoria del equipo"
                           persistent-hint
                           required
+                          v-model = data.Memoria_ram_capacidad
                         >
                         </v-select>
                       </v-col>
@@ -125,6 +130,7 @@
                           hint="ventilador, solo el del CPU"
                           persistent-hint
                           required
+                          v-model = data.fan_cooler
                         >
                         </v-autocomplete>
                       </v-col>
@@ -139,6 +145,7 @@
                           label="Case"
                           hint="Cajon donde esta el pc"
                           persistent-hint
+                          v-model = data.case
                         ></v-autocomplete>
                       </v-col>
 
@@ -152,6 +159,7 @@
                           label="Mouse"
                           hint="Marca del mouse"
                           persistent-hint
+                          v-model = data.mouse
                         ></v-autocomplete>
                       </v-col>
 
@@ -165,6 +173,7 @@
                           label="Teclado"
                           hint="Marca del teclado"
                           persistent-hint
+                          v-model = data.teclado
                         ></v-autocomplete>
                       </v-col>
 
@@ -178,6 +187,7 @@
                           label="Monitor"
                           hint="Marca Monitor"
                           persistent-hint
+                          v-model = data.monitor
                         ></v-autocomplete>
                       </v-col>
                     </v-row>
@@ -199,7 +209,7 @@
                   <v-btn
                     color="blue-darken-1"
                     variant="text"
-                    @click="console.log('enviado')"
+                    @click="store.enviarItemsForm(data),resetData()"
                   >
                     Save
                   </v-btn>
@@ -251,11 +261,41 @@ import {useItemsStore} from '~/stores/items'
 
 const store = useItemsStore()
 
+
+
 const props = defineProps(['listaItems','titulos'])
+
+
 const search = ref()
 
 const dialog = ref(true)
 const dialogDelete = ref(false)
+
+const data = reactive({
+  NRO_ITEM:'',
+  cpu:'',
+  tarjeta_madre:'',
+  Memoria_ram_tipo:'',
+  Memoria_ram_capacidad:'',
+  fan_cooler:'',
+  case:'',
+  mouse:'',
+  teclado:'',
+  monitor:'',
+})
+
+function resetData() {
+  data.NRO_ITEM = '';
+  data.cpu = '';
+  data.tarjeta_madre = '';
+  data.Memoria_ram_tipo = '';
+  data.Memoria_ram_capacidad = '';
+  data.fan_cooler = '';
+  data.case = '';
+  data.mouse = '';
+  data.teclado = '';
+  data.monitor = '';
+}
 
 
 

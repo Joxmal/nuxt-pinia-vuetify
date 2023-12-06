@@ -25,7 +25,6 @@ const titulos = [
     { key: 'NRO_ITEM',
      title: 'NRO_ITEM',
      sortable:false,
-
     },
     {
         key: 'cpu',
@@ -42,43 +41,6 @@ const titulos = [
     { key: 'creado', title: 'Creado' },
     { key: 'actions', title: 'Actions' },
     { key: 'id', title: 'ID' },
-]
-
-
-const listaItems= [
-    {
-    cpu:'core 2 duo',
-    tajeta_madre: 'asrock',
-    mem_ram_tipo: "DDR3",
-    mem_ram_capacidad: "3GB,1GB,1GB",
-    case: "HP",
-    mouse: "LOGITECH",
-    teclado: "HP",
-    monitor:'LG',
-    creado:'2021-12-02',
-    },
-    {
-    cpu:'core 2 duo',
-    tajeta_madre: 'asrock',
-    mem_ram_tipo: "DDR3",
-    mem_ram_capacidad: "3GB,1GB,1GB",
-    case: "HP",
-    mouse: "LOGITECH",
-    teclado: "HP",
-    monitor:'LG',
-    creado:'2020-12-02',
-    },
-    {
-    cpu:'core 2 duo',
-    tajeta_madre: 'asrock',
-    mem_ram_tipo: "DDR3",
-    mem_ram_capacidad: "3GB,1GB,1GB",
-    case: "HP",
-    mouse: "LOGITECH",
-    teclado: "HP",
-    monitor:'LG',
-    creado:'2019-12-02',
-    },
 ]
 
 onBeforeMount(()=>{

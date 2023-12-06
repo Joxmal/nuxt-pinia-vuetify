@@ -1,15 +1,16 @@
 <template>
-    <v-btn @click="store.inciarSesion(credenciales)">conectar</v-btn>
-    <v-spacer/>
-    <v-btn @click="store.desconectar()">Desconectar</v-btn>
-    <v-spacer/>
 
-    <v-btn @click="stadoConexion">consosola</v-btn>
-    <v-divider></v-divider>
-    <v-btn @click="store2.IniciarSesion()">estado2</v-btn>
-  offset-lg10
+    <v-btn @click="store.desconectar()">Desconectar</v-btn>
+
+
+  <v-spacer/>
+  <v-divider class="mt-10"></v-divider>
+
     <pre>
-      {{ store.estadoUsuario}}
+      {{ store.avatarImagen}}
+  <v-divider class="mt-10"></v-divider>
+
+      {{ store.avatarNombre}}
 
     </pre>
     
