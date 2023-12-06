@@ -1,4 +1,9 @@
 <template>
+    <alert-success mensaje="Creado con exito" v-show="store.iconShow.create"/>
+    <alert-warning v-show="store.iconShow.delete"
+     mensaje="eliminado con exito" 
+    />
+
     <v-card
       flat
       min-height="340"
@@ -95,7 +100,7 @@
                         md="4"
                       >
                         <v-select
-                          :items="['DDR1', 'DDR2', 'DDR3', 'DDR4']"
+                          :items="['DDR1', 'DDR2', 'DDR3', 'DDR4','NO']"
                           label="RAM TIPO"
                           v-model = data.Memoria_ram_tipo
                           required
@@ -109,7 +114,7 @@
                         md="4"
                       >
                         <v-select
-                          :items="['<1GB','1GB', '2GB', '4GB', '8GB','16GB']"
+                          :items="['<1GB','1GB', '2GB', '4GB', '8GB','16GB','NO']"
                           label="RAM CAP"
                           hint="cantidad de memoria del equipo"
                           persistent-hint
@@ -125,7 +130,7 @@
                         md="4"
                       >
                         <v-autocomplete
-                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo']"
+                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo','NO']"
                           label="Fan Cooler"
                           hint="ventilador, solo el del CPU"
                           persistent-hint
@@ -141,7 +146,7 @@
                         md="4"
                       >
                         <v-autocomplete
-                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo','ASTRON']"
+                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo','ASTRON','NO']"
                           label="Case"
                           hint="Cajon donde esta el pc"
                           persistent-hint
@@ -155,7 +160,7 @@
                         md="4"
                       >
                         <v-autocomplete
-                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo']"
+                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo','NO']"
                           label="Mouse"
                           hint="Marca del mouse"
                           persistent-hint
@@ -169,7 +174,7 @@
                         md="4"
                       >
                         <v-autocomplete
-                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo']"
+                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo','NO']"
                           label="Teclado"
                           hint="Marca del teclado"
                           persistent-hint
@@ -183,7 +188,7 @@
                         md="12"
                       >
                         <v-autocomplete
-                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo']"
+                          :items="['Generico','HP', 'Dell', 'VIT', 'Lenovo','NO']"
                           label="Monitor"
                           hint="Marca Monitor"
                           persistent-hint
@@ -204,14 +209,14 @@
                     variant="text"
                     @click="isActive.value = false"
                   >
-                    Close
+                    Cerrar
                   </v-btn>
                   <v-btn
                     color="blue-darken-1"
                     variant="text"
-                    @click="store.enviarItemsForm(data),resetData()"
+                    @click="store.enviarItemsForm(data),resetData() "
                   >
-                    Save
+                    Crear
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -242,7 +247,7 @@
       </v-icon>
       <v-icon
         size="small"
-        @click="deleteItem(item)"
+        @click="store.eliminarItem(item)"
       >
         mdi-delete
       </v-icon>
@@ -261,15 +266,18 @@ import {useItemsStore} from '~/stores/items'
 
 const store = useItemsStore()
 
-
-
 const props = defineProps(['listaItems','titulos'])
-
 
 const search = ref()
 
 const dialog = ref(true)
 const dialogDelete = ref(false)
+
+//icono de mostrar y ocultar
+const showIconos = reactive({
+  delete:false,
+  create:false
+})
 
 const data = reactive({
   NRO_ITEM:'',
@@ -297,12 +305,8 @@ function resetData() {
   data.monitor = '';
 }
 
-
-
 function editItem(valor){
   console.log(valor)
-  console.log(valor.name)
-
 }
 
 

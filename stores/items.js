@@ -8,7 +8,15 @@ export const useItemsStore = defineStore('useItemsStore', {
         pb_url: useRuntimeConfig().public.POCKETBASE_URL,
         numero:0,
         itemsLista: '',
-        listaMapeada:false
+        listaMapeada:false,
+
+
+        //iconos
+        iconShow:{
+            delete:false,
+            create:false
+        }
+       
     }),
 
     getters:{
@@ -57,10 +65,29 @@ export const useItemsStore = defineStore('useItemsStore', {
 
         async enviarItemsForm(data){
             const pb = new PocketBase(this.pb_url)
-            console.log(data)
-            const record = await pb.collection('item').create(data);
+            await pb.collection('item').create(data);
+            this.obtenerDatos()            
+            this.iconShow.create = true
+            setTimeout(() => {
+                this.iconShow.create = false
+            }, 2000);
+        },
 
-            this.obtenerDatos()
+        async eliminarItem(valor){
+            const pb = new PocketBase(this.pb_url)
+            const respuesta = prompt("¿Deseas eliminar? (y/n)")
+            if (respuesta === "y" || respuesta === "Y") {               
+                await pb.collection('item').delete(valor.id);
+                this.obtenerDatos()
+                
+                this.iconShow.delete = true
+                setTimeout(() => {
+                this.iconShow.delete = false
+                }, 2000);
+
+              } else {
+                console.log("Operación cancelada.");
+            }
         }
    
     },
