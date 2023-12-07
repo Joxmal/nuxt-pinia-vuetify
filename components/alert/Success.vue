@@ -1,7 +1,7 @@
 <template>
   <v-alert
     max-width="300"
-    class="text-h5 ml-auto"
+    class="text-h6 ml-auto"
     type="success"
     icon="mdi-package-variant-closed-plus"
     border="top"
@@ -11,7 +11,6 @@
     rounded="lg"
     variant="elevated"
     :text="props.mensaje"
-    style="position: absolute;z-index: 50;top:80px ; right: 10px;"
   >
   </v-alert>
 </template>

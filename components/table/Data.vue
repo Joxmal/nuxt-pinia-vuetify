@@ -1,21 +1,14 @@
 <template>
-    <alert-success mensaje="Creado con exito" v-show="store.iconShow.create"/>
     <alert-warning v-show="store.iconShow.delete"
      mensaje="eliminado con exito" 
     />
-
     <v-card
       flat
       min-height="340"
     >
-
-    
       <v-data-table v-if="store.listaMapeada"
         sticky
-
         :hover="true"
-
-        
         :height="400"
         :fixed-header="true"
         density="compact"
@@ -38,7 +31,8 @@
             max-width="800px"
             persistent
           >
-            <template v-slot:activator="{ props }">
+          
+          <template v-slot:activator="{ props }">
               <v-btn
                 color="primary"
                 class="mb-2"
@@ -49,8 +43,8 @@
             </template>
 
             <template v-slot:default="{ isActive }">
-
-              <v-card loading>
+              <v-card loading position="relative">
+                <alert-success mensaje="Creado con exito" v-show="store.iconShow.create" style="position: absolute;right: 0;"/>
                 <v-card-title>
                   <span class="text-h5">Nuevo item</span>
                 </v-card-title>

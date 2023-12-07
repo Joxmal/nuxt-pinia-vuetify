@@ -19,11 +19,8 @@
   
 <script setup>
 import { useStoreConexion } from '@/stores/useStoreConexion';
-import { useStoreIniciarSesionPrueba } from '@/stores/useStoreIniciarSesionPrueba';
+
 const store = useStoreConexion()
-const store2 = useStoreIniciarSesionPrueba()
-
-
 
  const credenciales =reactive({
    user:'joxmal',

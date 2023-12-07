@@ -2,7 +2,10 @@
   <v-app>
     <v-container class="d-flex justify-center">
 
-        <AlertError class="d-flex rounded-pill " style="position:fixed ;" v-if="store.errorInicio"/>
+        <AlertError 
+        mensaje="error al iniciar sesion"
+        class="d-flex rounded-pill " 
+        style="position:fixed ;" v-if="store.errorInicio"/>
         <Login/>
 
     </v-container>

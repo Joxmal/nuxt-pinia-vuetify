@@ -4,20 +4,19 @@
             <v-app-bar scroll-behavior="hide elevate" prominent app>
                 <template v-slot:prepend>
                     <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-                    <v-toolbar-title>informatica-sgi</v-toolbar-title>
+                    <nuxt-link to="/dashboard" style="text-decoration: none;">
+                      <v-toolbar-title >informatica-sgi</v-toolbar-title>
+                    </nuxt-link>
                 </template>
                 <template v-slot:append>
-                    <v-btn variant="text" icon="mdi-filter"></v-btn>
-
+                    <v-btn :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
                 </template>
                 
             </v-app-bar>
-            
             <v-navigation-drawer
         theme="dark"
         rail
         permanent
-        @mouseenter="drawer= true"
       >
         <v-list-item
           nav
@@ -88,8 +87,12 @@
 
 <script setup>
 import {useStoreConexion} from '~/stores/useStoreConexion'
+import {useResetStorage} from '~/stores/reset'
 
 const store = useStoreConexion()
+const storeReset =useResetStorage()
+
+const loading = ref(false)
 
 const drawer = ref(false)
 const categoria = ref()

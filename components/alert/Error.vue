@@ -6,6 +6,12 @@
       border
       prominent
     >
-      Error al iniciar sesion
+      {{ mensaje }}
     </v-alert>
 </template>
+
+
+<script setup>
+
+const props = defineProps(['mensaje'])
+</script>
