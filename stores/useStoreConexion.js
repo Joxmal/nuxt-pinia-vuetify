@@ -4,8 +4,6 @@ import PocketBase from 'pocketbase'
 
 
 export const useStoreConexion = defineStore('useStoreConexion', {
-
-
     state: () => ({
         pb_url: useRuntimeConfig().public.POCKETBASE_URL,
 
@@ -15,17 +13,14 @@ export const useStoreConexion = defineStore('useStoreConexion', {
         avatarNombre:'',
         avatarImagen: '',
         
-        
-        
     }),
-  persist:persistedState.sessionStorage,
+    persist:persistedState.sessionStorage,
 
     getters:{
         estadoUsuario: (state) => state.pb_Valid
     },
 
-
-  actions:{
+    actions:{
         async inciarSesion(credenciales){
 
             try {
