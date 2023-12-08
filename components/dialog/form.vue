@@ -1,7 +1,7 @@
 <template>
   <v-dialog max-width="800px" persistent>
-    <template v-slot:activator="{ props }">
-      <v-btn color="primary" class="mb-2" v-bind="props"> {{ boton_titulo }} </v-btn>
+    <template v-slot:activator="{ props } ">
+      <v-btn color="primary" class="mb-2" v-bind="props"> {{ boton_titulo || "NUEVO" }}</v-btn>
     </template>
 
     <template v-slot:default="{ isActive }">
@@ -41,15 +41,12 @@
 
 
 <script setup>
+const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create'])
 
-const props = defineProps(
-    {
-        boton_titulo:String,
-        mostrar_alert_create:Boolean,
-        mostrar_alert_delete: Boolean,
+defineEmits([
+'crear',
+])
 
-    }
-)
 
 
 
