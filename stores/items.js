@@ -10,7 +10,6 @@ export const useItemsStore = defineStore('useItemsStore', {
         itemsLista: '',
         listaMapeada:false,
 
-
         //iconos
         iconShow:{
             delete:false,

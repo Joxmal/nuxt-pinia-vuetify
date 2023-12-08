@@ -1,16 +1,18 @@
 <template>
-    <v-btn @click="boton = !boton"></v-btn>
-<table-general :listaItems="listaItems" :titulos="titulos " titulo_table="IP asignada al usuario"
+<table-general :listaItems="store.mapeoLista" :titulos="titulos" :loading="store.activarTabla" titulo_table="IP asignada al usuario"
     @editar="editar"
-    @eliminar="recibe"
+    @eliminar="store.deleteListaDatos"
     >
     <template #dialogo>
         <dialog-form
-        :propactivacion="boton"
-         titulo_dialog="crear ip"
+         :modoEditar="modoEditar"
+         :titulo_dialog="modoTitulo"
          boton_titulo="NUEVA ASIGNACION"
-         :mostrar_alert_create="true"
-        @crear="recibe">
+         :mostrar_alert_create="store.iconCreated"
+         @editarDialogForm="editarListaDatos"
+         @crear="crearListaDatos(data)"
+         @modoCrear="cambiarCreacion"
+        >
             <template #contenido>
                 <v-container>
                     <v-row>
@@ -45,7 +47,7 @@
                             <v-text-field
                                 label="Cedula"
                                 v-model="data.cedula"
-                                hint="cedula del usuario"
+                                hint="cedula del usuario SOLO NUMEROS"
                                 required>
                             </v-text-field>
                         </v-col>
@@ -63,16 +65,16 @@ datos para el form
     {{ data }}
 </pre>
 <v-divider/>
-datos para editar:
+lista bd:
+
 <pre>
-    {{ dataEditar }}
+    {{ store.listaIPObtenida }}
 </pre>
+lista mapeada
+<pre>
+    {{ store.mapeoLista }}
 
-
-
-
-
-
+</pre>
 </template>
 
 <script setup>
@@ -80,8 +82,7 @@ import { useIPListaStore } from '~/stores/ip_lista'
 const store = useIPListaStore()
 
 
-const boton = ref(true)
-
+// titulos de la tabla
 const titulos = [
     { key: 'ip',
      title: 'IP',
@@ -98,29 +99,7 @@ const titulos = [
     { key: 'actions', title: 'Actions' },
     { key: 'id', title: 'system'},
 ]
-
-const listaItems = [
-    {
-        ip: "10.13.180",
-        usuario: "jose",
-        departamento: "INFORMATICA",
-        cedula:'28045702',
-        creado: "2023-12-07",
-        id: 'a21dad1'
-    },
-    {
-        ip: "10.11.145",
-        usuario: "CESAR",
-        departamento: "CATASTRO",
-        cedula:'8965232',
-        creado: "2022-11-05",
-        id: 'a1dad1ad1a'
-    }
-]
-
-
-
-
+//datos para el form
 const data = reactive({
     ip:'',
     usuario:'',
@@ -128,22 +107,72 @@ const data = reactive({
     cedula:'',
     id:''
 })
-
-
-const dataEditar= ref()
+// resetear los datos del form
+function resetData(){
+    data.ip = ""
+    data.usuario = ""
+    data.departamento = ""
+    data.cedula = ""
+    data.id = ''
+}
 
 
 function recibe(valor){
     console.log(valor)   
 }
 
+
+function editarListaDatos(){
+    const editarDb = {
+        "IP": data.ip,
+        "usuario": data.usuario,
+        "departamento": data.departamento,
+        "cedula": data.cedula
+    }
+    store.updateListaDatos(data.id,editarDb)
+}
+
+//crear 
+function crearListaDatos(data){
+    const datosDB = {
+        "IP": data.ip,
+        "usuario": data.usuario,
+        "departamento": data.departamento,
+        "cedula": data.cedula
+    }
+    store.crearListaDatos(datosDB)
+    resetData()
+
+}
+
+//cambiar a modo editar y creacion
+
+function cambiarCreacion(){
+    modoEditar.value = false
+    modoTitulo.value = 'CREAR'
+    resetData()
+}
+
+const modoEditar = ref()
+const modoTitulo = ref()
+
 function editar(valor){
+    const elemento = document.getElementById('boton-dialogo')
+    elemento.click()
+    modoEditar.value = true
+    modoTitulo.value = 'EDITAR'
+
     console.log(valor)
 
     data.ip = valor.ip
-    data.usuario = valor.ip
-    data.departamento = valor.ip
-    data.cedula = valor.ip
+    data.usuario = valor.usuario
+    data.departamento = valor.departamento
+    data.cedula = valor.cedula
     data.id = valor.id
 }
+
+onMounted(()=>{
+    store.obtenerListaDatos()
+})
+
 </script>

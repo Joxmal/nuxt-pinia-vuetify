@@ -6,7 +6,8 @@
     flat
     min-height="340"
   >
-    <v-data-table v-if="listaItems"
+  <div v-if="props.loading === false"><s-v-g-spinner-frames class="text-h1 w-100"/></div>
+    <v-data-table v-else
       sticky
       :hover="true"
       :height="400"
@@ -48,14 +49,13 @@
           </v-icon>
           <v-icon
             size="small"
-            @click="$emit('eliminar',item)"
+            @click="$emit('eliminar',item.id)"
           >
             mdi-delete
           </v-icon>
       </template>
   
     </v-data-table>
-    <div v-else><s-v-g-spinner-frames class="text-h1 w-100"/></div>
   
   </v-card>
   </template>
@@ -64,13 +64,14 @@
   
   <script setup>
   
-  const props = defineProps({
-    titulo_table: String,
-    mostrar_alert_create: Boolean,
-    listaItems: Object,
-    titulos: Object
-  
-  })
+  const props = defineProps([
+    'titulo_table',
+    'mostrar_alert_create',
+    'listaItems',
+    'titulos',
+    'loading'
+
+  ])
 
   const emit = defineEmits([
   'editar','eliminar'

@@ -19,7 +19,9 @@ export const useResetStorage = defineStore('useResetStorage', {
         resetDataFromDB(){
             this.loading = true
             const item = useItemsStore()
+            const IPlista = useIPListaStore()
             item.obtenerDatos()
+            IPlista.obtenerListaDatos()
 
             
             setTimeout(() => {
