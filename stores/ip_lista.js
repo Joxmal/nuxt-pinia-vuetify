@@ -12,6 +12,7 @@ export const useIPListaStore = defineStore('useIPListaStore', {
         mapeoLista:'mapeo',
         activarTabla: false,
         iconCreated:false,
+        iconDelete:false,
 
         listaDepartamento : [
             "ADMINISTRACION",
@@ -102,12 +103,29 @@ export const useIPListaStore = defineStore('useIPListaStore', {
         const pb = new PocketBase(this.pb_url)
         await pb.collection('ip_asignadas').update(id, data);
         this.obtenerListaDatos()
+
+        this.iconCreated= true
+        setTimeout(() => {
+        this.iconCreated= false
+        }, 2000);
+
+
     },
 
     async deleteListaDatos(id){
-        const pb = new PocketBase(this.pb_url)
-        await pb.collection('ip_asignadas').delete(id);
-        this.obtenerListaDatos()
+        if (confirm('¿Deseas eliminar este registro?')) {
+            const pb = new PocketBase(this.pb_url)
+            await pb.collection('ip_asignadas').delete(id);
+            this.obtenerListaDatos()
+    
+            this.iconDelete= true
+            setTimeout(() => {
+            this.iconDelete= false
+            }, 2000);
+          } else {
+            return
+        }
+
     }
     },
     

@@ -1,11 +1,15 @@
 <template>
-  <alert-warning v-show="mostrar_alert_create"
-    mensaje="eliminado con exito" 
-  />
+  <div style="position: fixed;left: 60%;top: 100px;transform: translate(-30%,-40%);margin: 0 auto; z-index: 50;">
+    <alert-warning  v-show="mostrar_alert_delete" mensaje="eliminado"/>
+  </div>
+  
   <v-card
-    flat
-    min-height="340"
+  flat
+  min-height="340"
+  class="mt-10"
   >
+  
+
   <div v-if="props.loading === false"><s-v-g-spinner-frames class="text-h1 w-100"/></div>
     <v-data-table v-else
       sticky
@@ -66,7 +70,7 @@
   
   const props = defineProps([
     'titulo_table',
-    'mostrar_alert_create',
+    'mostrar_alert_delete',
     'listaItems',
     'titulos',
     'loading'

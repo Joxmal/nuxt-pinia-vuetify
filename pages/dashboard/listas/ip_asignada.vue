@@ -1,10 +1,16 @@
 <template>
-<table-general :listaItems="store.mapeoLista" :titulos="titulos" :loading="store.activarTabla" titulo_table="IP asignada al usuario"
+<table-general 
+    titulo_table="IP asignada al usuario"
+    :mostrar_alert_delete="store.iconDelete"
+    :listaItems="store.mapeoLista" 
+    :titulos="titulos" 
+    :loading="store.activarTabla" 
     @editar="editar"
     @eliminar="store.deleteListaDatos"
     >
     <template #dialogo>
         <dialog-form
+         :icon="icono_EDitar_Crear"
          :modoEditar="modoEditar"
          :titulo_dialog="modoTitulo"
          boton_titulo="NUEVA ASIGNACION"
@@ -38,6 +44,7 @@
                                 :items="store.listaDepartamento"
                                 label="Departamento"
                                 hint="departamento al que pertenece el usuario"
+                                persistent-hint
                                 v-model="data.departamento"
                                 required>
                             </v-autocomplete>
@@ -60,7 +67,9 @@
 <pre>
 </pre>
 <v-divider/>
-datos para el form
+
+
+<!-- datos para el form
 <pre>
     {{ data }}
 </pre>
@@ -74,7 +83,9 @@ lista mapeada
 <pre>
     {{ store.mapeoLista }}
 
-</pre>
+</pre> -->
+
+
 </template>
 
 <script setup>
@@ -142,13 +153,15 @@ function crearListaDatos(data){
     }
     store.crearListaDatos(datosDB)
     resetData()
-
 }
+
+const icono_EDitar_Crear = ref()
 
 //cambiar a modo editar y creacion
 
 function cambiarCreacion(){
     modoEditar.value = false
+    icono_EDitar_Crear.value =  undefined
     modoTitulo.value = 'CREAR'
     resetData()
 }
@@ -161,6 +174,7 @@ function editar(valor){
     elemento.click()
     modoEditar.value = true
     modoTitulo.value = 'EDITAR'
+    icono_EDitar_Crear.value = 'mdi-pencil'
 
     console.log(valor)
 
@@ -174,5 +188,6 @@ function editar(valor){
 onMounted(()=>{
     store.obtenerListaDatos()
 })
+
 
 </script>

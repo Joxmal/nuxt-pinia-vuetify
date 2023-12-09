@@ -3,9 +3,8 @@
     max-width="300"
     class="text-h6 ml-auto"
     type="success"
-    icon="mdi-package-variant-closed-plus"
+    :icon="props.icon"
     border="top"
-    prominent
     elevation="10"
     density="compact"
     rounded="lg"
@@ -16,7 +15,15 @@
 </template>
 
 <script setup>
-const props = defineProps(['mensaje'])
+const props = defineProps({
+  mensaje:{
+    type: String
+  },
+  icon:{
+    type: String,
+    default: "mdi-package-variant-closed-plus"
+  }
+})
 
 
 </script>

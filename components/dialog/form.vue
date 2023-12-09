@@ -7,12 +7,13 @@
     <template v-slot:default="{ isActive }">
       <v-card loading position="relative">
         <alert-success
+          :icon="prop.icon"
           mensaje="Creado con éxito"
           v-show="mostrar_alert_create"
           style="position: absolute; right: 0" />
 
         <v-card-title>
-          <span class="text-h5">{{ titulo_dialog }} || {{ modoEditar }}</span>
+          <span class="text-h5">{{ titulo_dialog }}</span>
         </v-card-title>
 
         <slot name="contenido"></slot>
@@ -48,7 +49,7 @@
 </template>
 
 <script setup>
-const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar'])
+const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon'])
 
 defineEmits([
 'crear','modoCrear','editarDialogForm'
