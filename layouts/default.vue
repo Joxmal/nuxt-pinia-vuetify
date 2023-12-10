@@ -9,7 +9,9 @@
               </nuxt-link>
           </template>
           <template v-slot:append>
-              <v-btn :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
+            <avatar-general/>
+            
+            <v-btn :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
           </template>
       </v-app-bar>
 
@@ -21,7 +23,6 @@
           nav
           :prepend-avatar="store.avatarImagen || 'https://randomuser.me/api/portraits/women/75.jpg'"
           height="45"
-          inset
         >
         </v-list-item>
 
@@ -80,6 +81,7 @@
       <v-main app>
           <v-container app>
               <slot />
+              sds
           </v-container>
       </v-main>
     </v-layout>

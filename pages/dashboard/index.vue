@@ -1,19 +1,7 @@
 <template>
 
-    <v-btn @click="store.desconectar()">Desconectar</v-btn>
+  aqui debe de ir las noticias
 
-
-  <v-spacer/>
-  <v-divider class="mt-10"></v-divider>
-
-    <pre>
-      {{ store.avatarImagen}}
-  <v-divider class="mt-10"></v-divider>
-
-      {{ store.avatarNombre}}
-
-    </pre>
-    
 </template>
   
   
