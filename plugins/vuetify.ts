@@ -1,7 +1,7 @@
 import { createVuetify } from "vuetify";
 import DateFnsAdapter from '@date-io/date-fns'
-import es from 'date-fns/locale/es'
 import enUS from 'date-fns/locale/en-US'
+import es from 'date-fns/esm/locale/es/index'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
