@@ -1,7 +1,9 @@
 import { createVuetify } from "vuetify";
+
 import DateFnsAdapter from '@date-io/date-fns'
-import enUS from 'date-fns/locale/en-US'
-import es from 'date-fns/esm/locale/es/index'
+// import enUS from 'date-fns/locale/en-US'
+import es from 'date-fns/esm/locale/es'
+
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
@@ -12,7 +14,6 @@ export default defineNuxtPlugin(nuxtApp=>{
         date:{
             adapter: DateFnsAdapter,
             locale:{
-                en: enUS,
                 es:es
             }
         },
