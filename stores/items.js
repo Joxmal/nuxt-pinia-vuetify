@@ -47,7 +47,6 @@ export const useItemsStore = defineStore('useItemsStore', {
                   NRO_ITEM:item.NRO_ITEM
                 };
               });
-            console.log(objetoFinal)
             this.listaMapeada = objetoFinal
 
         },
@@ -59,7 +58,6 @@ export const useItemsStore = defineStore('useItemsStore', {
             });
             this.itemsLista = records
             this.mapearLista()
-            console.log(this.itemsLista)
         },
 
         async enviarItemsForm(data){

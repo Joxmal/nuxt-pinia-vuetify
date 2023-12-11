@@ -55,7 +55,9 @@
                                 label="Cedula"
                                 v-model="data.cedula"
                                 hint="cedula del usuario SOLO NUMEROS"
-                                required>
+                                required
+                                type="number"
+                                >
                             </v-text-field>
                         </v-col>
                     </v-row>
@@ -91,6 +93,9 @@ lista mapeada
 <script setup>
 import { useIPListaStore } from '~/stores/ip_lista'
 const store = useIPListaStore()
+definePageMeta({
+    middleware:'autenticacion'
+})
 
 
 // titulos de la tabla

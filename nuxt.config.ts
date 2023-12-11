@@ -5,6 +5,9 @@ export default defineNuxtConfig({
     'vuetify/lib/styles/main.sass',
     '@mdi/font/css/materialdesignicons.min.css'
   ],
+  plugins:[
+    '~/plugins/pinia-plugin.js'
+  ],
   build: {
     transpile: ['vuetify']
   },
@@ -12,7 +15,18 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
     '@pinia/nuxt',
+    '@nuxtjs/i18n',
+
   ],
+  i18n:{
+    locale: 've',
+    messages: {
+      ve: {
+        welcome: 'el esequivo es nuestro'
+      },
+    }
+  },
+
   runtimeConfig:{
     public:{
       POCKETBASE_URL: process.env.POCKETBASE_URL

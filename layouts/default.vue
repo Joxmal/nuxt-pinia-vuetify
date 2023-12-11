@@ -1,23 +1,24 @@
 <template>
   <v-app>
     <v-layout app>
-      <v-app-bar scroll-behavior="hide elevate" prominent app>
+      <v-app-bar scroll-behavior="hide elevate" >
           <template v-slot:prepend>
-              <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+              <v-app-bar-nav-icon  @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
               <nuxt-link to="/dashboard" style="text-decoration: none;">
                 <v-toolbar-title >informatica-sgi</v-toolbar-title>
               </nuxt-link>
           </template>
+            <v-btn :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
           <template v-slot:append>
             <avatar-general/>
             
-            <v-btn :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
           </template>
       </v-app-bar>
 
       <v-navigation-drawer
         rail
         permanent
+        
       >
         <v-list-item
           nav
@@ -48,7 +49,6 @@
       <v-navigation-drawer
         border="right"
         v-model="drawer" width="175"
-        permanent 
         @mouseenter="drawer= true"
         @mouseleave="cerrarbarra">
         <v-list>
@@ -78,10 +78,9 @@
         </v-list>
 
       </v-navigation-drawer>
-      <v-main app>
-          <v-container app>
+      <v-main>
+          <v-container>
               <slot />
-              sds
           </v-container>
       </v-main>
     </v-layout>

@@ -7,7 +7,7 @@ export const useStoreConexion = defineStore('useStoreConexion', {
     state: () => ({
         pb_url: useRuntimeConfig().public.POCKETBASE_URL,
 
-        pb_Valid : '',
+        pb_Valid : false,
         errorInicio: false,
         
         avatarNombre:'',
@@ -21,6 +21,13 @@ export const useStoreConexion = defineStore('useStoreConexion', {
     },
 
     actions:{
+        async verificarAutenticacion(){
+            const pb = new PocketBase(this.pb_url)
+            const autenticado = pb.authStore.isValid
+            this.pb_Valid = autenticado
+            console.log(this.pb_Valid)
+        },
+
         async inciarSesion(credenciales){
 
             try {
@@ -28,7 +35,7 @@ export const useStoreConexion = defineStore('useStoreConexion', {
                 const pb = new PocketBase(this.pb_url)
                 const authData = await pb.collection('users').authWithPassword(credenciales.username,credenciales.password);
                 
-                this.pb_Valid = pb.authStore.isValid
+                this.verificarAutenticacion()
     
                 const router = useRouter()
                 router.push({path:'/dashboard'})
@@ -41,7 +48,7 @@ export const useStoreConexion = defineStore('useStoreConexion', {
                 this.errorInicio = true
                 setTimeout(() => {
                     this.errorInicio = false
-                }, 3000);
+                }, 2000);
             }
             
         },
@@ -51,7 +58,7 @@ export const useStoreConexion = defineStore('useStoreConexion', {
         },
 
         borrarDatos(){
-            this.pb_Valid = '',
+            this.pb_Valid = false,
             this.errorInicio = false,
             this.avatarNombre = '',
             this.avatarImagen = ''
@@ -60,7 +67,7 @@ export const useStoreConexion = defineStore('useStoreConexion', {
             const pb = new PocketBase(this.pb_url)
             pb.authStore.clear();
             this.pb_Valid = pb.authStore.isValid
-
+            
             navigateTo('/')
             this.borrarDatos()
         },
