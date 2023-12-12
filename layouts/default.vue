@@ -4,7 +4,7 @@
       <v-app-bar scroll-behavior="hide elevate" >
           <template v-slot:prepend>
               <v-app-bar-nav-icon  @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-              <nuxt-link to="/dashboard" style="text-decoration: none;">
+              <nuxt-link to="/dashboard" class="text-blue">
                 <v-toolbar-title >informatica-sgi</v-toolbar-title>
               </nuxt-link>
           </template>
@@ -56,8 +56,8 @@
           <v-list-item-title height="60px" class="text-center text-h3 pt-3 text-overline">{{ViewMenu}}</v-list-item-title>
           <v-divider/>
             <!-- General -->
-          <nuxt-link v-show="ViewMenu==='inicio'" :to="lista.path" v-for="lista in listaNavegacion.general" :key="lista.value" style="text-decoration: none;">
-            <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
+          <nuxt-link class=" font-bold" v-show="ViewMenu==='inicio'" :to="lista.path" v-for="lista in listaNavegacion.general" :key="lista.value" style="text-decoration: none; color: whitesmoke;">
+            <v-list-item color="red" :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
 
             <!-- Reportes -->

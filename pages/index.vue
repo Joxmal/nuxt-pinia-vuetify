@@ -26,6 +26,8 @@ definePageMeta({
 
 
 <style>
-
+a{
+  color: blue;
+}
 
 </style>
