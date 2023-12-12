@@ -78,10 +78,12 @@
         </v-list>
 
       </v-navigation-drawer>
-      <v-main>
+      <v-main >
+
           <v-container>
               <slot />
           </v-container>
+
       </v-main>
     </v-layout>
   </v-app>
@@ -138,3 +140,8 @@ function cerrarbarra() {
 
 
 </script>
+
+
+<style>
+
+</style>

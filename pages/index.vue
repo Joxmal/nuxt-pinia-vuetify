@@ -19,7 +19,13 @@ const store = useStoreConexion()
 
 definePageMeta({
   middleware:'utenticado-en-login',
-  layout:false
+  layout:false,
 })
 
 </script>
+
+
+<style>
+
+
+</style>

@@ -1,30 +1,28 @@
 import { createVuetify } from "vuetify";
 
-import DateFnsAdapter from '@date-io/date-fns'
+// import DateFnsAdapter from '@date-io/date-fns'
 // import enUS from 'date-fns/locale/en-US'
-import es from 'date-fns/esm/locale/es'
+// import es from 'date-fns/esm/locale/es'
+// import enUS from "date-fns/locale/en-US";
+// import { en } from "vuetify/locale";
 
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import { en } from "vuetify/locale";
 
 export default defineNuxtPlugin(nuxtApp=>{
     const vuetify = createVuetify({
-        date:{
-            adapter: DateFnsAdapter,
-            locale:{
-                es:es,
-                en:en
-            }
-        },
-        locale:{
-            locale:"es",
-            fallback:"en",
-            messages:{en}
-
-            
-        },
+        // date:{
+        //     adapter: DateFnsAdapter,
+        //     locale:{
+        //         es:en,
+        //         en:enUS,
+        //     }
+        // },
+        // locale:{
+        //     locale:"es",
+        //     fallback:"es"
+        // },
         components,
         directives,
         ssr: true,

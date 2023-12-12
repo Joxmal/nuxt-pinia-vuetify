@@ -6,7 +6,7 @@
   <template #contenido>
     <v-container>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" md="6">
           <v-autocomplete 
           label="departamento" 
           hint="departamento al cual se le realizo el reporte" 
@@ -17,8 +17,33 @@
           </v-autocomplete>
         </v-col>
 
+        <v-col cols="12" md="6">
+          <v-autocomplete 
+          label="Tipo de Reporte" 
+          hint="Tipo de Reporte" 
+          persistent-hint
+          open-text="abrir"
+          close-text="cerrar"
+          :items="['1','2','3']">
+          </v-autocomplete>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <v-text-field
+          label="Nro de item"
+          >
+          </v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <v-text-field
+          label="Funcionario"
+          >
+          </v-text-field>
+        </v-col>
+
         <v-col cols="12" sm="6">
-          <v-card color="deep-purple-darken-1" variant="elevated" class="pa-2">
+          <v-card style="border: 2px solid rgb(6, 143, 255);" variant="elevated" class="pa-2">
             <v-text-field
               name="Hora de entrada"
               label="Hora de entrada"
@@ -36,7 +61,7 @@
         </v-col>
 
         <v-col cols="12" sm="6" >
-          <v-card color="deep-purple-darken-1" variant="elevated" class="pa-2" >
+          <v-card style="border: 2px solid rgb(6, 143, 255);" variant="elevated" class="pa-2" >
             <v-text-field
               name="Hora de salida"
               label="Hora de salida"
@@ -53,23 +78,33 @@
 
         </v-col>
 
-        <v-col cols="12" sm="6">
-          <v-text-field
-          label="Nro de item"
-          >
-          </v-text-field>
+        <v-col cols="12">
+          <v-textarea
+            rows="3"
+            clearable 
+            label="Descripción" 
+            variant="outlined">
+
+          </v-textarea>
+          <v-card elevation="15" class="mx-auto" max-width="500px" style="display: flex; flex-direction: column; align-items: center;">
+            <v-card-title style="text-align: center;"> ESTATUS DEL REPORTE</v-card-title>
+
+            <v-switch
+              inset
+              density="compact"
+              v-model="statusReporte"
+              base-color="primary"
+              :color="statusReporte==='en curso'? 'red': 'success'"
+              hide-details
+              true-value="finalizado"
+              false-value="en curso"
+            ></v-switch>
+            <label :class="statusReporte==='en curso'? 'text-red': 'text-success'" class="text-h5">{{ statusReporte }}</label>
+
+          </v-card>
+
         </v-col>
 
-        <v-col class="pt-6" cols="12" sm="6">
-          <v-row>
-            <v-text-field style=""
-             label="estado"
-             hint="description relacionado al estado del equipo" 
-             persistent-hint
-             />
-            <v-checkbox-btn/>
-          </v-row>
-        </v-col>
       
       </v-row>
     </v-container>
@@ -88,7 +123,7 @@
 import { useReportesStore } from '~/stores/reportes'
 
 const store = useReportesStore()
-
+const statusReporte =ref('en curso')
 const horaEntrada = ref()
 
 function obtener(valor) {
