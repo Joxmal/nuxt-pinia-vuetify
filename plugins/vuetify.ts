@@ -14,7 +14,8 @@ export default defineNuxtPlugin(nuxtApp=>{
         date:{
             adapter: DateFnsAdapter,
             locale:{
-                es:es
+                es:es,
+                en:en
             }
         },
         locale:{
