@@ -8,9 +8,10 @@
                 <v-toolbar-title >informatica-sgi</v-toolbar-title>
               </nuxt-link>
           </template>
-            <v-btn :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
-          <template v-slot:append>
-            <avatar-general/>
+            <v-btn  :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
+            <template v-slot:append>
+              <button-theme-changing class="mr-16"/>
+              <avatar-general/>
             
           </template>
       </v-app-bar>

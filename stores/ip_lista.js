@@ -56,7 +56,9 @@ export const useIPListaStore = defineStore('useIPListaStore', {
             "TRIBUTOS TAQUILLA",
             "TURISMO",
             "VIVIENDA",
-            "ZETA"
+            "ZETA",
+            "CHUAO",
+            "EXTERIOR"
         ],
     }),
 

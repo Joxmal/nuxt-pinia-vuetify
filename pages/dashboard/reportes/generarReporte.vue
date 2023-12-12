@@ -24,22 +24,23 @@
           persistent-hint
           open-text="abrir"
           close-text="cerrar"
-          :items="['1','2','3']">
+          :items="store.tipoReporte">
           </v-autocomplete>
         </v-col>
 
         <v-col cols="12" md="6">
           <v-text-field
-          label="Nro de item"
+          label="Nro de bien"
           >
           </v-text-field>
         </v-col>
 
         <v-col cols="12" md="6">
-          <v-text-field
+          <v-autocomplete
           label="Funcionario"
+          :items="store.listaTotalEmpleados_oficina"
           >
-          </v-text-field>
+          </v-autocomplete>
         </v-col>
 
         <v-col cols="12" sm="6">
@@ -67,7 +68,7 @@
               label="Hora de salida"
               type="time"
               suffix="Salida"
-              v-model="horaEntrada"
+              v-model="horaSalida"
               >
             </v-text-field>
   
@@ -100,12 +101,8 @@
               false-value="en curso"
             ></v-switch>
             <label :class="statusReporte==='en curso'? 'text-red': 'text-success'" class="text-h5">{{ statusReporte }}</label>
-
           </v-card>
-
         </v-col>
-
-      
       </v-row>
     </v-container>
   </template>
@@ -124,7 +121,9 @@ import { useReportesStore } from '~/stores/reportes'
 
 const store = useReportesStore()
 const statusReporte =ref('en curso')
+
 const horaEntrada = ref()
+const horaSalida = ref()
 
 function obtener(valor) {
   console.log(valor)

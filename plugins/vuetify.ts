@@ -27,7 +27,7 @@ export default defineNuxtPlugin(nuxtApp=>{
         directives,
         ssr: true,
         theme:{
-            defaultTheme: 'dark'
+            // defaultTheme: 'dark'
         }
     })
 
