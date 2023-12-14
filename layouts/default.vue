@@ -1,11 +1,11 @@
 <template>
   <v-app>
     <v-layout app>
-      <v-app-bar scroll-behavior="hide elevate" >
+      <v-app-bar border color="primary" elevation="15" scroll-behavior="hide elevate" >
           <template v-slot:prepend>
               <v-app-bar-nav-icon  @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-              <nuxt-link to="/dashboard" class="text-blue">
-                <v-toolbar-title >informatica-sgi</v-toolbar-title>
+              <nuxt-link  to="/dashboard" class="text-surface text-decoration-none">
+                <v-toolbar-title  >informatica-sgi</v-toolbar-title>
               </nuxt-link>
           </template>
             <v-btn  :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
@@ -17,6 +17,7 @@
       </v-app-bar>
 
       <v-navigation-drawer
+        class=""
         rail
         permanent
         
@@ -48,31 +49,32 @@
       </v-navigation-drawer>
 
       <v-navigation-drawer
+        class=""
         border="right"
         v-model="drawer" width="175"
         @mouseenter="drawer= true"
-        @mouseleave="cerrarbarra">
+        >
         <v-list>
           <v-list-item-title height="60px" class="text-center text-h3 pt-3 text-overline">{{ViewMenu}}</v-list-item-title>
           <v-divider/>
             <!-- General -->
-          <nuxt-link class=" font-bold" v-show="ViewMenu==='inicio'" :to="lista.path" v-for="lista in listaNavegacion.general" :key="lista.value" style="text-decoration: none; color: whitesmoke;">
-            <v-list-item color="red" :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
+          <nuxt-link class="text-decoration-none" :class="listaNavegacion.class" v-show="ViewMenu==='inicio'" :to="lista.path" v-for="lista in listaNavegacion.general" :key="lista.value">
+            <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
 
             <!-- Reportes -->
-          <nuxt-link v-show="ViewMenu=='reporte'" :to="lista.path" v-for="lista in listaNavegacion.reportes" :key="lista.value" style="text-decoration: none;">
+          <nuxt-link v-show="ViewMenu=='reporte'" :class="listaNavegacion.class" :to="lista.path" v-for="lista in listaNavegacion.reportes" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
 
             <!-- listado -->
-          <nuxt-link v-show="ViewMenu=='listas'" :to="lista.path" v-for="lista in listaNavegacion.listas" :key="lista.value" style="text-decoration: none;">
+          <nuxt-link v-show="ViewMenu=='listas'" :class="listaNavegacion.class" :to="lista.path" v-for="lista in listaNavegacion.listas" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
           
           
           <!-- listado -->
-          <nuxt-link v-show="ViewMenu=='sistemas'" :to="lista.path" v-for="lista in listaNavegacion.sistemas" :key="lista.value" style="text-decoration: none;">
+          <nuxt-link v-show="ViewMenu=='sistemas'" :class="listaNavegacion.class"  :to="lista.path" v-for="lista in listaNavegacion.sistemas" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
           
@@ -109,6 +111,8 @@ function MostrarMenu(valor){
 }
 
 const listaNavegacion = {
+  class:"text-colorLink",
+
   general:{
     1:{ icon:'mdi-newspaper', value:'noticias', path:'/dashboard/general/noticias'},
     2:{ icon:'mdi-folder-plus', value:'numeros'}, 
@@ -116,7 +120,7 @@ const listaNavegacion = {
   },
   listas:{
     1:{ icon:'mdi-office-building-cog-outline', value:'Items', path:'/dashboard/listas/items'},
-    2:{ icon:'mdi-ip-outline', value:'lista ip', path:'/dashboard/listas/ip_asignada'}, 
+    2:{ icon:'mdi-account', value:'Usuarios', path:'/dashboard/listas/ip_asignada'}, 
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },
   reportes:{

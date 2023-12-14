@@ -6,12 +6,16 @@
   <v-card
   flat
   min-height="340"
-  class="mt-10"
+  class="pa-5"
+  rounded="lg"
+  border
+  elevation="5"
   >
   
 
   <div v-if="props.loading === false"><s-v-g-spinner-frames class="text-h1 w-100"/></div>
-    <v-data-table v-else
+    <v-data-table 
+      v-else
       sticky
       :hover="true"
       :height="400"
@@ -23,6 +27,8 @@
   
       <template v-slot:top>
         <v-toolbar
+          rounded="lg"
+          color="primary"
           flat>
           <v-toolbar-title>{{titulo_table}}</v-toolbar-title>
           <v-divider

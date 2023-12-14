@@ -7,14 +7,10 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <v-autocomplete 
-          label="departamento" 
-          hint="departamento al cual se le realizo el reporte" 
-          persistent-hint
-          open-text="abrir"
-          close-text="cerrar"
-          :items="store.listaDepartamento">
-          </v-autocomplete>
+          <v-text-field
+          label="Nro de bien"
+          >
+          </v-text-field>
         </v-col>
 
         <v-col cols="12" md="6">
@@ -29,10 +25,15 @@
         </v-col>
 
         <v-col cols="12" md="6">
-          <v-text-field
-          label="Nro de bien"
-          >
-          </v-text-field>
+          <v-autocomplete 
+          label="departamento" 
+          hint="departamento al cual se le realizo el reporte" 
+          persistent-hint
+          open-text="abrir"
+          close-text="cerrar"
+          disabled
+          :items="store.listaDepartamento">
+          </v-autocomplete>
         </v-col>
 
         <v-col cols="12" md="6">

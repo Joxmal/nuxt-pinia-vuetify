@@ -1,4 +1,4 @@
-import { createVuetify } from "vuetify";
+import { createVuetify,type ThemeDefinition } from "vuetify";
 
 // import DateFnsAdapter from '@date-io/date-fns'
 // import enUS from 'date-fns/locale/en-US'
@@ -9,6 +9,34 @@ import { createVuetify } from "vuetify";
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+
+const myCustomDARKTheme: ThemeDefinition = {
+    dark: true,
+    colors: {
+        colorLink:"#CAF1FF",
+        background: "#15202b",
+        surface: "#12212F",
+        primary: "#3f51b5",
+        secondary: "#03dac6",
+        error: "#f44336",
+        info: "#2196F3",
+        success: "#4caf50",
+        warning: "#fb8c00",
+    },
+  }
+
+const customLightTheme = {
+    dark: false,
+    colors: {
+        colorLink:"#003EFF",
+        background: "#eee",
+        surface: "#FFFFFF",
+        primary: "#3f51b5",
+        secondary: "#00ccff",
+        error: "#f44336",
+        info: "#1456F3",
+    },
+};
 
 export default defineNuxtPlugin(nuxtApp=>{
     const vuetify = createVuetify({
@@ -27,7 +55,16 @@ export default defineNuxtPlugin(nuxtApp=>{
         directives,
         ssr: true,
         theme:{
-            // defaultTheme: 'dark'
+             defaultTheme: 'myCustomDARKTheme',
+            variations:{
+                colors:['primary','secondary'],
+                lighten:4,
+                darken:5
+            },
+            themes:{
+                myCustomDARKTheme,
+                customLightTheme
+            }
         }
     })
 

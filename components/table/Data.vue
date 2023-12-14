@@ -6,7 +6,8 @@
       flat
       min-height="340"
     >
-      <v-data-table v-if="store.listaMapeada"
+      <v-data-table 
+        v-if="store.listaMapeada"
         sticky
         :hover="true"
         :height="400"
@@ -19,6 +20,7 @@
       <template v-slot:top>
         <v-toolbar
           flat
+          color="primary"
         >
           <v-toolbar-title>ITEMS</v-toolbar-title>
           <v-divider
@@ -34,7 +36,7 @@
           
           <template v-slot:activator="{ props }">
               <v-btn
-                color="primary"
+                color="indigo-lighten-5"
                 class="mb-2"
                 v-bind="props"
               >

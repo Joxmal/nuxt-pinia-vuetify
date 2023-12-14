@@ -71,7 +71,7 @@ export const useIPListaStore = defineStore('useIPListaStore', {
   actions:{
     async obtenerListaDatos(){
         const pb = new PocketBase(this.pb_url)
-        const records = await pb.collection('ip_asignadas').getFullList({
+        const records = await pb.collection('usuarios').getFullList({
             sort: '-created',
         });
         this.mapeoLista = records.map(item=>{
@@ -90,7 +90,7 @@ export const useIPListaStore = defineStore('useIPListaStore', {
 
     async crearListaDatos(data){
         const pb = new PocketBase(this.pb_url)
-        await pb.collection('ip_asignadas').create(data);
+        await pb.collection('usuarios').create(data);
 
         this.obtenerListaDatos()
         
@@ -103,7 +103,7 @@ export const useIPListaStore = defineStore('useIPListaStore', {
 
     async updateListaDatos(id,data){
         const pb = new PocketBase(this.pb_url)
-        await pb.collection('ip_asignadas').update(id, data);
+        await pb.collection('usuarios').update(id, data);
         this.obtenerListaDatos()
 
         this.iconCreated= true
@@ -117,7 +117,7 @@ export const useIPListaStore = defineStore('useIPListaStore', {
     async deleteListaDatos(id){
         if (confirm('¿Deseas eliminar este registro?')) {
             const pb = new PocketBase(this.pb_url)
-            await pb.collection('ip_asignadas').delete(id);
+            await pb.collection('usuarios').delete(id);
             this.obtenerListaDatos()
     
             this.iconDelete= true
