@@ -22,18 +22,31 @@ export const useReportesStore = defineStore('useReportesStore', {
     async obtenerDatos(){
       const store = useIPListaStore()
       await store.obtenerListaDatos()
-      const usuarios = store.mapeoLista
+      let lista = store.mapeoLista
 
-      const usuariosPorUsuario = usuarios
-      .map(usuario => usuario.usuario)
-      .sort();
-      //lista de usuarios
-      this.listaTotalEmpleados_oficina = usuariosPorUsuario
-      //lista de departamentos
-      this.listaDepartamento = store.listaDepartamento
+      lista = lista.reduce((acc, usuario) => {
+        if (!acc[usuario.departamento]) {
+          acc[usuario.departamento] = [];
+        }
+        acc[usuario.departamento].push(usuario.usuario);
+        return acc;
+      }, {});
+      const departamentos = Object.keys(lista);
+
+      // console.log({
+      //   informatica: lista["INFORMATICA"],
+      //   departamentos: departamentos
+      // });
+        this.listaTotalEmpleados_oficina = lista
+        this.listaDepartamento = departamentos
     }
 
    
     },
     
 })
+
+const lista = {
+  informatica:["jose","manuel","lopez"],
+  departamentos:['DEPARTAMENTO DE DESARROLLO ECONOMICO','ATENCION AL CIUDADANO','informatica']
+}

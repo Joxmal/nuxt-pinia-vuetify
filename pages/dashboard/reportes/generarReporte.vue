@@ -31,15 +31,17 @@
           persistent-hint
           open-text="abrir"
           close-text="cerrar"
-          disabled
-          :items="store.listaDepartamento">
+          :items="store.listaDepartamento"
+          v-model="selectDepartamento"
+          >
+        
           </v-autocomplete>
         </v-col>
 
         <v-col cols="12" md="6">
           <v-autocomplete
           label="Funcionario"
-          :items="store.listaTotalEmpleados_oficina"
+          :items="store.listaTotalEmpleados_oficina[selectDepartamento]"
           >
           </v-autocomplete>
         </v-col>
@@ -129,6 +131,8 @@ const horaSalida = ref()
 function obtener(valor) {
   console.log(valor)
 }
+
+const selectDepartamento = ref('')
 
 
 onBeforeMount(()=>{
