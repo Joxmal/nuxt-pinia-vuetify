@@ -39,10 +39,11 @@ export const useStoreConexion = defineStore('useStoreConexion', {
     
                 const router = useRouter()
                 router.push({path:'/dashboard'})
+                
 
                 // imagen del avatar
                 this.avatarImagen = `${this.pb_url}/api/files/${authData.record.collectionId}/${authData.record.id}/${authData.record.avatar}?thumb=150x300`
-                this.avatarNombre = `${authData.record.username}`
+                this.avatarNombre = `${authData.record.name}`
             } catch (error) {
                 console.error(error)
                 this.errorInicio = true

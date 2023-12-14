@@ -116,9 +116,6 @@
   </template>
   
   </dialog-form>
-  <pre>
-    {{ store.listaTotalEmpleados_oficina }}
-  </pre>
   <v-divider></v-divider>
   <pre>
     {{ form }}
@@ -138,11 +135,24 @@ const store = useReportesStore()
 const horaSalida = ref()
 
 function obtenerFechaEntrada(valor) {
-  form.fechaEntrada = valor
+  const fechaEntrada = new Date(valor)
+  const horaEntrada = form.horaEntrada
+
+  const [hora, minutos] = horaEntrada.split(":"); 
+
+  fechaEntrada.setHours(4,0,0);
+
+
+  console.log(fechaEntrada.toUTCString());
+
+  // .toISOString().slice(0, 23) + "Z"
+
 }
 
 function obtenerFechaSalida(valor) {
   form.fechaSalida = valor
+
+  console.log(typeof valor)
 }
 
 
