@@ -5,12 +5,11 @@
           <template v-slot:prepend>
               <v-app-bar-nav-icon  @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
               <nuxt-link  to="/dashboard" class="text-surface text-decoration-none">
-                <v-toolbar-title  >informatica-sgi</v-toolbar-title>
+                <v-toolbar-title  >INICIO</v-toolbar-title>
               </nuxt-link>
           </template>
             <v-btn  :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
             <template v-slot:append>
-              <button-theme-changing class="mr-16"/>
               <avatar-general/>
             
           </template>

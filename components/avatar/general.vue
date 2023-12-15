@@ -31,6 +31,7 @@
           Editar Cuenta (NO)
         </v-btn>
         <v-divider class="my-3"></v-divider>
+
         <v-btn
           rounded
           variant="text"
@@ -38,6 +39,19 @@
         >
           Desconetar
         </v-btn>
+
+        <v-divider class="my-3"></v-divider>
+        
+        <v-btn
+          rounded
+          variant="text"
+          
+        >
+          <button-theme-changing class=""/>
+        </v-btn>
+
+
+
       </div>
     </v-card-text>
   </v-card>
