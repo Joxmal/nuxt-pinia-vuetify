@@ -2,6 +2,7 @@
   <dialog-form
     titulo_dialog="reporte"
     boton_titulo="Nuevo Reporte"
+    @crear="store.crearReporte(form)"
   >
   <template #contenido>
     <v-container>
@@ -117,6 +118,8 @@
   
   </dialog-form>
   <v-divider></v-divider>
+  <v-btn @click="store.obtenerReporte()">listar reportes</v-btn>
+
   <pre>
     {{ form }}
 
@@ -136,28 +139,42 @@ const horaSalida = ref()
 
 function obtenerFechaEntrada(valor) {
   const fechaEntrada = new Date(valor)
-  const horaEntrada = form.horaEntrada
+  fechaEntrada.setDate(fechaEntrada.getDate()+1)
 
+  const horaEntrada = form.horaEntrada
   const [hora, minutos] = horaEntrada.split(":"); 
 
-  fechaEntrada.setHours(4,0,0);
+  fechaEntrada.setHours(hora,minutos,0);
+  form.fechaEntrada = fechaEntrada
 
 
-  console.log(fechaEntrada.toUTCString());
+  // console.warn("fecha a enviar")
+  // console.log(fechaEntrada.toLocaleString());
+  // console.log(fechaEntrada.toISOString());
 
-  // .toISOString().slice(0, 23) + "Z"
-
+    // .toISOString().slice(0, 23) + "Z"
+  // console.warn("la prueba de hora")
+  // console.log(new Date("2023-12-15 00:06:00.000Z"))
+  // console.log(new Date("2023-12-15 00:06:00.000Z").toLocaleTimeString())
+  // console.log(new Date("2023-12-15 00:06:00.000Z").toLocaleDateString())
+  // console.log((new Date("2023-12-15 00:06:00.000Z").getHours()))
+  // console.log((new Date("2022-01-01 10:00:00.123Z").getMinutes()))
 }
 
 function obtenerFechaSalida(valor) {
-  form.fechaSalida = valor
+  const fechaSalida = new Date(valor)
+  fechaSalida.setDate(fechaSalida.getDate()+1)
 
-  console.log(typeof valor)
+  const horaSalida = form.horaSalida
+  const [hora, minutos] = horaSalida.split(":"); 
+
+  fechaSalida.setHours(hora,minutos,0);
+  form.fechaSalida = fechaSalida
 }
 
 
 const form = reactive({
-  creador:storeConexion.avatarNombre,
+  creador:storeConexion.avatarID,
   Item:'',
   tipoReporte:null,
   departamento:null,

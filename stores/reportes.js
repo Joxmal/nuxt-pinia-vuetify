@@ -5,6 +5,7 @@ import PocketBase from 'pocketbase'
 
 export const useReportesStore = defineStore('useReportesStore', {
     state: () => ({
+      pb_url: useRuntimeConfig().public.POCKETBASE_URL,
       listaTotalEmpleados_oficina: undefined,
       
       listaDepartamento:undefined,
@@ -33,16 +34,30 @@ export const useReportesStore = defineStore('useReportesStore', {
       }, {});
       const departamentos = Object.keys(lista);
 
-      // console.log({
-      //   informatica: lista["INFORMATICA"],
-      //   departamentos: departamentos
-      // });
         this.listaTotalEmpleados_oficina = lista
         this.listaDepartamento = departamentos
-    }
-
-   
     },
+
+    async crearReporte(data){
+      const pb = new PocketBase(this.pb_url)
+      const record = await pb.collection('reportes').create(data);
+      console.log("reporte")
+      console.log(record)
+    },
+    
+    
+    async obtenerReporte(){
+      const storeConexion = useStoreConexion()
+
+      const pb = new PocketBase(this.pb_url)
+      const records = await pb.collection('reportes').getFullList({
+        sort: '-created',
+        filter:`creador="${storeConexion.avatarID}"`
+      });
+
+      console.log(records)
+    }
+  },
     
 })
 
