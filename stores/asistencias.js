@@ -3,13 +3,18 @@ import PocketBase from 'pocketbase'
 
 
 
-export const useReportesStore = defineStore('useReportesStore', {
+export const useAsistenciasStore = defineStore('useAsistenciasStore', {
     state: () => ({
       pb_url: useRuntimeConfig().public.POCKETBASE_URL,
       listaTotalEmpleados_oficina: undefined,
       
       listaDepartamento:undefined,
       mapeo:false,
+
+      //notificaciones
+      iconError:false,
+      iconCreate:false,
+      iconDelete:false,
 
       tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASISTENCIA TÉCNICA','RESPALDO','OPERATIVOS ESPECIALES']
     }),
@@ -39,23 +44,40 @@ export const useReportesStore = defineStore('useReportesStore', {
     },
 
     async crearReporte(data){
-      const pb = new PocketBase(this.pb_url)
-      const record = await pb.collection('reportes').create(data);
-      console.log("reporte")
-      console.log(record)
+      try {
+        const pb = new PocketBase(this.pb_url)
+        const record = await pb.collection('reportes').create(data);
+        console.log("reporte")
+        console.log(record)
+
+        this.iconCreate= true
+        setTimeout(() => {
+        this.iconCreate= false
+        }, 2000);
+
+      } catch (err) {
+        console.log(err.response)
+
+        this.iconError= true
+        setTimeout(() => {
+        this.iconError= false
+        }, 2000);
+      }
     },
-    
-    
     async obtenerReporte(){
-      const storeConexion = useStoreConexion()
 
-      const pb = new PocketBase(this.pb_url)
-      const records = await pb.collection('reportes').getFullList({
-        sort: '-created',
-        filter:`creador="${storeConexion.avatarID}"`
-      });
-
-      console.log(records)
+      try {
+        const storeConexion = useStoreConexion()
+        const pb = new PocketBase(this.pb_url)
+        const records = await pb.collection('reportes').getFullList({
+          sort: '-created',
+          filter:`creador="${storeConexion.avatarID}"`
+        });
+        console.log(records)
+      } catch (err) {
+        console.log(err.response.data)
+      }
+   
     }
   },
     

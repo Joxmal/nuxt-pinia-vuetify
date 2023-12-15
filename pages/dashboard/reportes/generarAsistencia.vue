@@ -1,7 +1,9 @@
 <template>
-  <dialog-form
-    titulo_dialog="reporte"
-    boton_titulo="Nuevo Reporte"
+  <dialog-form 
+    titulo_dialog="ASISTENCIA"
+    boton_titulo="Nueva asistencia"
+    :iconError="store.iconError"
+    :mostrar_alert_create="store.iconCreate"
     @crear="store.crearReporte(form)"
   >
   <template #contenido>
@@ -18,8 +20,8 @@
 
         <v-col cols="12" md="6">
           <v-autocomplete 
-          label="Tipo de Reporte" 
-          hint="Tipo de Reporte" 
+          label="Tipo de Asistencia" 
+          hint="Tipo de Asistencia" 
           persistent-hint
           open-text="abrir"
           close-text="cerrar"
@@ -32,7 +34,7 @@
         <v-col cols="12" md="6">
           <v-autocomplete 
           label="departamento" 
-          hint="departamento al cual se le realizo el reporte" 
+          hint="departamento al cual se le realizo la asistencia" 
           persistent-hint
           open-text="abrir"
           close-text="cerrar"
@@ -99,17 +101,17 @@
 
           </v-textarea>
           <v-card elevation="15" class="mx-auto" max-width="500px" style="display: flex; flex-direction: column; align-items: center;">
-            <v-card-title style="text-align: center;"> ESTATUS DEL REPORTE</v-card-title>
+            <v-card-title style="text-align: center;"> ESTATUS DE LA ASISTENCIA</v-card-title>
 
             <v-switch
               inset
               density="compact"
               base-color="primary"
-              :color="form.status==='en curso'? 'red': 'success'"
+              :color="form.status=== false ? 'red': 'success'"
               hide-details
               v-model="form.status"
             ></v-switch>
-            <label :class="form.status=== false ? 'text-red': 'text-success'" class="text-h5">{{ form.status== true ? 'FINALIZADO': 'EN CURSO'}}</label>
+            <label :class="form.status === false ? 'text-red': 'text-success'" class="text-h5">{{ form.status== true ? 'FINALIZADO': 'EN CURSO'}}</label>
           </v-card>
         </v-col>
       </v-row>
@@ -118,8 +120,12 @@
   
   </dialog-form>
   <v-divider></v-divider>
-  <v-btn @click="store.obtenerReporte()">listar reportes</v-btn>
+  <v-btn color="indigo-lighten-5" @click="store.obtenerReporte()">Listar asistencias</v-btn>
+  <v-container class="d-flex flex-wrap justify-space-between ga-2">
 
+    <card-asistencia v-for="n in 10" class="border"/>
+
+  </v-container>
   <pre>
     {{ form }}
 
@@ -128,11 +134,15 @@
 
 
 <script setup>
-import { useReportesStore } from '~/stores/reportes'
+import { useAsistenciasStore } from '~/stores/asistencias'
 import { useStoreConexion } from '~/stores/useStoreConexion'
 
+definePageMeta({
+    middleware:'autenticacion'
+})
+
 const storeConexion = useStoreConexion()
-const store = useReportesStore()
+const store = useAsistenciasStore ()
 
 
 const horaSalida = ref()
@@ -184,7 +194,7 @@ const form = reactive({
   fechaEntrada:null,
   fechaSalida:null,
   descripsion:'',
-  status:'en curso'
+  status:false
 })
 
 

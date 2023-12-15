@@ -4,7 +4,7 @@
       color="#C51162"
       icon="mdi-alert-decagram"
       border
-      prominent
+      :density="'compact'"
     >
       {{ mensaje }}
     </v-alert>

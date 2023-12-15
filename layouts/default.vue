@@ -124,7 +124,7 @@ const listaNavegacion = {
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },
   reportes:{
-    1:{ icon:'mdi-file-chart', value:'reportes', path:'/dashboard/reportes/generarReporte'},
+    1:{ icon:'mdi-file-chart', value:'asistencia', path:'/dashboard/reportes/generarAsistencia'},
     2:{ icon:'mdi-folder-plus', value:'numeros'}, 
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },

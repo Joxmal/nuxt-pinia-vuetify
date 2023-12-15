@@ -1,16 +1,17 @@
 <template>
-  <v-dialog max-width="800px" persistent>
+  <v-dialog max-width="900px" persistent>
     <template v-slot:activator="{ props } ">
       <v-btn color="indigo-lighten-5" @click="$emit('modoCrear')" id="boton-dialogo" class="mb-2" v-bind="props"> {{ boton_titulo || "NUEVO" }}</v-btn>
     </template>
 
     <template v-slot:default="{ isActive }">
       <v-card loading position="relative">
+        <alert-error style="position: fixed; right: 1rem; top: 0.4rem;" v-show="prop.iconError" mensaje="error"/>
         <alert-success
           :icon="prop.icon"
           mensaje="Creado con éxito"
           v-show="mostrar_alert_create"
-          style="position: absolute; right: 0" />
+          style="position: fixed; right: 0" />
 
         <v-card-title>
           <span class="text-h5">{{ titulo_dialog }}</span>
@@ -49,7 +50,7 @@
 </template>
 
 <script setup>
-const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon'])
+const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon','iconError'])
 
 defineEmits([
 'crear','modoCrear','editarDialogForm'
