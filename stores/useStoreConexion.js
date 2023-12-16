@@ -13,6 +13,9 @@ export const useStoreConexion = defineStore('useStoreConexion', {
         avatarID:'',
         avatarNombre:'',
         avatarImagen: '',
+
+        //lista de los usuarios
+        usuariosLista:''
         
     }),
     persist:persistedState.sessionStorage,
@@ -30,13 +33,14 @@ export const useStoreConexion = defineStore('useStoreConexion', {
         },
 
         async inciarSesion(credenciales){
-
             try {
                 console.log(credenciales)
                 const pb = new PocketBase(this.pb_url)
                 const authData = await pb.collection('users').authWithPassword(credenciales.username,credenciales.password);
                 
                 this.verificarAutenticacion()
+                this.obtenerListaUsuarios()
+
     
                 const router = useRouter()
                 router.push({path:'/dashboard'})
@@ -54,6 +58,14 @@ export const useStoreConexion = defineStore('useStoreConexion', {
                 }, 2000);
             }
             
+        },
+
+        async obtenerListaUsuarios(){
+            const pb = new PocketBase(this.pb_url)
+            const records = await pb.collection('Lista_Usuarios').getFullList({
+              sort: '-name',
+            });
+            this.usuariosLista= records
         },
 
         sincronizarDatos(){
@@ -74,7 +86,6 @@ export const useStoreConexion = defineStore('useStoreConexion', {
             navigateTo('/')
             this.borrarDatos()
         },
-
 
    
     },

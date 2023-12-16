@@ -123,13 +123,28 @@
   <v-btn color="indigo-lighten-5" @click="store.obtenerReporte()">Listar asistencias</v-btn>
   <v-container class="d-flex flex-wrap justify-space-between ga-2">
 
-    <card-asistencia v-for="n in 10" class="border"/>
+    <lazy-card-asistencia v-for="item in store.asistenciaLista_Usuario " :key="item.id" 
+     class="border"
+     :tipo-asistencia="item.tipoReporte"
+     :creador="store.buscarNombrePorID(item.creador)"
+     :departamento="item.departamento"
+     :fecha-entrada=" new Date(item.fechaEntrada).toLocaleDateString()"
+     :fecha-salida="new Date(item.fechaSalida).toLocaleDateString()"
+     :hora-entrada="obtenerHora(item.fechaEntrada)"
+     :hora-salida="obtenerHora(item.fechaSalida)"
+     :funcionario="item.funcionario"
+     :status="item.status === true ? 'Finalizado' : 'En Curso'"
+    />
 
   </v-container>
-  <pre>
+  <!-- <pre>
     {{ form }}
 
+  </pre> -->
+  <pre>
+    {{ store.asistenciaLista_Usuario }}
   </pre>
+
 </template>
 
 
@@ -197,9 +212,15 @@ const form = reactive({
   status:false
 })
 
-
+function obtenerHora(item){
+  const date = new Date(item)
+  let horas = date.getHours();
+  let minutos = date.getMinutes();
+  return `${horas.toString().padStart(2,'0')}:${minutos.toString().padStart(2,'0')}`
+}
 
 onBeforeMount(()=>{
   store.obtenerDatos()
+  store.obtenerReporte()
 })
 </script>

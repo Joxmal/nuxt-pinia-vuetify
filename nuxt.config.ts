@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  ssr:true,
   app: {
     
   },
@@ -16,7 +17,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@pinia/nuxt',
   ],
-
 
   runtimeConfig:{
     public:{

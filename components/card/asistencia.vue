@@ -1,26 +1,32 @@
 <template>
-        <v-card  title="PREVENTIVO" position="relative" class="" max-width="220">
+        <v-card  :title="props.tipoAsistencia" position="relative" class="" max-width="230">
               <MenuDropdown @editar="recibe" @eliminar="recibe" />
           <v-card-text class="d-flex flex-column justify-center" >
+
+              <v-card class="d-flex justify-space-around font-weight-black">
+                <v-card border class="text-center text-secondary pa-1">
+                  <div>{{ fechaEntrada }}</div>
+                  <div>{{ horaEntrada }}</div>
+                </v-card>
+                
+                <v-card border class="text-center text-secondary pa-1">
+                  <div>{{ props.fechaSalida }}</div>                  
+                  <div>{{ props.horaSalida }}</div>
+                </v-card>
+
+              </v-card>
+
             <div class="font-weight-bold d-flex  justify-space-around">
-              <v-chip>2023-12-14</v-chip>
-              <v-chip>2023-12-19</v-chip>
-            </div>
-            <div class="font-weight-bold d-flex  justify-space-around">
-              <v-chip>08:32 am</v-chip>
-              <v-chip>02:10 pm</v-chip>
             </div>
             <div class="text-blue-darken-1 text-subtitle-1 font-weight-bold text-center py-2">
-              RECURSOS HUMANOS
+              {{props.departamento}}
             </div>
-
-
               <v-row class="d-flex flex-nowrap flex-column  justify-center ">
                 <v-col
                  cols="12"
                  class="mx-auto text-center font-weight-black" 
                 >
-                  Jose Montes
+                  {{ props.creador }}
                 </v-col>
                 <v-btn size="x-small" icon="mdi-arrow-collapse-down" class="w-fit mx-auto text-center mt-n3 "></v-btn>
                 <v-col
@@ -28,14 +34,14 @@
                  class="mx-auto text-center mt-n3 font-weight-black" 
 
                 >
-                  funcionario
+                  {{ props.funcionario }}
                 </v-col>
                 <v-col
                  cols="12" 
                  class="mx-auto text-center mt-n3 font-weight-black" 
                 >
                 <v-chip class="text-h6 text-success">
-                  finalizado
+                  {{ props.status }}
                 </v-chip>
                   
                 </v-col>
@@ -48,6 +54,9 @@
 
   </template>
   <script setup>
+
+  const props = defineProps(['departamento','fechaEntrada','fechaSalida','horaEntrada','horaSalida','tipoAsistencia','creador','funcionario','status'])
+
 
   function recibe(valor){
     console.log(valor)

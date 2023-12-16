@@ -16,6 +16,11 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       iconCreate:false,
       iconDelete:false,
 
+      //lista de asistencia
+      asistenciaLista_Usuario: '',
+
+
+
       tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASISTENCIA TÉCNICA','RESPALDO','OPERATIVOS ESPECIALES']
     }),
 
@@ -42,7 +47,6 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         this.listaTotalEmpleados_oficina = lista
         this.listaDepartamento = departamentos
     },
-
     async crearReporte(data){
       try {
         const pb = new PocketBase(this.pb_url)
@@ -65,7 +69,6 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       }
     },
     async obtenerReporte(){
-
       try {
         const storeConexion = useStoreConexion()
         const pb = new PocketBase(this.pb_url)
@@ -74,10 +77,23 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
           filter:`creador="${storeConexion.avatarID}"`
         });
         console.log(records)
+        this.asistenciaLista_Usuario= records
       } catch (err) {
         console.log(err.response.data)
       }
-   
+    },
+
+    buscarNombrePorID(valor){
+      const storeConexion = useStoreConexion()
+      const listaUsuarios = storeConexion.usuariosLista
+
+      const usuarioEncontrado = listaUsuarios.find(item => item.id === valor);
+      if (usuarioEncontrado) {
+        return usuarioEncontrado.name;
+      }else{
+        'sin Nombre'
+      }
+
     }
   },
     
