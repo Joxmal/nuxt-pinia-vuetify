@@ -19,6 +19,9 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       //lista de asistencia
       asistenciaLista_Usuario: '',
 
+      //datos del dialogo
+      dialogoDescripsion:'',
+
 
 
       tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASISTENCIA TÉCNICA','RESPALDO','OPERATIVOS ESPECIALES']
@@ -94,7 +97,12 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         'sin Nombre'
       }
 
+    },
+
+    DialogoDescripsion(valor){
+      this.dialogoDescripsion = valor
     }
+
   },
     
 })

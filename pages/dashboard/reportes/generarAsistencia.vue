@@ -121,19 +121,35 @@
   </dialog-form>
   <v-divider></v-divider>
   <v-btn color="indigo-lighten-5" @click="store.obtenerReporte()">Listar asistencias</v-btn>
+  <v-divider></v-divider>
+
+  <dialog-form :ocultar_boton="true" id_boton="boton-descripsion" boton_titulo="Descripsion">
+    <template #contenido>
+      <v-container>
+        <p class="text-h6">
+          {{ store.dialogoDescripsion }}
+        </p>
+      </v-container>
+    </template>
+  </dialog-form>
   <v-container class="d-flex flex-wrap justify-space-between ga-2">
+
+  
 
     <lazy-card-asistencia v-for="item in store.asistenciaLista_Usuario " :key="item.id" 
      class="border"
+     
      :tipo-asistencia="item.tipoReporte"
      :creador="store.buscarNombrePorID(item.creador)"
      :departamento="item.departamento"
+     :descripsion="item.descripsion"
      :fecha-entrada=" new Date(item.fechaEntrada).toLocaleDateString()"
      :fecha-salida="new Date(item.fechaSalida).toLocaleDateString()"
      :hora-entrada="obtenerHora(item.fechaEntrada)"
      :hora-salida="obtenerHora(item.fechaSalida)"
      :funcionario="item.funcionario"
      :status="item.status === true ? 'Finalizado' : 'En Curso'"
+     :item="item.item"
     />
 
   </v-container>

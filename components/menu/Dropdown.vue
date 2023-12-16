@@ -41,6 +41,7 @@ defineProps({
   const items = [
     { title: 'editar', icon:'mdi-pencil' },
     { title: 'eliminar', icon:'mdi-delete-empty' },
+    { title: 'descripcion', icon:'mdi-view-dashboard' },
   ]
 </script>
 

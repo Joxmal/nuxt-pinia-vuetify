@@ -1,68 +1,68 @@
 <template>
-        <v-card  :title="props.tipoAsistencia" position="relative" class="" max-width="230">
-              <MenuDropdown @editar="recibe" @eliminar="recibe" />
-          <v-card-text class="d-flex flex-column justify-center" >
-
-              <v-card class="d-flex justify-space-around font-weight-black">
-                <v-card border class="text-center text-secondary pa-1">
-                  <div>{{ fechaEntrada }}</div>
-                  <div>{{ horaEntrada }}</div>
-                </v-card>
-                
-                <v-card border class="text-center text-secondary pa-1">
-                  <div>{{ props.fechaSalida }}</div>                  
-                  <div>{{ props.horaSalida }}</div>
-                </v-card>
-
-              </v-card>
-
-            <div class="font-weight-bold d-flex  justify-space-around">
-            </div>
-            <div class="text-blue-darken-1 text-subtitle-1 font-weight-bold text-center py-2">
-              {{props.departamento}}
-            </div>
-              <v-row class="d-flex flex-nowrap flex-column  justify-center ">
-                <v-col
-                 cols="12"
-                 class="mx-auto text-center font-weight-black" 
-                >
-                  {{ props.creador }}
-                </v-col>
-                <v-btn size="x-small" icon="mdi-arrow-collapse-down" class="w-fit mx-auto text-center mt-n3 "></v-btn>
-                <v-col
-                 cols="12" 
-                 class="mx-auto text-center mt-n3 font-weight-black" 
-
-                >
-                  {{ props.funcionario }}
-                </v-col>
-                <v-col
-                 cols="12" 
-                 class="mx-auto text-center mt-n3 font-weight-black" 
-                >
-                <v-chip class="text-h6 text-success">
-                  {{ props.status }}
-                </v-chip>
-                  
-                </v-col>
-              </v-row>
-
-            
-          </v-card-text>
-        </v-card>
+<v-card  :title="props.tipoAsistencia" position="relative" class="" max-width="230">
+  <MenuDropdown @editar="recibe" @eliminar="recibe" @descripcion="abrirDialogoDescripsion" />
+  <v-card-text class="d-flex flex-column justify-center" >
 
 
-  </template>
+
+    <div  class="d-flex flex-wrap ga-1 justify-space-around font-weight-black">
+      <v-card border class="text-center pa-1">
+        <div>{{ fechaEntrada }}</div>
+        <div>{{ horaEntrada }}</div>
+      </v-card>
+      <v-card border class="text-center pa-1">
+        <div>{{ props.fechaSalida }}</div>                  
+        <div>{{ props.horaSalida }}</div>
+      </v-card>
+    </div>
+    <div class="text-blue-darken-1 text-subtitle-1 font-weight-bold text-center py-2">
+      {{props.departamento}}
+    </div>
+    <v-row class="d-flex flex-nowrap flex-column  justify-center ">
+      <v-col
+        cols="12"
+        class="mx-auto text-center font-weight-black" 
+      >
+        {{ props.creador }}
+      </v-col>
+      <v-btn size="x-small" icon="mdi-arrow-collapse-down" class="w-fit mx-auto text-center mt-n3 "></v-btn>
+      <v-col
+        cols="12" 
+        class="mx-auto text-center mt-n3 font-weight-black" >
+        {{ props.funcionario }}
+      </v-col>
+      <v-col
+        cols="12" 
+        class="mx-auto text-center mt-n3 font-weight-black" >
+        <v-chip :class="props.status !== 'En Curso' ? 'text-success' : 'text-warning'" class="text-h6">
+          {{ props.status }}
+        </v-chip>
+        <v-divider></v-divider>
+        <v-chip v-if="props.item">
+          {{ props.item }}
+        </v-chip>
+      </v-col>
+    </v-row>
+  </v-card-text>
+</v-card>
+
+</template>
   <script setup>
+  import { useAsistenciasStore } from '~/stores/asistencias'
 
-  const props = defineProps(['departamento','fechaEntrada','fechaSalida','horaEntrada','horaSalida','tipoAsistencia','creador','funcionario','status'])
+  const props = defineProps(['departamento','fechaEntrada','fechaSalida','horaEntrada','horaSalida','tipoAsistencia','creador','funcionario','status','descripsion','item'])
 
+  const store = useAsistenciasStore()
+
+  function abrirDialogoDescripsion(){
+    store.DialogoDescripsion(props.descripsion)
+    const element = document.getElementById('boton-descripsion')
+    element.click()
+  }
 
   function recibe(valor){
     console.log(valor)
   }
-
-
     const messages = [
       {
         from: 'You',
