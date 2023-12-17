@@ -6,6 +6,7 @@
 
     <template v-slot:default="{ isActive }">
       <v-card loading position="relative">
+        <v-btn v-if="botonResetFormulario" @click="$emit('resetearFormulario')" position="absolute" location="top right" class="ma-2" color="primary" variant="plain" border>Reset</v-btn>
         <alert-error style="position: fixed; right: 1rem; top: 0.4rem;" v-show="prop.iconError" mensaje="error"/>
         <alert-success
           :icon="prop.icon"
@@ -50,7 +51,7 @@
 </template>
 
 <script setup>
-const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon','iconError','id_boton','ocultar_boton'])
+const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon','iconError','id_boton','ocultar_boton','botonResetFormulario'])
 
 defineEmits([
 'crear','modoCrear','editarDialogForm'

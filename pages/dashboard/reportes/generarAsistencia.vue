@@ -2,22 +2,66 @@
     <!-- dilogo de la descripsion -->
   <dialog-form :ocultar_boton="true" id_boton="boton-descripsion" boton_titulo="Descripsion">
     <template #contenido>
-      <v-container>
-        <v-card color=" pa-5" elevation="12">
-          <v-card-title class=" text-center text-h5">DESCRIPSION</v-card-title>
-          <p class="text-h6">
+      <v-container class="d-flex flex-column ga-2">
+
+        <div class=" font-weight-black text-h5 d-flex flex-column  align-center mb-1">
+            {{ store.form.departamento }} 
+        </div>
+        <v-divider></v-divider>
+
+        <div class="font-weight-black d-flex justify-space-between align-center">
+
+          <div class="font-weight-black  d-flex flex-column  align-center">
+            <div>
+              trabajador
+            </div>
+            <div>
+              {{ store.buscarNombrePorID(store.form.creador) }} 
+            </div>
+          </div>
+
+          <div class="font-weight-black  d-flex flex-column justify-center  align-center">
+            <div>
+              funcionario
+            </div>
+            <div>
+              {{ store.form.funcionario }} 
+            </div>
+          </div>
+        </div>
+        <v-divider></v-divider>
+        <div class="font-weight-black  d-flex  justify-space-between align-center">
+          <div class="">
+            Entrada : {{ new Date(store.form.fechaEntrada).toLocaleString() }}
+          </div>
+          
+          <div class="">
+            Salida : {{ new Date(store.form.fechaSalida).toLocaleString() }}
+          </div>
+        </div>
+        
+
+
+          
+
+
+
+        <v-card :density="'compact'" color=" pa-5" elevation="12">
+          <v-card-title class=" text-center text-h5 bg-primary mt-n3 ">{{ store.form.tipoReporte }}</v-card-title>
+          <p class="text-h6 text-justify">
             {{ store.dialogoDescripsion }}
           </p>
-          <v-chip>
-            ID DEL SISTEMA: {{ store.ID_asistencia_editar }}
-          </v-chip>
         </v-card>
+        <v-chip>
+          ID DEL SISTEMA:<b> {{store.ID_asistencia_editar }}</b> 
+        </v-chip>
       </v-container>
     </template>
   </dialog-form>
 
   <!-- //dilogo de edicion y creacion -->
-  <dialog-form 
+  <dialog-form
+    :boton-reset-formulario="true" 
     titulo_dialog="ASISTENCIA"
     boton_titulo="Nueva asistencia"
     :iconError="store.iconError"
@@ -25,6 +69,7 @@
     @crear="store.crearReporte(store.form)"
     @editarDialogForm="store.editarReporte()"
     @modo-crear="store.modoEditar=false"
+    @resetearFormulario="store.resetearReporte()"
     :modo-editar="store.modoEditar"
   >
   <template #contenido>
@@ -142,15 +187,8 @@
       </v-row>
     </v-container>
   </template>
-  
   </dialog-form>
-  <v-divider></v-divider>
-  <v-btn color="indigo-lighten-5" @click="store.obtenerReporte()">Listar asistencias</v-btn>
-  <v-divider></v-divider>
-
   <div class="d-flex my-2 flex-wrap justify-space-between ga-2">
-  
-
     <lazy-card-asistencia v-for="item in store.asistenciaLista_Usuario " :key="item.id" 
      class="border"
      

@@ -58,6 +58,19 @@
     store.DialogoDescripsion(props.descripsion)
     const element = document.getElementById('boton-descripsion')
     element.click()
+
+
+    store.form.item = props.item
+    store.form.tipoReporte = props.tipoAsistencia
+    store.form.departamento = props.departamento
+    store.form.funcionario = props.funcionario
+    store.form.horaEntrada = props.horaEntrada
+    store.form.horaSalida = props.horaSalida
+    store.form.fechaEntrada = props.fechaEntrada
+    store.form.fechaSalida = props.fechaSalida
+    store.form.descripsion = props.descripsion
+    store.form.status = props.status
+
   }
 
   function abrirDialogoEditar(){
