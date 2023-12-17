@@ -2,7 +2,7 @@
 <v-card position="relative" class="pt-5" max-width="230">
 
   <v-card-title class="text-center">{{ props.tipoAsistencia }} </v-card-title>
-  <MenuDropdown @editar="abrirDialogoEditar" @eliminar="recibe" @descripcion="abrirDialogoDescripsion" />
+  <MenuDropdown @editar="abrirDialogoEditar" @eliminar="store.eliminarReporte(props.idAsistencia)" @descripcion="abrirDialogoDescripsion" />
   <v-card-text  class="d-flex ma-n2 flex-column justify-center" >
 
     <div  class="d-flex flex-wrap ga-1 justify-space-around font-weight-black">

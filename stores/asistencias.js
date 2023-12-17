@@ -115,6 +115,24 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
     },
 
+    async eliminarReporte(ID){
+      try {
+        const pb = new PocketBase(this.pb_url)
+        if (confirm('¿Desea Eliminar esta asistencia?')) {
+          await pb.collection('reportes').delete(ID);
+          console.log("eliminado con exito")
+
+          this.obtenerReporte()
+
+        }else{
+          return
+        }
+      } catch (error) {
+        console.log("ocurrio un error")
+        console.log(error.response)
+      }
+    },
+
     async obtenerReporte(){
       try {
         const storeConexion = useStoreConexion()

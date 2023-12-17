@@ -148,9 +148,7 @@
   <v-btn color="indigo-lighten-5" @click="store.obtenerReporte()">Listar asistencias</v-btn>
   <v-divider></v-divider>
 
-
-  <v-container class="d-flex flex-wrap justify-space-between ga-2">
-
+  <div class="d-flex my-2 flex-wrap justify-space-between ga-2">
   
 
     <lazy-card-asistencia v-for="item in store.asistenciaLista_Usuario " :key="item.id" 
@@ -172,7 +170,7 @@
      :item="item.item"
     />
 
-  </v-container>
+  </div>
   <v-divider></v-divider>
 
   {{ store.ID_asistencia_editar }}
