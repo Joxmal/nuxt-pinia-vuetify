@@ -30,20 +30,21 @@
             @click="isActive.value = false">
             Cerrar
           </v-btn>
-
-          <v-btn v-if="modoEditar"
-            color="blue-darken-1"
-            variant="text"
-            @click="$emit('editarDialogForm')">
-            Editar
-          </v-btn>
-
-          <v-btn v-else
-            color="blue-darken-1"
-            variant="text"
-            @click="$emit('crear')">
-            Crear
-          </v-btn>
+          <div v-show="!prop.ocultarBotones">
+            <v-btn v-if="modoEditar"
+              color="blue-darken-1"
+              variant="text"
+              @click="$emit('editarDialogForm')">
+              Editar
+            </v-btn>
+  
+            <v-btn v-else
+              color="blue-darken-1"
+              variant="text"
+              @click="$emit('crear')">
+              Crear
+            </v-btn>
+          </div>
         </v-card-actions>
       </v-card>
     </template>
@@ -51,7 +52,7 @@
 </template>
 
 <script setup>
-const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon','iconError','id_boton','ocultar_boton','botonResetFormulario'])
+const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon','iconError','id_boton','ocultar_boton','botonResetFormulario','ocultarBotones'])
 
 defineEmits([
 'crear','modoCrear','editarDialogForm'

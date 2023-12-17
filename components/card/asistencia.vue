@@ -71,6 +71,7 @@
     store.form.descripsion = props.descripsion
     store.form.status = props.status
 
+    store.ID_asistencia_editar= props.idAsistencia
   }
 
   function abrirDialogoEditar(){

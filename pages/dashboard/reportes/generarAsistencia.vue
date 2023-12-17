@@ -1,6 +1,6 @@
 <template>
     <!-- dilogo de la descripsion -->
-  <dialog-form :ocultar_boton="true" id_boton="boton-descripsion" boton_titulo="Descripsion">
+  <dialog-form :ocultar-botones="true" :ocultar_boton="true" id_boton="boton-descripsion" boton_titulo="Descripsion">
     <template #contenido>
       <v-container class="d-flex flex-column ga-2">
 
@@ -39,13 +39,6 @@
             Salida : {{ new Date(store.form.fechaSalida).toLocaleString() }}
           </div>
         </div>
-        
-
-
-          
-
-
-
         <v-card :density="'compact'" color=" pa-5" elevation="12">
           <v-card-title class=" text-center text-h5 bg-primary mt-n3 ">{{ store.form.tipoReporte }}</v-card-title>
           <p class="text-h6 text-justify">
