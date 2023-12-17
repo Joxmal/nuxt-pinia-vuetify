@@ -1,8 +1,7 @@
 <template>
 <v-menu
   min-width="200px"
-  rounded
->
+  rounded>
   <template v-slot:activator="{ props }">
     <v-btn
       icon
@@ -16,6 +15,8 @@
       </v-avatar>
     </v-btn>
   </template>
+ 
+  
   <v-card>
     <v-card-text>
       <div class="mx-auto text-center">
@@ -47,14 +48,15 @@
           variant="text"
           
         >
-          <button-theme-changing class=""/>
-        </v-btn>
+        <button-theme-changing class=""/>
+      </v-btn>
 
 
 
       </div>
     </v-card-text>
   </v-card>
+  hh
 </v-menu>
 </template>
 

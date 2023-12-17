@@ -11,6 +11,22 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       listaDepartamento:undefined,
       mapeo:false,
 
+
+      //formulario de creacion
+      form : {
+        creador:useStoreConexion().avatarID,
+        item:'',
+        tipoReporte:null,
+        departamento:null,
+        funcionario:null,
+        horaEntrada:"08:00",
+        horaSalida:"14:30",
+        fechaEntrada:null,
+        fechaSalida:null,
+        descripsion:'',
+        status:false
+      },
+
       //notificaciones
       iconError:false,
       iconCreate:false,
@@ -22,17 +38,28 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       //datos del dialogo
       dialogoDescripsion:'',
 
+      //ID de la asistencia al editar
+      ID_asistencia_editar:'id',
+      modoEditar:false,
 
-
-      tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASISTENCIA TÉCNICA','RESPALDO','OPERATIVOS ESPECIALES']
+      tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.']
     }),
-
     getters:{
 
     },
-
-
   actions:{
+    resetearReporte(){
+      this.form.item=''
+      this.form.tipoReporte=null
+      this.form.departamento=null,
+      this.form.funcionario=null,
+      this.form.horaEntrada="08=00",
+      this.form.horaSalida="14=30",
+      this.form.fechaEntrada=null,
+      this.form.fechaSalida=null,
+      this.form.descripsion='',
+      this.form.status=false
+    },
     async obtenerDatos(){
       const store = useIPListaStore()
       await store.obtenerListaDatos()
@@ -62,6 +89,8 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         this.iconCreate= false
         }, 2000);
 
+        this.resetearReporte()
+        this.obtenerReporte()
       } catch (err) {
         console.log(err.response)
 
@@ -70,7 +99,22 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         this.iconError= false
         }, 2000);
       }
+
+
     },
+
+    async editarReporte(){
+      const pb = new PocketBase(this.pb_url)
+      const record = await pb.collection('reportes').update(this.ID_asistencia_editar, this.form);
+      console.log(record)
+      console.log("editado con exito")
+
+      this.resetearReporte()
+      this.obtenerReporte()
+      this.ID_asistencia_editar =""
+
+    },
+
     async obtenerReporte(){
       try {
         const storeConexion = useStoreConexion()
@@ -106,8 +150,3 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
   },
     
 })
-
-const lista = {
-  informatica:["jose","manuel","lopez"],
-  departamentos:['DEPARTAMENTO DE DESARROLLO ECONOMICO','ATENCION AL CIUDADANO','informatica']
-}

@@ -6,8 +6,8 @@
         Colocar fecha
     </v-btn>
 </div>
-<v-sheet  class="d-flex justify-center">
-    <v-sheet class="pa-2 font-weight-black">
+<v-sheet v-if="false" class="d-flex justify-center">
+    <v-sheet  class="pa-2 font-weight-black">
         {{ fechaParcheada }}
     </v-sheet>
 </v-sheet>
@@ -32,8 +32,6 @@
         ACEPTAR
     </v-btn>
 </v-dialog>
-
-<v-divider/>
 </template>
     
     
