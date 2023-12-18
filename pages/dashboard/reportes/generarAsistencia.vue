@@ -1,5 +1,5 @@
 <template>
-    <!-- dilogo de la descripsion -->
+  <!-- dilogo de la descripsion -->
   <dialog-form :ocultar-botones="true" :ocultar_boton="true" id_boton="boton-descripsion" boton_titulo="Descripsion">
     <template #contenido>
       <v-container class="d-flex flex-column ga-2">
@@ -51,136 +51,182 @@
       </v-container>
     </template>
   </dialog-form>
-
+  <!-- ---------- -->
   <!-- //dilogo de edicion y creacion -->
-  <dialog-form
-    :boton-reset-formulario="true" 
-    titulo_dialog="ASISTENCIA"
-    boton_titulo="Nueva asistencia"
-    :iconError="store.iconError"
-    :mostrar_alert_create="store.iconCreate"
-    @crear="store.crearReporte(store.form)"
-    @editarDialogForm="store.editarReporte()"
-    @modo-crear="store.modoEditar=false"
-    @resetearFormulario="store.resetearReporte()"
-    :modo-editar="store.modoEditar"
-  >
-  <template #contenido>
+  <dialog-form 
+          :boton-reset-formulario="true" 
+          titulo_dialog="ASISTENCIA"
+          boton_titulo="Nueva asistencia"
+          :iconError="store.iconError"
+          :mostrar_alert_create="store.iconCreate"
+          @crear="store.crearReporte(store.form)"
+          @editarDialogForm="store.editarReporte()"
+          @modo-crear="store.modoEditar=false"
+          @resetearFormulario="store.resetearReporte()"
+          :modo-editar="store.modoEditar">
+        <template #contenido>
+          <v-container>
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-text-field
+                label="Nro de bien"
+                v-model="store.form.item">
+                </v-text-field>
+              </v-col>
+      
+              <v-col cols="12" md="6">
+                <v-autocomplete 
+                label="Tipo de Asistencia" 
+                hint="Tipo de Asistencia" 
+                persistent-hint
+                open-text="abrir"
+                close-text="cerrar"
+                :items="store.tipoReporte"
+                v-model="store.form.tipoReporte"
+                >
+                </v-autocomplete>
+              </v-col>
+      
+              <v-col cols="12" md="6">
+                <v-autocomplete 
+                label="departamento" 
+                hint="departamento al cual se le realizo la asistencia" 
+                persistent-hint
+                open-text="abrir"
+                close-text="cerrar"
+                :items="store.listaDepartamento"
+                v-model="store.form.departamento"
+                >
+              
+                </v-autocomplete>
+              </v-col>
+      
+              <v-col cols="12" md="6">
+                <v-autocomplete
+                label="Funcionario"
+                :items="store.listaTotalEmpleados_oficina[store.form.departamento]"
+                v-model="store.form.funcionario"
+                >
+                </v-autocomplete>
+              </v-col>
+      
+              <v-col cols="12" sm="6">
+                <v-card style="border: 2px solid rgb(6, 143, 255);" variant="elevated" class="pa-2">
+                  <v-text-field
+                    name="Hora de entrada"
+                    label="Hora de entrada"
+                    type="time"
+                    suffix="Entrada"
+                    v-model="store.form.horaEntrada"
+                    >
+                  </v-text-field>
+        
+                  <date-picker-dialog
+                    @fecha="obtenerFechaEntrada"
+                  />
+                  <v-sheet class="d-flex justify-center">
+                    <v-sheet class="pa-2 font-weight-black">{{ new Date(store.form.fechaEntrada).toLocaleDateString() }}</v-sheet>
+                  </v-sheet>
+                </v-card>
+      
+              </v-col>
+      
+              <v-col cols="12" sm="6" >
+                <v-card style="border: 2px solid rgb(6, 143, 255);" variant="elevated" class="pa-2" >
+                  <v-text-field
+                    name="Hora de salida"
+                    label="Hora de salida"
+                    type="time"
+                    suffix="Salida"
+                    v-model="store.form.horaSalida"
+                    >
+                  </v-text-field>
+        
+                  <date-picker-dialog
+                    @fecha="obtenerFechaSalida"
+                  />
+                  <v-sheet class="d-flex justify-center">
+                    <v-sheet class="pa-2 font-weight-black">{{ new Date(store.form.fechaSalida).toLocaleDateString() }}</v-sheet>
+                  </v-sheet>
+                </v-card>
+      
+              </v-col>
+      
+              <v-col cols="12">
+                <v-textarea
+                  rows="3"
+                  clearable 
+                  label="Descripción" 
+                  variant="outlined"
+                  v-model="store.form.descripsion"
+                  >
+      
+                </v-textarea>
+                <v-card elevation="15" class="mx-auto" max-width="500px" style="display: flex; flex-direction: column; align-items: center;">
+                  <v-card-title style="text-align: center;"> ESTATUS DE LA ASISTENCIA</v-card-title>
+      
+                  <v-switch
+                    inset
+                    density="compact"
+                    base-color="primary"
+                    :color="store.form.status=== false ? 'red': 'success'"
+                    hide-details
+                    v-model="store.form.status"
+                  ></v-switch>
+                  <label :class="store.form.status === false ? 'text-red': 'text-success'" class="text-h5">{{ store.form.status== true ? 'FINALIZADO': 'EN CURSO'}}</label>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </template>
+  </dialog-form>
+  
+    <!-- buscador de por fecha -->
     <v-container>
       <v-row>
-        <v-col cols="12" md="6">
-          <v-text-field
-          label="Nro de bien"
-          v-model="store.form.item">
-          </v-text-field>
-        </v-col>
-
-        <v-col cols="12" md="6">
-          <v-autocomplete 
-          label="Tipo de Asistencia" 
-          hint="Tipo de Asistencia" 
-          persistent-hint
-          open-text="abrir"
-          close-text="cerrar"
-          :items="store.tipoReporte"
-          v-model="store.form.tipoReporte"
-          >
+          <!-- se va a esconder hasta que exista un usuario admin -->
+        <v-col  v-if="false" class="">
+          <v-autocomplete border class=" mt-4"  color="blue" variant="solo-filled">
+            
           </v-autocomplete>
         </v-col>
 
-        <v-col cols="12" md="6">
-          <v-autocomplete 
-          label="departamento" 
-          hint="departamento al cual se le realizo la asistencia" 
-          persistent-hint
-          open-text="abrir"
-          close-text="cerrar"
-          :items="store.listaDepartamento"
-          v-model="store.form.departamento"
-          >
-        
-          </v-autocomplete>
+        <v-col class="">
+          <date-picker-dialog
+            titulo-boton="Desde"
+            @fecha="pasarfechaDesde"
+          />
+          <v-sheet class="d-flex justify-center pa-2 font-weight-black">
+           {{ new Date(store.$state.fechaPeticion.desde).toLocaleDateString()}}
+          </v-sheet>
         </v-col>
 
-        <v-col cols="12" md="6">
-          <v-autocomplete
-          label="Funcionario"
-          :items="store.listaTotalEmpleados_oficina[store.form.departamento]"
-          v-model="store.form.funcionario"
-          >
-          </v-autocomplete>
+        <v-col>
+          <date-picker-dialog
+            titulo-boton="Hasta"
+            @fecha="pasarfechaHasta" 
+          />
+          <v-sheet class="d-flex justify-center pa-2 font-weight-black">
+           {{ new Date(store.$state.fechaPeticion.hasta).toLocaleDateString() }}
+          </v-sheet>
         </v-col>
 
-        <v-col cols="12" sm="6">
-          <v-card style="border: 2px solid rgb(6, 143, 255);" variant="elevated" class="pa-2">
-            <v-text-field
-              name="Hora de entrada"
-              label="Hora de entrada"
-              type="time"
-              suffix="Entrada"
-              v-model="store.form.horaEntrada"
-              >
-            </v-text-field>
-  
-            <date-picker-dialog
-              @fecha="obtenerFechaEntrada"
-            />
-            <v-sheet class="d-flex justify-center">
-              <v-sheet class="pa-2 font-weight-black">{{ new Date(store.form.fechaEntrada).toLocaleDateString() }}</v-sheet>
-            </v-sheet>
-          </v-card>
-
+        <v-col>
+          <v-btn @click="store.obtenerReporte()" color="primary">
+            BUSCAR
+          </v-btn>
         </v-col>
 
-        <v-col cols="12" sm="6" >
-          <v-card style="border: 2px solid rgb(6, 143, 255);" variant="elevated" class="pa-2" >
-            <v-text-field
-              name="Hora de salida"
-              label="Hora de salida"
-              type="time"
-              suffix="Salida"
-              v-model="store.form.horaSalida"
-              >
-            </v-text-field>
-  
-            <date-picker-dialog
-              @fecha="obtenerFechaSalida"
-            />
-            <v-sheet class="d-flex justify-center">
-              <v-sheet class="pa-2 font-weight-black">{{ new Date(store.form.fechaSalida).toLocaleDateString() }}</v-sheet>
-            </v-sheet>
-          </v-card>
-
-        </v-col>
-
-        <v-col cols="12">
-          <v-textarea
-            rows="3"
-            clearable 
-            label="Descripción" 
-            variant="outlined"
-            v-model="store.form.descripsion"
-            >
-
-          </v-textarea>
-          <v-card elevation="15" class="mx-auto" max-width="500px" style="display: flex; flex-direction: column; align-items: center;">
-            <v-card-title style="text-align: center;"> ESTATUS DE LA ASISTENCIA</v-card-title>
-
-            <v-switch
-              inset
-              density="compact"
-              base-color="primary"
-              :color="store.form.status=== false ? 'red': 'success'"
-              hide-details
-              v-model="store.form.status"
-            ></v-switch>
-            <label :class="store.form.status === false ? 'text-red': 'text-success'" class="text-h5">{{ store.form.status== true ? 'FINALIZADO': 'EN CURSO'}}</label>
-          </v-card>
-        </v-col>
       </v-row>
+
+
+
     </v-container>
-  </template>
-  </dialog-form>
+
+      
+
+
+
   <div class="d-flex my-2 flex-wrap justify-space-between ga-2">
     <lazy-card-asistencia v-for="item in store.asistenciaLista_Usuario " :key="item.id" 
      class="border"
@@ -236,6 +282,7 @@ function obtenerFechaEntrada(valor) {
 
   fechaEntrada.setHours(hora,minutos,0);
   store.form.fechaEntrada = fechaEntrada
+  console.log(fechaEntrada)
 }
 
 function obtenerFechaSalida(valor) {
@@ -260,4 +307,19 @@ onBeforeMount(()=>{
   store.obtenerDatos()
   store.obtenerReporte()
 })
+
+
+//fecha del bucador
+
+function pasarfechaDesde(valor){
+store.fechaPeticion.desde = valor
+}
+
+function pasarfechaHasta(valor){
+store.fechaPeticion.hasta = valor
+}
+
+function fechaDesde(valor){
+console.log(valor)
+}
 </script>

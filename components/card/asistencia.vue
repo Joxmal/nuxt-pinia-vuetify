@@ -37,7 +37,7 @@
         <v-chip :class="props.status !== false ? 'text-success' : 'text-warning'" class="text-h6">
           {{ props.status === false ? 'EN CURSO' : 'FINALIZADO' }}
         </v-chip>
-        <v-divider></v-divider>
+        <v-divider class="my-1"></v-divider>
         <v-chip v-if="props.item">
           {{ props.item }}
         </v-chip>

@@ -42,7 +42,14 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       ID_asistencia_editar:'id',
       modoEditar:false,
 
-      tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.']
+      tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'],
+
+      //fechas de peticiones a la base de datos de las asistencias 
+      fechaPeticion:{
+        desde:"2000-12-16",
+        hasta:"2040-12-16"
+      }
+
     }),
     getters:{
 
@@ -139,7 +146,7 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         const pb = new PocketBase(this.pb_url)
         const records = await pb.collection('reportes').getFullList({
           sort: '-created',
-          filter:`creador="${storeConexion.avatarID}"`
+          filter:`creador="${storeConexion.avatarID}" && ( fechaEntrada >= "${this.fechaPeticion.desde}" && fechaSalida <= "${this.fechaPeticion.hasta}" )`
         });
         console.log(records)
         this.asistenciaLista_Usuario= records
@@ -163,6 +170,20 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
     DialogoDescripsion(valor){
       this.dialogoDescripsion = valor
+    },
+
+    //consulta a la bd por fecha 
+    async obtenerConsultaPorFecha(){
+      const pb = new PocketBase(this.pb_url)
+      try {
+        const records = await pb.collection('reportes').getFullList({
+          sort: '-created',
+          filter:`fechaEntrada >= "2023-12-16" && fechaSalida <= "2023-12-23"`
+        });
+        console.log(records)
+      } catch (error) {
+        console.log(error.response)
+      }
     }
 
   },

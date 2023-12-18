@@ -3,7 +3,7 @@
     <v-btn
      color="primary"
      @click="dialog=true">
-        Colocar fecha
+        {{ props.tituloBoton }}
     </v-btn>
 </div>
 <v-sheet v-if="false" class="d-flex justify-center">
@@ -36,6 +36,14 @@
     
     
 <script setup>
+
+const props = defineProps({
+    tituloBoton:{
+        type:String,
+        default:'Colocar Fecha'
+    }
+})
+
 //abrir y cerrar dialog
 const dialog =ref()
 
