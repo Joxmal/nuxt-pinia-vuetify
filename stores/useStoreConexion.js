@@ -9,10 +9,13 @@ export const useStoreConexion = defineStore('useStoreConexion', {
 
         pb_Valid : false,
         errorInicio: false,
-        
+
+
+        //datos del usuario que unicio sesion
         avatarID:'',
         avatarNombre:'',
         avatarImagen: '',
+        avatarRole:'',
 
         //lista de los usuarios
         usuariosLista:''
@@ -21,7 +24,14 @@ export const useStoreConexion = defineStore('useStoreConexion', {
     persist:persistedState.sessionStorage,
 
     getters:{
-        estadoUsuario: (state) => state.pb_Valid
+        estadoUsuario: (state) => state.pb_Valid,
+
+        usuarioListaMap(state){
+          return state.usuariosLista.map(item=>({
+            name: item.name,
+            id: item.id,
+          }));
+        }  
     },
 
     actions:{
@@ -49,7 +59,10 @@ export const useStoreConexion = defineStore('useStoreConexion', {
                 // imagen del avatar
                 this.avatarImagen = `${this.pb_url}/api/files/${authData.record.collectionId}/${authData.record.id}/${authData.record.avatar}?thumb=150x300`
                 this.avatarNombre = `${authData.record.name}`
+                this.avatarRole = `${authData.record.role}`
                 this.avatarID = `${authData.record.id}`
+
+                useAsistenciasStore().seleccionUsuario = useStoreConexion().avatarID
             } catch (error) {
                 console.error(error)
                 this.errorInicio = true
@@ -77,6 +90,7 @@ export const useStoreConexion = defineStore('useStoreConexion', {
             this.errorInicio = false,
             this.avatarNombre = '',
             this.avatarImagen = ''
+            this.avatarID= ''
         },
         desconectar(){
             const pb = new PocketBase(this.pb_url)
@@ -85,6 +99,9 @@ export const useStoreConexion = defineStore('useStoreConexion', {
             
             navigateTo('/')
             this.borrarDatos()
+
+            useAsistenciasStore().seleccionUsuario = ""
+
         },
 
    

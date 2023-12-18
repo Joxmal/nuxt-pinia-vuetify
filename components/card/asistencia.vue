@@ -1,5 +1,5 @@
 <template>
-<v-card position="relative" class="pt-5" max-width="230">
+<v-card position="relative" class="pt-5" width="220">
 
   <v-card-title class="text-center">{{ props.tipoAsistencia }} </v-card-title>
   <MenuDropdown @editar="abrirDialogoEditar" @eliminar="store.eliminarReporte(props.idAsistencia)" @descripcion="abrirDialogoDescripsion" />
@@ -72,6 +72,10 @@
     store.form.status = props.status
 
     store.ID_asistencia_editar= props.idAsistencia
+    
+
+    store.nombreCardAsistencia = props.creador
+
   }
 
   function abrirDialogoEditar(){

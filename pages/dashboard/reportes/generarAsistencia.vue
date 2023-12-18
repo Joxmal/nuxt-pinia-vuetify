@@ -16,7 +16,7 @@
               trabajador
             </div>
             <div>
-              {{ store.buscarNombrePorID(store.form.creador) }} 
+              {{ store.nombreCardAsistencia }} 
             </div>
           </div>
 
@@ -185,29 +185,27 @@
     <v-container>
       <v-row>
           <!-- se va a esconder hasta que exista un usuario admin -->
-        <v-col  v-if="false" class="">
-          <v-autocomplete border class=" mt-4"  color="blue" variant="solo-filled">
-            
-          </v-autocomplete>
+        <v-col  v-if="useStoreConexion().avatarRole  === 'superUser'" cols="12" sm="4">
+          <v-select label="Trabajador" v-model="valorusuarioID"  :items="useStoreConexion().usuarioListaMap" :item-props="itemProps"></v-select>
         </v-col>
 
-        <v-col class="">
+        <v-col cols="12" sm="4">
+          <v-sheet class="d-flex justify-center flex-column text-center pa-2 font-weight-black">
           <date-picker-dialog
             titulo-boton="Desde"
             @fecha="pasarfechaDesde"
           />
-          <v-sheet class="d-flex justify-center pa-2 font-weight-black">
-           {{ new Date(store.$state.fechaPeticion.desde).toLocaleDateString()}}
+           {{ invertirFecha(store.fechaPeticion.desde) }}
           </v-sheet>
         </v-col>
 
-        <v-col>
+        <v-col cols="12" sm="4">
+          <v-sheet class="d-flex justify-center flex-column text-center pa-2 font-weight-black">
           <date-picker-dialog
             titulo-boton="Hasta"
             @fecha="pasarfechaHasta" 
           />
-          <v-sheet class="d-flex justify-center pa-2 font-weight-black">
-           {{ new Date(store.$state.fechaPeticion.hasta).toLocaleDateString() }}
+           {{ invertirFecha(store.fechaPeticion.hasta) }}
           </v-sheet>
         </v-col>
 
@@ -216,20 +214,21 @@
             BUSCAR
           </v-btn>
         </v-col>
-
       </v-row>
 
 
 
     </v-container>
 
-      
+  <v-card position="relative" class=" pa-4 py-10   bg-none rounded d-flex my-2 flex-wrap justify-center ga-2">
+
+    <v-chip  class="font-weight-black" style="position: absolute;top: 0; right: 0;" >
+      {{store.conteoAsistencia}}
+    </v-chip>
 
 
-
-  <div class="d-flex my-2 flex-wrap justify-space-between ga-2">
     <lazy-card-asistencia v-for="item in store.asistenciaLista_Usuario " :key="item.id" 
-     class="border"
+     class="border "
      
      :id-asistencia="item.id"
      :tipo-asistencia="item.tipoReporte"
@@ -247,12 +246,12 @@
      :item="item.item"
     />
 
-  </div>
-  <v-divider></v-divider>
+  </v-card>
+  <!-- <v-divider></v-divider>
 
   {{ store.ID_asistencia_editar }}
-  <v-divider></v-divider>
-  <pre>
+  <v-divider></v-divider> -->
+  <!-- <pre>
     {{ store.form }}
 
   </pre>
@@ -260,7 +259,7 @@
 
   <pre>
     {{ store.asistenciaLista_Usuario }}
-  </pre>
+  </pre> -->
 
 </template>
 
@@ -270,6 +269,7 @@ import { useAsistenciasStore } from '~/stores/asistencias'
 definePageMeta({
     middleware:'autenticacion'
 })
+
 const store = useAsistenciasStore ()
 
 
@@ -313,13 +313,47 @@ onBeforeMount(()=>{
 
 function pasarfechaDesde(valor){
 store.fechaPeticion.desde = valor
+console.log(valor)
 }
 
 function pasarfechaHasta(valor){
 store.fechaPeticion.hasta = valor
 }
 
+function invertirFecha(fecha){
+let partes = fecha.split("-");
+return partes[2] + "-" + partes[1] + "-" + partes[0];
+}
+
 function fechaDesde(valor){
 console.log(valor)
 }
+
+
+//select de los usuarios
+function itemProps (item) {
+  return {
+    title: item.name,
+  }
+}
+
+
+const valorusuarioID = ref({
+  name: useStoreConexion().avatarNombre,
+  id: useStoreConexion().avatarID
+})
+
+
+watch(valorusuarioID,(newvalor)=>{
+  console.log("cambio")
+   store.seleccionUsuario = newvalor.id
+   store.obtenerReporte()
+})
+
+const devolverIDusuario = computed(()=>{
+  return new Date()
+})
+
+
+
 </script>

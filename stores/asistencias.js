@@ -11,8 +11,7 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       listaDepartamento:undefined,
       mapeo:false,
 
-
-      //formulario de creacion
+      //formulario de creacion--edicion SE EUTILIZA EN LA DESCRIPSION (VA CAMBIANDO)
       form : {
         creador:useStoreConexion().avatarID,
         item:'',
@@ -26,6 +25,9 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         descripsion:'',
         status:false
       },
+
+      //aqui se almacena el nombre de la card de la asistencia para mostrar el nombre de la persona que creo esa asistencia
+      nombreCardAsistencia:'',
 
       //notificaciones
       iconError:false,
@@ -44,15 +46,19 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
       tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'],
 
+
+      //FILTRADOS DE BUSQUEDA
       //fechas de peticiones a la base de datos de las asistencias 
       fechaPeticion:{
         desde:"2000-12-16",
-        hasta:"2040-12-16"
-      }
+        hasta:"2040-12-16",
+      },
+      //seleccion del id de creacion (para buscar en la bd a partir de la ID del usuario)
+      seleccionUsuario:useStoreConexion().avatarID
 
     }),
     getters:{
-
+      conteoAsistencia: (state) => state.asistenciaLista_Usuario.length,
     },
   actions:{
     resetearReporte(){
@@ -142,14 +148,17 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
     async obtenerReporte(){
       try {
-        const storeConexion = useStoreConexion()
         const pb = new PocketBase(this.pb_url)
+
+        let filterBuscar = `creador="${this.seleccionUsuario}" && ( fechaEntrada >= "${this.fechaPeticion.desde}" && fechaSalida <= "${this.fechaPeticion.hasta}" )`
+
         const records = await pb.collection('reportes').getFullList({
           sort: '-created',
-          filter:`creador="${storeConexion.avatarID}" && ( fechaEntrada >= "${this.fechaPeticion.desde}" && fechaSalida <= "${this.fechaPeticion.hasta}" )`
+          filter:filterBuscar
         });
-        console.log(records)
         this.asistenciaLista_Usuario= records
+
+        console.log(this.asistenciaLista_Usuario)
       } catch (err) {
         console.log(err.response.data)
       }
@@ -158,21 +167,35 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
     buscarNombrePorID(valor){
       const storeConexion = useStoreConexion()
       const listaUsuarios = storeConexion.usuariosLista
-
+      
       const usuarioEncontrado = listaUsuarios.find(item => item.id === valor);
       if (usuarioEncontrado) {
         return usuarioEncontrado.name;
       }else{
         'sin Nombre'
       }
+    },
 
+
+    buscarIDPorNombre(valor){
+      const storeConexion = useStoreConexion()
+      const listaUsuarios = storeConexion.usuariosLista
+      
+      const usuarioEncontrado = listaUsuarios.find(item => item.name === valor);
+      if (usuarioEncontrado) {
+        console.log("lista de usuarios")
+        console.log(usuarioEncontrado.id)
+        return usuarioEncontrado.id;
+      }else{
+        'sin Nombre'
+      }
     },
 
     DialogoDescripsion(valor){
       this.dialogoDescripsion = valor
     },
 
-    //consulta a la bd por fecha 
+    //consulta a la bd por fecha (no se esta usando por ahora )
     async obtenerConsultaPorFecha(){
       const pb = new PocketBase(this.pb_url)
       try {
