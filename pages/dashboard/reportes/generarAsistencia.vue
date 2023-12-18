@@ -185,11 +185,11 @@
     <v-container>
       <v-row>
           <!-- se va a esconder hasta que exista un usuario admin -->
-        <v-col  v-if="useStoreConexion().avatarRole  === 'superUser'" cols="12" sm="4">
+        <v-col  v-if="useStoreConexion().avatarRole  === 'superUser'" cols="12" sm="3">
           <v-select label="Trabajador" v-model="valorusuarioID"  :items="useStoreConexion().usuarioListaMap" :item-props="itemProps"></v-select>
         </v-col>
 
-        <v-col cols="12" sm="4">
+        <v-col cols="12" sm="3">
           <v-sheet class="d-flex justify-center flex-column text-center pa-2 font-weight-black">
           <date-picker-dialog
             titulo-boton="Desde"
@@ -199,7 +199,7 @@
           </v-sheet>
         </v-col>
 
-        <v-col cols="12" sm="4">
+        <v-col cols="12" sm="3">
           <v-sheet class="d-flex justify-center flex-column text-center pa-2 font-weight-black">
           <date-picker-dialog
             titulo-boton="Hasta"
@@ -209,7 +209,7 @@
           </v-sheet>
         </v-col>
 
-        <v-col>
+        <v-col class="d-flex justify-center" cols="12" sm="3">
           <v-btn @click="store.obtenerReporte()" color="primary">
             BUSCAR
           </v-btn>
