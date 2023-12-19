@@ -22,7 +22,7 @@
         cols="12"
         class="mx-auto text-center font-weight-black" 
       >
-        {{ props.creador }}
+        {{ store.buscarNombrePorID(props.creador) }}
       </v-col>
       <v-btn size="x-small" icon="mdi-arrow-collapse-down" class="w-fit mx-auto text-center mt-n3 "></v-btn>
       <v-col
@@ -58,7 +58,6 @@
     const element = document.getElementById('boton-descripsion')
     element.click()
 
-
     store.form.item = props.item
     store.form.tipoReporte = props.tipoAsistencia
     store.form.departamento = props.departamento
@@ -73,7 +72,7 @@
     store.ID_asistencia_editar= props.idAsistencia
     
 
-    store.nombreCardAsistencia = props.creador
+    store.nombreCardAsistencia = store.buscarNombrePorID(props.creador)
 
   }
 
@@ -86,6 +85,7 @@
     store.modoEditar = true
 
     //cambiar formulario
+    store.form.creador=props.creador
     store.form.item = props.item
     store.form.tipoReporte = props.tipoAsistencia
     store.form.departamento = props.departamento

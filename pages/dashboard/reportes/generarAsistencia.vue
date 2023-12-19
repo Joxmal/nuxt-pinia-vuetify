@@ -232,7 +232,7 @@
      
      :id-asistencia="item.id"
      :tipo-asistencia="item.tipoReporte"
-     :creador="store.buscarNombrePorID(item.creador)"
+     :creador="item.creador"
      :departamento="item.departamento"
      :descripsion="item.descripsion"
      
@@ -255,11 +255,17 @@
     {{ store.form }}
 
   </pre>
-
+-->
+<pre>
+    {{ store.form }}
+  </pre>
+  <v-divider></v-divider>
 
   <pre>
     {{ store.asistenciaLista_Usuario }}
-  </pre> -->
+  </pre> 
+  <v-divider></v-divider>
+
 
 </template>
 

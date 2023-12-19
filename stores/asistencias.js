@@ -91,6 +91,8 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         this.listaDepartamento = departamentos
     },
     async crearReporte(data){
+      this.form.creador= useStoreConexion().avatarID
+
       try {
         const pb = new PocketBase(this.pb_url)
         const record = await pb.collection('reportes').create(data);
