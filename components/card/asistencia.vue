@@ -1,9 +1,8 @@
 <template>
-<v-card position="relative" class="pt-5" width="220">
-
+<v-card style="border: 2px solid rgb(15, 115, 246) !important;"   position="relative" class="rounded-lg pt-5" width="220">
   <v-card-title class="text-center">{{ props.tipoAsistencia }} </v-card-title>
   <MenuDropdown @editar="abrirDialogoEditar" @eliminar="store.eliminarReporte(props.idAsistencia)" @descripcion="abrirDialogoDescripsion" />
-  <v-card-text  class="d-flex ma-n2 flex-column justify-center" >
+  <v-card-text class="d-flex ma-n2 flex-column justify-center" >
 
     <div  class="d-flex flex-wrap ga-1 justify-space-around font-weight-black">
       <v-card  border class="text-center pa-1">

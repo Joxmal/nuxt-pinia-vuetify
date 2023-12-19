@@ -157,8 +157,9 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
           filter:filterBuscar
         });
         this.asistenciaLista_Usuario= records
+        
 
-        console.log(this.asistenciaLista_Usuario)
+        console.log(filterBuscar)
       } catch (err) {
         console.log(err.response.data)
       }
