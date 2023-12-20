@@ -33,9 +33,12 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       iconError:false,
       iconCreate:false,
       iconDelete:false,
+      //loading de las cards
+      loadinCards:true,
 
       //lista de asistencia
       asistenciaLista_Usuario: '',
+      conteoTotalAsistencia:'',
 
       //datos del dialogo
       dialogoDescripsion:'',
@@ -46,19 +49,63 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
       tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'],
 
-
-      //FILTRADOS DE BUSQUEDA
-      //fechas de peticiones a la base de datos de las asistencias 
-      fechaPeticion:{
-        desde:"2000-12-16",
-        hasta:"2040-12-16",
-      },
       //seleccion del id de creacion (para buscar en la bd a partir de la ID del usuario)
-      seleccionUsuario:useStoreConexion().avatarID
+      seleccionUsuario:useStoreConexion().avatarID,
+
+      //paginacion para ver las cards
+      pagination:1,
+      totalPage:5,
+
+      //filtros de busqueda para la base de datos
+      tipoReporteFiltro:['TODOS','PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'], 
+      variablesFiltro:{
+        filtroCreador: `creador="${useStoreConexion().avatarID}"`,
+        tipoAsistencia:'TODOS',
+        fechaPeticion: {
+          rango: {
+            activo:true,
+            desde: "2020-12-01",
+            hasta: "2040-12-01",
+          },
+          fecha:"2023-12-20"
+        }
+      }
+
 
     }),
     getters:{
       conteoAsistencia: (state) => state.asistenciaLista_Usuario.length,
+      filtroBusqueda() {
+        const { fechaPeticion, filtroCreador, tipoAsistencia } = this.variablesFiltro;
+        const { rango, fecha } = fechaPeticion;
+      
+        let filterBuscar = "";
+      
+        if (rango.activo) {
+          if (filtroCreador === 'creador="jlpwz10ms03on6z"') {
+            filterBuscar += `(fechaEntrada >= "${rango.desde}" && fechaSalida <= "${rango.hasta}")`;
+          } else {
+            filterBuscar += `creador="${this.seleccionUsuario}" && (fechaEntrada >= "${rango.desde}" && fechaSalida <= "${rango.hasta}")`;
+          }
+      
+          if (tipoAsistencia !== "TODOS") {
+            filterBuscar += ` && tipoReporte = "${tipoAsistencia}"`;
+          }
+        } else {
+          if (filtroCreador === 'creador="jlpwz10ms03on6z"') {
+            filterBuscar += `fechaEntrada ~ "${fecha}"`;
+          } else {
+            filterBuscar += `creador="${this.seleccionUsuario}" && fechaEntrada ~ "${fecha}"`;
+          }
+      
+          if (tipoAsistencia !== "TODOS") {
+            filterBuscar += ` && tipoReporte = "${tipoAsistencia}"`;
+          }
+        }
+      
+        return filterBuscar;
+      }
+
     },
   actions:{
     resetearReporte(){
@@ -66,8 +113,8 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       this.form.tipoReporte=null
       this.form.departamento=null,
       this.form.funcionario=null,
-      this.form.horaEntrada="08=00",
-      this.form.horaSalida="14=30",
+      this.form.horaEntrada="08:00",
+      this.form.horaSalida="14:30",
       this.form.fechaEntrada=null,
       this.form.fechaSalida=null,
       this.form.descripsion='',
@@ -89,6 +136,11 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
         this.listaTotalEmpleados_oficina = lista
         this.listaDepartamento = departamentos
+
+        this.obtenerPrimerDiaMes()
+        this.obtenerUltimoDiaMes()
+        this.obtenerDiaActual()
+
     },
     async crearReporte(data){
       this.form.creador= useStoreConexion().avatarID
@@ -149,22 +201,32 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
     },
 
     async obtenerReporte(){
+
+      this.loadinCards= true
+
       try {
         const pb = new PocketBase(this.pb_url)
 
-        let filterBuscar = `creador="${this.seleccionUsuario}" && ( fechaEntrada >= "${this.fechaPeticion.desde}" && fechaSalida <= "${this.fechaPeticion.hasta}" )`
+        let filterBuscar = this.filtroBusqueda
 
-        const records = await pb.collection('reportes').getFullList({
+        console.log(this.filtroBusqueda)
+
+        const records = await pb.collection('reportes').getList(this.pagination, 50, {
           sort: '-created',
           filter:filterBuscar
         });
-        this.asistenciaLista_Usuario= records
-        
+        console.log(records)
 
-        console.log(filterBuscar)
+        this.asistenciaLista_Usuario= records.items
+        this.conteoTotalAsistencia = records.totalItems
+        this.totalPage= records.totalPages
+
       } catch (err) {
-        console.log(err.response.data)
+        console.log(err)
       }
+
+      this.loadinCards= false
+
     },
 
     buscarNombrePorID(valor){
@@ -210,8 +272,41 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       } catch (error) {
         console.log(error.response)
       }
-    }
+    },
+
+    //calcular primer y ultimo dia del mes
+  obtenerDiaActual(){
+    const fechaActual = new Date();
+    const año = fechaActual.getFullYear();
+    const mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
+    const día = fechaActual.getDate();
+
+    const fechaFormateada = `${año}-${mes}-${día}`;
+    
+    this. variablesFiltro.fechaPeticion.fecha = fechaFormateada
+  },
+  
+  obtenerPrimerDiaMes(){
+      const fechaActual = new Date();
+      const año = fechaActual.getFullYear();
+      const mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
+      const día = "01"
+      const fechaFormateada = `${año}-${mes}-${día}`;
+  
+      this.variablesFiltro.fechaPeticion.rango.desde = fechaFormateada
+  },
+  obtenerUltimoDiaMes(){
+      const fechaActual = new Date();
+      const año = fechaActual.getFullYear();
+      const mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
+      const últimoDía = new Date(año, mes, 0).getDate();
+      const fechaFormateada = `${año}-${mes}-${últimoDía}`;
+  
+      this.variablesFiltro.fechaPeticion.rango.hasta = fechaFormateada
+  },
 
   },
+
+
     
 })

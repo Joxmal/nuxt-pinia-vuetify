@@ -1,7 +1,7 @@
 <template>
   <v-dialog max-width="900px" persistent>
     <template v-slot:activator="{ props } ">
-      <v-btn v-show="!prop.ocultar_boton" color="indigo-lighten-5" @click="$emit('modoCrear')" :id="prop.id_boton || 'boton-dialogo'" class="mb-2" v-bind="props"> {{ boton_titulo || "NUEVO" }}</v-btn>
+      <v-btn v-show="!prop.ocultar_boton" :style="classBtn" color="indigo-lighten-5" @click="$emit('modoCrear')" :id="prop.id_boton || 'boton-dialogo'" v-bind="props"> {{ boton_titulo || "NUEVO" }}</v-btn>
     </template>
 
     <template v-slot:default="{ isActive }">
@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon','iconError','id_boton','ocultar_boton','botonResetFormulario','ocultarBotones'])
+const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon','iconError','id_boton','ocultar_boton','botonResetFormulario','ocultarBotones',"classBtn"])
 
 defineEmits([
 'crear','modoCrear','editarDialogForm'

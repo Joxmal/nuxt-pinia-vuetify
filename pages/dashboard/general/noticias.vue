@@ -19,16 +19,16 @@
 
                         <div class="d-flex ga-2 text-center justify-center " v-if="rangoFecha">
                             <v-sheet>
-                                DESDE <input  type="date" v-model="variablesFiltro.fechaPeticion.rango.desde"> <br> {{ variablesFiltro.fechaPeticion.rango.desde }}
+                                DESDE <br><input  type="date" v-model="variablesFiltro.fechaPeticion.rango.desde"> 
                             </v-sheet>
     
                             <v-sheet>
-                                HASTA <input type="date" v-model="variablesFiltro.fechaPeticion.rango.hasta"> <br> {{ variablesFiltro.fechaPeticion.rango.hasta }}
+                                HASTA <br><input type="date" v-model="variablesFiltro.fechaPeticion.rango.hasta"> 
                             </v-sheet>
                         </div>
 
                         <v-sheet v-else>
-                            FECHA <br> <input type="date" v-model="variablesFiltro.fechaPeticion.fecha"> <br> {{ variablesFiltro.fechaPeticion.fecha }}
+                            FECHA <br> <input type="date" v-model="variablesFiltro.fechaPeticion.fecha">
                         </v-sheet>
 
             </v-col>
@@ -49,7 +49,7 @@
         <v-row  justify="center" align-content="start" class=" min-height-200 overflow-overlay">
 
             <v-col class="d-flex justify-center aling-center"  v-if="!LoadinCargaPage" v-for="item in resultadoConsulta.items">
-                <v-card   color="primary"  width="200" height="250">
+                <v-card  class=""  color="primary"  width="200" height="250">
                     {{ item.tipoReporte }}
                 </v-card>
             </v-col>
@@ -91,7 +91,7 @@ const seleccionUsuario = ref({
 })
 
 //activar o desactiva rango de las fechas
-const rangoFecha = ref()
+const rangoFecha = ref(false)
 
 const filterBuscar = ref()
 
@@ -199,8 +199,9 @@ function obtenerPrimerDiaMes(){
     const fechaActual = new Date();
     const año = fechaActual.getFullYear();
     const mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
-    const día = 1
+    const día = "01"
     const fechaFormateada = `${año}-${mes}-${día}`;
+
     return fechaFormateada
 }
 
@@ -210,6 +211,7 @@ function obtenerUltimoDiaMes(){
     const mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
     const últimoDía = new Date(año, mes, 0).getDate();
     const fechaFormateada = `${año}-${mes}-${últimoDía}`;
+
     return fechaFormateada
 }
 
@@ -228,15 +230,5 @@ function obtenerUltimoDiaMes(){
 
 .overflow-overlay {
   overflow: overlay;
-}
-
-
-::-webkit-scrollbar {
-  width: 1px;               /* width of the entire scrollbar */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(102, 189, 255);    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */  /* creates padding around scroll thumb */
 }
 </style>

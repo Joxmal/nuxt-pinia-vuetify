@@ -1,5 +1,5 @@
 <template>
-<v-card style="border: 2px solid rgb(15, 115, 246) !important;"   position="relative" class="rounded-lg pt-5" width="220">
+<v-card style="border: 2px solid rgb(15, 115, 246) !important; height: 334px;"   position="relative" class="rounded-lg pt-5" width="220">
   <v-card-title class="text-center">{{ props.tipoAsistencia }} </v-card-title>
   <MenuDropdown @editar="abrirDialogoEditar" @eliminar="store.eliminarReporte(props.idAsistencia)" @descripcion="abrirDialogoDescripsion" />
   <v-card-text class="d-flex ma-n2 flex-column justify-center" >
@@ -38,7 +38,7 @@
         </v-chip>
         <v-divider class="my-1"></v-divider>
         <v-chip v-if="props.item">
-          {{ props.item }}
+          {{ props.item}}
         </v-chip>
       </v-col>
     </v-row>
