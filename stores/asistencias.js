@@ -53,6 +53,7 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       seleccionUsuario:useStoreConexion().avatarID,
 
       //paginacion para ver las cards
+      paginationItemsPorPagina:50,
       pagination:1,
       totalPage:5,
 
@@ -74,7 +75,7 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
     }),
     getters:{
-      conteoAsistencia: (state) => state.asistenciaLista_Usuario.length,
+      conteoAsistencia: (state) => state.asistenciaLista_Usuario.items.length,
       filtroBusqueda() {
         const { fechaPeticion, filtroCreador, tipoAsistencia } = this.variablesFiltro;
         const { rango, fecha } = fechaPeticion;
@@ -104,7 +105,22 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         }
       
         return filterBuscar;
+      },
+      contadorTiposAsistencia(){
+        const reportes = {};
+        if (this.asistenciaLista_Usuario !== '') {
+          this.asistenciaLista_Usuario.items.forEach(item => {
+            const tipoReporte = item.tipoReporte;
+            if (tipoReporte in reportes) {
+              reportes[tipoReporte]++;
+            } else {
+              reportes[tipoReporte] = 1;
+            }
+          });
+          return reportes
+        }
       }
+
 
     },
   actions:{
@@ -211,13 +227,13 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
         console.log(this.filtroBusqueda)
 
-        const records = await pb.collection('reportes').getList(this.pagination, 50, {
+        const records = await pb.collection('reportes').getList(this.pagination, this.paginationItemsPorPagina, {
           sort: '-created',
           filter:filterBuscar
         });
         console.log(records)
 
-        this.asistenciaLista_Usuario= records.items
+        this.asistenciaLista_Usuario= records
         this.conteoTotalAsistencia = records.totalItems
         this.totalPage= records.totalPages
 

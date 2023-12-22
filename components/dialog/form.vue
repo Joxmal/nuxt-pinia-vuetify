@@ -5,7 +5,7 @@
     </template>
 
     <template v-slot:default="{ isActive }">
-      <v-card loading position="relative">
+      <v-card position="relative">
         <v-btn v-if="botonResetFormulario" @click="$emit('resetearFormulario')" position="absolute" location="top right" class="ma-2" color="primary" variant="plain" border>Reset</v-btn>
         <alert-error style="position: fixed; right: 1rem; top: 0.4rem;" v-show="prop.iconError" mensaje="error"/>
         <alert-success

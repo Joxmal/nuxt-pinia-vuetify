@@ -74,7 +74,7 @@ export const useIPListaStore = defineStore('useIPListaStore', {
         const records = await pb.collection('usuarios').getFullList({
             sort: '-created',
         });
-        this.mapeoLista = records.map(item=>{
+        this.mapeoLista = records.map(item=>{ 
             return{
                 ip: item.IP,
                 usuario: item.usuario,
