@@ -28,10 +28,7 @@
 <script setup>
 import {useStoreConexion} from '~/stores/useStoreConexion';
 
-
-
 const store= useStoreConexion()
-
 
 const credenciales = reactive({
     username :'',

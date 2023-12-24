@@ -72,11 +72,15 @@
           </nuxt-link>
           
           
-          <!-- listado -->
+          <!-- sistemas -->
           <nuxt-link v-show="ViewMenu=='sistemas'" :class="listaNavegacion.class"  :to="lista.path" v-for="lista in listaNavegacion.sistemas" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
-          
+
+          <!-- sistemas -->
+          <nuxt-link v-show="ViewMenu=='impresoras'" :class="listaNavegacion.class"  :to="lista.path" v-for="lista in listaNavegacion.impresoras" :key="lista.value" style="text-decoration: none;">
+            <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
+          </nuxt-link>
         </v-list>
 
       </v-navigation-drawer>
@@ -116,6 +120,8 @@ const listaNavegacion = {
     1:{ icon:'mdi-newspaper', value:'noticias', path:'/dashboard/general/noticias'},
     2:{ icon:'mdi-folder-plus', value:'numeros'}, 
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
+    4:{ icon:'mdi-test-tube', value:'pruebas', path:'/dashboard/general/pruebas'},
+    5:{ icon:'mdi-test-tube', value:'pruebas2', path:'/dashboard/general/pruebas'},
   },
   listas:{
     1:{ icon:'mdi-office-building-cog-outline', value:'Items', path:'/dashboard/listas/items'},
@@ -131,7 +137,12 @@ const listaNavegacion = {
     1:{ icon:'mdi-ip-outline', value:'adadd', path:'/dashboard/sistemas/ip'},
     2:{ icon:'mdi-folder-plus', value:'numeros'}, 
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
-  }
+  },
+  impresoras:{
+    1:{ icon:'mdi-map-marker-star-outline', value:'ubicaciones', path:'/dashboard/impresoras'},
+    2:{ icon:'mdi-folder-plus', value:'numeros'}, 
+    3:{ icon:'mdi-alert-decagram', value:'importante'}, 
+  },
 
 }
 

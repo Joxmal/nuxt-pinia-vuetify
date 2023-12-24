@@ -3,10 +3,10 @@ import PocketBase from 'pocketbase'
 
 
 
-export const useStoreConexion = defineStore('useStoreConexion', {
+export const useImpresorasStore = defineStore('useImpresorasStore', {
     state: () => ({
         pb_url: useRuntimeConfig().public.POCKETBASE_URL,
-
+        
         pb_Valid : false,
         errorInicio: false,
 
@@ -39,6 +39,7 @@ export const useStoreConexion = defineStore('useStoreConexion', {
             const pb = new PocketBase(this.pb_url)
             const autenticado = pb.authStore.isValid
             this.pb_Valid = autenticado
+            console.log(this.pb_Valid)
         },
 
         async refrescarAutenticacion(){
@@ -50,7 +51,7 @@ export const useStoreConexion = defineStore('useStoreConexion', {
             try {
                 console.log(credenciales)
                 const pb = new PocketBase(this.pb_url)
-                const authData = await pb.collection('users').authWithPassword((credenciales.username).trim(),credenciales.password);
+                const authData = await pb.collection('users').authWithPassword(credenciales.username,credenciales.password);
                 
                 this.verificarAutenticacion()
                 this.obtenerListaUsuarios()
