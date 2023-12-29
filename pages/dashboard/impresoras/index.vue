@@ -1,8 +1,8 @@
 <template>
-    <v-carousel class="mb-4" progress="warning" hide-delimiter-background color="background" show-arrows="hover">
+    <v-carousel class="mb-4" :cycle="false" progress="warning" hide-delimiter-background color="background" show-arrows="hover">
         <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.src" cover></v-carousel-item>
     </v-carousel>
-<v-container class="d-flex flex-wrap ga-2">
+<v-container class="d-flex flex-wrap justify-center ga-2">
     <v-card border elevation="10" v-for="n in 20" width="200" class="pb-2">
         <template v-slot:loader="{ isActive }">
             <v-progress-linear :active="isActive" color="deep-purple" height="4" indeterminate></v-progress-linear>
@@ -12,10 +12,10 @@
         <v-card-item>
             <v-card-title>HP 117</v-card-title>
     
-            <v-card-subtitle>
+            <v-card-subtitle class="d-flex align-center">
                 <span class="me-1">MUY USADA</span>
     
-                <v-icon color="error" icon="mdi-fire-circle" size="small"></v-icon>
+                <v-icon color="success" icon="mdi-battery-charging-high" size="small"></v-icon>
             </v-card-subtitle>
     
             <MenuDropdown/>

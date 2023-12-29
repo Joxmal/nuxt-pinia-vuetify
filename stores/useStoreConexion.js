@@ -41,11 +41,6 @@ export const useStoreConexion = defineStore('useStoreConexion', {
             this.pb_Valid = autenticado
         },
 
-        async refrescarAutenticacion(){
-            const pb = new PocketBase(this.pb_url)
-            await pb.collection('users').authRefresh();
-        },
-
         async inciarSesion(credenciales){
             try {
                 console.log(credenciales)
