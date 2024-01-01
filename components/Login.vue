@@ -13,8 +13,6 @@
                   :type="show1 ? 'text' : 'password'" 
                   hint="Minimo de 8 letras"
                   placeholder="Contraseña"
-                  
-                  counter
                   @click:append-inner="show1 = !show1"
               >
               </v-text-field>

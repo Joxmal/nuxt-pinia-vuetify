@@ -267,7 +267,7 @@
       :funcionario="item.funcionario"
       :status="item.status"
       :item="item.item"
-      />
+    />
 
 
   </div>
@@ -278,7 +278,7 @@
   <div v-show="name !== 'xs'" style="position: absolute; right: 0; top: 50%;transform: translate(0%, -25%);">
     <v-select
       density="compact"
-     :items="[10,20,30,40,50,300]"
+     :items="[10,20,30,40,50,300,10000]"
      v-model="paginationItemsPorPagina"
      />
   </div>
@@ -302,13 +302,43 @@
   
     </v-card-text>
   </v-card>
-
+  <v-btn @click="store.generarPDF()">cambiar</v-btn>
+  <pre>
+    {{pdfdata}}
+  </pre>
 </template>
 
 
 <script setup>
 import { useAsistenciasStore } from '~/stores/asistencias'
 import { useDisplay } from 'vuetify'
+import jsPDF from "jspdf";
+import autoTable  from "jspdf-autotable";
+
+const store = useAsistenciasStore ()
+
+let pdfdata = ref()
+
+function ordenarpdf(){
+  console.log(pdfdata.value)
+
+  let mapeo = store.asistenciaLista_Usuario.items
+
+  mapeo = mapeo.map(item=>([
+    store.buscarNombrePorID(item.creador),
+    item.item,
+    item.tipoReporte,
+    item.departamento,
+    item.funcionario,
+    new Date(item.fechaEntrada).toLocaleDateString(), 
+    new Date(item.fechaSalida).toLocaleDateString(),
+  ]));
+
+
+
+  pdfdata.value = mapeo
+  console.log(pdfdata.value)
+}
 
 definePageMeta({
     middleware:'autenticacion'
@@ -322,7 +352,6 @@ const { name } = useDisplay()
 
 const {variablesFiltro,pagination,contadorTiposAsistencia,paginationItemsPorPagina} = storeToRefs(useAsistenciasStore())
 
-const store = useAsistenciasStore ()
 
 
 function obtenerFechaEntrada(valor) {
@@ -412,5 +441,8 @@ watch(pagination,()=>{
   store.obtenerReporte()
   console.log(pagination)
 })
+
+
+
 
 </script>

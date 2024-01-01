@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import PocketBase from 'pocketbase'
+import jsPDF from "jspdf";
+import autoTable  from "jspdf-autotable";
 
 
 
@@ -305,21 +307,127 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
   obtenerPrimerDiaMes(){
       const fechaActual = new Date();
       const año = fechaActual.getFullYear();
-      const mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
+      let mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
+      mes = mes.toString().padStart(2, "0"); // pasar a 01 en caso de que sea 1
       const día = "01"
       const fechaFormateada = `${año}-${mes}-${día}`;
-  
+      
       this.variablesFiltro.fechaPeticion.rango.desde = fechaFormateada
   },
   obtenerUltimoDiaMes(){
       const fechaActual = new Date();
       const año = fechaActual.getFullYear();
-      const mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
+      let mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
+      mes = mes.toString().padStart(2, "0"); // pasar a 01 en caso de que sea 1
+
       const últimoDía = new Date(año, mes, 0).getDate();
       const fechaFormateada = `${año}-${mes}-${últimoDía}`;
-  
+
       this.variablesFiltro.fechaPeticion.rango.hasta = fechaFormateada
   },
+
+  generarPDF(){
+    const doc = new jsPDF('p', 'mm', 'letter')
+
+
+    
+
+    const columns = [`trabajador`,`tipoReporte`,`Departamento`,`funcionario`,`fechaInicio`,`fechaSalida`,`NroItem`]
+
+    let data = this.asistenciaLista_Usuario.items
+    data = data.map(item=>([
+      this.buscarNombrePorID(item.creador),
+      item.tipoReporte,
+      item.departamento,
+      item.funcionario,
+      new Date(item.fechaEntrada).toLocaleDateString(), 
+      new Date(item.fechaSalida).toLocaleDateString(),
+      item.item,
+    ]));
+
+
+    autoTable(doc,{
+      startY:20,
+      margin:{horizontal:10},
+      styles: { overflow: "linebreak" },
+      bodyStyles: { valign: "top" },
+      showHead: "everyPage",
+      didDrawPage: function (data) {
+
+          // Header
+          doc.setFontSize(20);
+          doc.setTextColor(40);
+          doc.text("Reporte", 95,10);
+
+          // Footer
+          const str = "pagina " + doc.internal.getNumberOfPages();
+
+          doc.setFontSize(10);
+
+          // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+          const pageSize = doc.internal.pageSize;
+          const pageHeight = pageSize.height
+          ? pageSize.height
+          : pageSize.getHeight();
+          doc.text(str, data.settings.margin.left, pageHeight - 10);
+          },
+      head:[columns],
+      body: data
+
+
+    })
+    
+    
+    doc.addPage();
+    doc.text('CONTEO',95,15);
+
+    let dataConteo = this.contadorTiposAsistencia
+    dataConteo = Object.entries(dataConteo)
+    console.log(dataConteo)
+    
+    const separado = dataConteo.reduce((resultado, [nombre, valor]) => {
+      resultado.strings.push(nombre);
+      resultado.numeros.push(valor);
+      return resultado;
+    }, { strings: [], numeros: [] });
+
+    console.log(separado);
+
+    autoTable(doc,{
+      startY:20,
+      margin:{horizontal:10},
+      // styles: { overflow: "linebreak" },
+      // bodyStyles: { valign: "top" },
+      // showHead: "everyPage",
+      head:[separado.strings],
+      body: [separado.numeros]
+    })
+    //-------------------------------------------
+
+    // otra tabla con el total
+    let sumaTotal = 0
+    console.log(separado.numeros)
+
+    for (let numero of separado.numeros) {
+      console.log(numero)
+      sumaTotal += numero
+    }
+    console.log(sumaTotal)
+    autoTable(doc,{
+      styles: { overflow: "linebreak" },
+      headStyles:{ halign: 'center' },
+      bodyStyles: { halign: 'center' },
+      margin:{horizontal:10},
+      startY:50,
+      // bodyStyles: { valign: "top" },
+      // showHead: "everyPage",
+      head:[['total']],
+      body: [[sumaTotal]]
+    })
+  
+    window.open(doc.output('bloburl'), '_blank');
+
+  }
 
   },
 

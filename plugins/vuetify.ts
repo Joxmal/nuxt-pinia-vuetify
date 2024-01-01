@@ -10,8 +10,8 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi'
 // import enUS from "date-fns/locale/en-US";
 // import { en } from "vuetify/locale";
 
-// import * as components from 'vuetify/components'
-// import * as directives from 'vuetify/directives'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 
 const myCustomDARKTheme: ThemeDefinition = {
@@ -63,9 +63,9 @@ export default defineNuxtPlugin(nuxtApp=>{
         //     locale:"es",
         //     fallback:"es"
         // },
-        // components,
-        // directives,
-        ssr: true,
+        components,
+        directives,
+        ssr: false,
         theme:{
              defaultTheme: 'myCustomDARKTheme',
             variations:{
