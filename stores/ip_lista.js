@@ -59,7 +59,8 @@ export const useIPListaStore = defineStore('useIPListaStore', {
             "ZETA",
             "CHUAO",
             "EXTERIOR",
-            "LOPNA"
+            "LOPNA",
+            "DEPARTAMENTO SEGURIDAD"
         ],
     }),
 
