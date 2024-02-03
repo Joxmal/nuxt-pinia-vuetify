@@ -300,10 +300,7 @@
   
     </v-card-text>
   </v-card>
-  <v-btn @click="store.generarPDF()">cambiar</v-btn>
-  <pre>
-    {{pdfdata}}
-  </pre>
+  <v-btn color="primary" @click="store.generarPDF()">Generar PDF</v-btn>
 </template>
 
 

@@ -8,8 +8,13 @@
       :src="props.srcImage"
       cover
     >
-      <v-card-text class=" text-center ">
-         <p class="text-h3 text-blue-darken-4 font-weight-bold">{{ props.title }}  </p>  
+    <v-card-text class=" text-center ">
+        <slot name="menu">
+          
+        </slot>
+         <p style="background-color: rgba(158, 184, 175, 0.534);" class="rounded-lg text-h4 text-grey-darken-4 font-weight-bold">
+          {{ props.title }}  
+        </p>  
       </v-card-text>
     </v-img>
     <v-card-actions>

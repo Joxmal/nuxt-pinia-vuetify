@@ -1,6 +1,6 @@
 <template>
 
-  <CardImage :elevation="10" class="py-2 my-2"  max-width="800" v-for="(piso,index) in nombresPisos" :key="index"
+  <CardImage :elevation="10" class=" mx-auto py-2 my-2"  max-width="800" v-for="(piso,index) in nombresPisos" :key="index"
     :title="index"
     @boton="redireccion({piso:piso.parametro})"
   />

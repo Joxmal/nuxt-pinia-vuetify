@@ -16,13 +16,15 @@
         <v-list-item
           class="text-subtitle-2"
         >
-            <v-list-item @click="$emit(item.title)" v-for="(item, index) in items" :key="index" 
-             density="compact"  
-             :append-icon="item.icon"
-             class="cursor"
-             >
-                {{ item.title }}
-            </v-list-item>
+          <v-list-item @click="$emit('editar')" density="compact" append-icon="mdi-pencil" class="cursor">
+            editar
+          </v-list-item>
+          <v-list-item @click="$emit('eliminar')" density="compact" append-icon="mdi-delete-empty" class="cursor">
+            eliminar
+          </v-list-item>
+          <v-list-item @click="$emit('descripcion')" density="compact" append-icon="mdi-view-dashboard" class="cursor">
+            descripcion
+          </v-list-item>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -37,12 +39,6 @@ defineProps({
         default:'bottom'
     }
 })
-
-  const items = [
-    { title: 'editar', icon:'mdi-pencil' },
-    { title: 'eliminar', icon:'mdi-delete-empty' },
-    { title: 'descripcion', icon:'mdi-view-dashboard' },
-  ]
 </script>
 
 <style scoped>
