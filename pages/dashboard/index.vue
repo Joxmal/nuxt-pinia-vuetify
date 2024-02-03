@@ -1,44 +1,28 @@
 <template>
-
-  <div > 
-     <div class="text-primary-lighten-1">text color</div>
-
-    <div class="text-primary-darken-1">text color</div>
-
-    <div class="text-primary-darken-2">text color</div>
-
-    <div>---</div>
-
-    <div class="text-secondary-lighten-1">text color</div>
-    <div class="text-secondary-darken-1">text color</div>
-
-  
-    <div class="text-secondary-darken-3">text color</div>
-    <div class="text-secondary-darken-4">text color</div>
-    <div class="text-secondary-darken-5">text color</div>
-    <div>---</div>
-    <div class="text-colorLink">text color link</div>  
+  <div>
+    <input type="file" @change="previewImage" />
+    <v-img :src="imagePreview" v-if="imagePreview" />
   </div>
-
 </template>
-  
-  
-<script setup>
-import { useStoreConexion } from '@/stores/useStoreConexion';
 
-const store = useStoreConexion()
+<script>
+export default {
+  data() {
+    return {
+      imagePreview: null
+    };
+  },
+  methods: {
+    previewImage(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
 
- const credenciales =reactive({
-   user:'joxmal',
-   password:'12345678'
- })
+      reader.onload = (e) => {
+        this.imagePreview = e.target.result;
+      };
 
- function stadoConexion(){
-  console.log(store.pb_Valid)
- }
-
-definePageMeta({
-    middleware:'autenticacion'
-})
-
+      reader.readAsDataURL(file);
+    }
+  }
+};
 </script>

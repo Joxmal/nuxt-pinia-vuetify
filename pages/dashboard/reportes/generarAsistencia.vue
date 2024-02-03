@@ -54,8 +54,6 @@
   <!-- ---------- -->
   <!-- //dilogo de edicion y creacion -->
   <dialog-form
-
-    class-btn=""
     :boton-reset-formulario="true" 
     titulo_dialog="ASISTENCIA"
     boton_titulo="NUEVA ASISTENCIA"

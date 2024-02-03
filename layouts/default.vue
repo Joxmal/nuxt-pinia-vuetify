@@ -130,12 +130,11 @@ const listaNavegacion = {
   },
   reportes:{
     1:{ icon:'mdi-file-chart', value:'asistencia', path:'/dashboard/reportes/generarAsistencia'},
-    2:{ icon:'mdi-folder-plus', value:'numeros'}, 
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },
   sistemas:{
     1:{ icon:'mdi-ip-outline', value:'adadd', path:'/dashboard/sistemas/ip'},
-    2:{ icon:'mdi-folder-plus', value:'numeros'}, 
+    2:{ icon:'mdi-multicast', value:'Map Ofic', path:'/dashboard/sistemas/mapaOficinas'}, 
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },
   impresoras:{

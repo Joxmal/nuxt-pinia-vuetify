@@ -56,7 +56,6 @@
       </div>
     </v-card-text>
   </v-card>
-  hh
 </v-menu>
 </template>
 

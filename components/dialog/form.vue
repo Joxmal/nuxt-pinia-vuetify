@@ -12,7 +12,7 @@
           :icon="prop.icon"
           mensaje="Creado con éxito"
           v-show="mostrar_alert_create"
-          style="position: fixed; right: 0" />
+          style="position: fixed; right: 0;z-index: 20;" />
 
         <v-card-title>
           <span class="text-h5">{{ titulo_dialog }}</span>
@@ -52,10 +52,25 @@
 </template>
 
 <script setup>
-const prop = defineProps(['titulo_dialog','boton_titulo','mostrar_alert_create','modoEditar','icon','iconError','id_boton','ocultar_boton','botonResetFormulario','ocultarBotones',"classBtn"])
+
+const prop = defineProps([
+  'titulo_dialog', // titulo del dialogo
+  'boton_titulo', //nombre del boton
+  'mostrar_alert_create', // mostrar o no la alerta de nueva creacion
+  'modoEditar', // activar el boton de editar
+  'icon', // icono de alerta succes
+  'iconError',  // icono de error
+  'id_boton', // id del boton (en caso de que queramos seleccionarlo con js)
+  'ocultar_boton', // ocultar o no el boton (true o false)
+  'botonResetFormulario', // mostrar o no el boton para resetear para formulario
+  'ocultarBotones', // ocutar botonnes de editar y de crear
+  "classBtn" // estilo del btn que abre el dialogo
+])
 
 defineEmits([
-'crear','modoCrear','editarDialogForm'
+  'crear',
+  'modoCrear',
+  'editarDialogForm'
 ])
 
 
