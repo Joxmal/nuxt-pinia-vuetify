@@ -29,7 +29,10 @@
     </pre>
   </template>
   
-  <script>
+<script>
+  definePageMeta({
+    middleware:'autenticacion',
+  })
   export default {
     data() {
       return {
@@ -46,7 +49,7 @@
       },
     },
   };
-  </script>
+</script>
   
 
 <style scoped>

@@ -48,6 +48,11 @@
 </template>
 
 <script setup>
+
+definePageMeta({
+    middleware:'autenticacion',
+})
+
 const items = [
     {
         src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',

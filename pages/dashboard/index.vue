@@ -6,6 +6,9 @@
 </template>
 
 <script>
+definePageMeta({
+  middleware:'autenticacion',
+})
 export default {
   data() {
     return {

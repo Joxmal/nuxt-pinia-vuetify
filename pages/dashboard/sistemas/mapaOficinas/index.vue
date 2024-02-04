@@ -11,6 +11,10 @@
 </template>
 <script setup>
 
+definePageMeta({
+  middleware:'autenticacion',
+})
+
 const route = useRoute()
 const router = useRouter()
 

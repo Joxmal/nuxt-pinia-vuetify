@@ -99,9 +99,11 @@
 
 <script setup>
 import { usemapaOficinas } from '~/stores/mapaOficinas';
-
 import {useIPListaStore} from '~/stores/ip_lista';
 
+definePageMeta({
+  middleware:'autenticacion',
+})
 
 const saludo =()=> console.log('saludo')
 
