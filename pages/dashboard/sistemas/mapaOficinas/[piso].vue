@@ -1,14 +1,21 @@
 <template>
   <!-- alertas -->
   <div>
-    <AlertWarning v-show="store.eliminarExitosoOficina === true"
-      style="position: fixed; right: 20px; z-index: 20;" 
-      mensaje="Eliminado con exito"
-    />
-    <AlertCargando v-show="store.cargando === true"
-      style="position: fixed; right: 20px; z-index: 20;" 
-      mensaje="Cargando"
-    />
+    <v-slide-x-transition group>
+      <AlertWarning v-show="store.eliminarExitosoOficina === true" key="1"
+        style="position: fixed; right: 20px; z-index: 20;" 
+        mensaje="Eliminado con exito"
+      />
+      <AlertCargando v-show="store.cargando === true" key="2"
+        style="position: fixed; right: 20px; z-index: 20;" 
+        mensaje="Cargando"
+      /> 
+      <AlertSuccess v-show="store.editarExitosoOficina === true" key="3"
+        style="position: fixed; right: 20px; z-index: 20;" 
+        mensaje="Editado"
+        icon="mdi-pencil-outline"
+      /> 
+    </v-slide-x-transition>
   </div>
 
   <!-- crear nueva oficina -->
@@ -16,6 +23,7 @@
   id_boton="FormularioOficina"
   @crear="crearOficina"
   @modo-crear="activarModoEditar = false"
+  @editarDialogForm="editarOficina(ID_oficina)"
   :mostrar_alert_create= store.envioExitosoOficina
   :modo-editar="activarModoEditar"
   :titulo_dialog="activarModoEditar ? 'EDITAR OFICINA' : 'CREAR OFICINA'"
@@ -75,7 +83,6 @@
     </template>
 
   </dialog-general-simple>
-
 <!-- cada card con su respectiva oficina -->
   <div class="d-flex flex-wrap justify-center ga-4 mt-10">
     <v-slide-y-transition group>  
@@ -86,14 +93,16 @@
       >
         <template #menu>
           <MenuDropdown
-            @editar="abrirModoEdicion"
+            @editar="abrirModoEdicion({idOficina:oficina.id, nombreOficina:oficina.oficina})"
             @eliminar="botonEliminarOficina({id:oficina.id})"
             @descripcion="saludo"
+            :ocultar-descripsion="true"
           />
         </template>>
       </card-image>
     </v-slide-y-transition> 
   </div>
+
 </template>
 
 
@@ -139,14 +148,31 @@ const clearImagePreview = ()=>{
 }
 
 async function crearOficina(){
-  store.form.oficina === '' || store.form.imagen === null ? alert('rellene los datos') : await store.crearOficina()
-  console.log("actualizando")
+  try {
+    if(store.form.oficina === '' || store.form.imagen === null){
+      alert('rellene los datos');
+    }else{
+      const estado =  await store.crearOficina()
+      if(estado){
+        throw new Error(estado)
+      }
+      await store.obtenerDatos($route.params.piso)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const ID_oficina = ref()
+async function editarOficina(id){
+  await store.editarOficina({ID_Oficina:id})
   await store.obtenerDatos($route.params.piso)
+  imagePreview.value = null
 }
 
 function botonEliminarOficina({id}){
-  store.EliminarOficina({ID_Oficina:id})
-  store.obtenerDatos($route.params.piso)
+  const eliminar = store.EliminarOficina({ID_Oficina:id})
+  eliminar === true ? null : store.obtenerDatos($route.params.piso);
 }
 
 const imagenDialog = ref()
@@ -167,9 +193,12 @@ onUnmounted(()=>{
 })
 
 const activarModoEditar = ref(false)
-function abrirModoEdicion(){
+function abrirModoEdicion({idOficina,nombreOficina}){
+  store.form.oficina = nombreOficina
   document.querySelector('#FormularioOficina').click()
   activarModoEditar.value = true
+  ID_oficina.value = idOficina
+  console.log(idOficina)
 }
 
 
