@@ -44,6 +44,7 @@ export const useStoreConexion = defineStore('useStoreConexion', {
         async inciarSesion(credenciales){
             try {
                 console.log(credenciales)
+                console.log(this.pb_url)
                 const pb = new PocketBase(this.pb_url)
                 const authData = await pb.collection('users').authWithPassword((credenciales.username).trim(),credenciales.password);
                 
