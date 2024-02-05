@@ -13,6 +13,7 @@ export const usemapaOficinas = defineStore('usemapaOficinas', {
             piso:'',
             oficina:"",
             imagen:null,
+            creador: useStoreConexion().avatarID
         },
         cargando:false,
         envioExitosoOficina:false,
@@ -31,7 +32,8 @@ export const usemapaOficinas = defineStore('usemapaOficinas', {
                 setTimeout(async () => {
                   records = await this.pb.collection('mapasOficinas').getFullList({
                     sort: '-created',
-                    filter: `piso="${NumeroPiso}"`
+                    filter: `piso="${NumeroPiso}"`,
+                    // expand: "creador"
                   });
                   console.log(records);
                   this.datos = records;
@@ -53,7 +55,11 @@ export const usemapaOficinas = defineStore('usemapaOficinas', {
                     this.envioExitosoOficina = false
                 }, 2000);
             } catch (error) {
-                return "se crea una a la vez"                
+                this.ocurrioUnError = true
+                setTimeout(() => {
+                    this.ocurrioUnError = false 
+                }, 5000);           
+                return "se crea una a la vez"
             }
         },
         async editarOficina({ID_Oficina}){
@@ -73,6 +79,10 @@ export const usemapaOficinas = defineStore('usemapaOficinas', {
                 }, 3000);
             } catch (error) {
                 console.log(error)
+                this.ocurrioUnError = true
+                setTimeout(() => {
+                this.ocurrioUnError = false 
+                }, 5000);
             }
 
 
@@ -94,7 +104,9 @@ export const usemapaOficinas = defineStore('usemapaOficinas', {
                 }
 
             } catch (error) {
+                console.log(error)
                 console.log('error al eliminar la oficina '+ ID_Oficina)
+
                 this.ocurrioUnError = true
                 setTimeout(() => {
                 this.ocurrioUnError = false 

@@ -15,6 +15,10 @@
         mensaje="Editado"
         icon="mdi-pencil-outline"
       /> 
+      <AlertError v-show="store.ocurrioUnError === true" key="4"
+        style="position: fixed; right: 20px; z-index: 20;" 
+        mensaje="ERROR"
+      /> 
     </v-slide-x-transition>
   </div>
 
@@ -83,6 +87,7 @@
     </template>
 
   </dialog-general-simple>
+  {{ store.form }}
 <!-- cada card con su respectiva oficina -->
   <div class="d-flex flex-wrap justify-center ga-4 mt-10">
     <v-slide-y-transition group>  
