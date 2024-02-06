@@ -53,23 +53,9 @@ export const useEquipos = defineStore('useEquipos', {
             const records = await this.pb.collection('usuarios').getFullList({
                 sort: '-created',
             });
-            console.log(records)
-            this.datosTrabajadores= records
+            this.datosTrabajadores = records
         },
-
         async crearEquipo(){
-
-            const data = {
-                "piso": 5,
-                "direccion": "test",
-                "responsable": "kspswb4ob67vsu6",
-                "ipv_4": "test",
-                "monitor": "test",
-                "cpu": "test",
-                "impresora": "test",
-                "ram": 123,
-                "almacenamiento": 123
-            };
             try {
                 const record = await this.pb.collection('equipos').create(this.form);
                 console.log(record)

@@ -149,6 +149,20 @@
       </v-container>
     </template>
   </DialogForm>
+
+  <div class="d-flex flex-wrap justify-center ga-4 mt-10">
+    <CardImage width="250" v-for="(index,trabajador) in store.datosTrabajadores" :key="index"
+    subtitle="titulo" title="titulo" 
+    button-name="IMAGENES">
+      <template #menu>
+          <MenuDropdown
+            @editar=""
+            @eliminar=""
+            @descripcion=""
+          />
+        </template>>
+    </CardImage>
+  </div>
 <v-btn @click="console.log(store.form)" >formulario</v-btn>
 <!-- <pre>
   {{ store.form }}
@@ -157,6 +171,9 @@
 <pre>
   {{ store.listaDeTrabajadores }}
 </pre> -->
+<pre>
+  {{ store.datosTrabajadores }}
+</pre>
 </template>
 
 

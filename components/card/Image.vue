@@ -1,7 +1,6 @@
 <template>
   <v-card
-    class=""
-  >
+    class="">
     <v-img
       class="align-end text-white"
       height="200"
@@ -12,9 +11,14 @@
         <slot name="menu">
           
         </slot>
-         <p style="background-color: rgba(158, 184, 175, 0.534);" class="rounded-lg text-h4 text-grey-darken-4 font-weight-bold">
-          {{ props.title }}  
-        </p>  
+        <div class="d-flex flex-column ga-2">
+          <p style="background-color: rgba(158, 184, 175, 0.534);" class="rounded-lg text-h4 text-grey-darken-4 font-weight-bold">
+            {{ props.title }}  
+          </p>
+          <p style="background-color: rgba(158, 184, 175, 0.534);" class="rounded-lg text-h5 text-grey-darken-4 font-weight-bold">
+            {{ props.subtitle }}  
+          </p>
+        </div> 
       </v-card-text>
     </v-img>
     <v-card-actions>
@@ -29,6 +33,7 @@
 
 const props = defineProps({
   title:String,
+  subtitle:String,
   buttonName:{
     type:String,
     default:'Seleccionar'
