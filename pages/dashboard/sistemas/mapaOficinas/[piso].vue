@@ -45,30 +45,30 @@
               </v-autocomplete>
             </v-col>
 
-              <v-col cols="12" md="6">
-                <v-file-input
-                  show-size
-                  :rules="rules"
-                  accept="image/png, image/jpeg, image/bmp"
-                  placeholder="Sube imagen del Mapa"
-                  prepend-inner-icon="mdi-camera"
-                  hint="solo PNG, JPEG, BMP"
-                  persistent-hint
-                  prepend-icon=""
-                  label="Imagen Piso"
-                  @change="previewImage"
-                  @click:clear="clearImagePreview"
-                  v-model="imagen"
-                >
-                </v-file-input>
-              </v-col>
+            <v-col cols="12" md="6">
+              <v-file-input
+                show-size
+                :rules="rules"
+                accept="image/png, image/jpeg, image/bmp"
+                placeholder="Sube imagen del Mapa"
+                prepend-inner-icon="mdi-camera"
+                hint="solo PNG, JPEG, BMP"
+                persistent-hint
+                prepend-icon=""
+                label="Imagen Piso"
+                @change="previewImage"
+                @click:clear="clearImagePreview"
+                v-model="imagen"
+              >
+              </v-file-input>
+            </v-col>
           </v-row>
           <v-img
-              aspect-ratio="16/9"
-              cover
-              :src="imagePreview"
-              v-if="imagePreview"
-            ></v-img>
+            aspect-ratio="16/9"
+            cover
+            :src="imagePreview"
+            v-if="imagePreview"
+          ></v-img>
         </v-container>
     </template>
   </dialog-form>
@@ -107,7 +107,7 @@
       </card-image>
     </v-slide-y-transition> 
   </div>
-
+{{ imagePreview }}
 </template>
 
 
