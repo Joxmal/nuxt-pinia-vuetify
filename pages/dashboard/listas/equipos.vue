@@ -150,19 +150,106 @@
     </template>
   </DialogForm>
 
-  <div class="d-flex flex-wrap justify-center ga-4 mt-10">
-    <CardImage width="250" v-for="(index,trabajador) in store.datosTrabajadores" :key="index"
-    subtitle="titulo" title="titulo" 
-    button-name="IMAGENES">
+  <DialogGeneralSimple id-boton="MostrarImagenes" :ocultar-boton="true">
+      <template #contenido>
+        <div style="width: 100%; margin: 0 auto; " >
+          <v-card height="auto" style="overflow: auto;" position="relative" v-if="Object.keys(store.equipoDetalles).length > 1" elevation="15" class="d-flex flex-column ga-2">
+
+            <v-card-title class="text-center">{{ store.equipoDetalles.direccion }}</v-card-title>
+            <v-sheet position="absolute" location="top right" class="ma-2"  variant="plain" >piso {{ store.equipoDetalles.piso }}</v-sheet>
+
+            <v-divider></v-divider>
+            <div class="font-weight-black d-flex justify-space-between align-center">
+              
+              <div class="font-weight-black  d-flex flex-column  align-center">
+                <div>
+                  Direccion IP
+                </div>
+                <div>
+                  {{ store.equipoDetalles.ipv_4 }}
+                </div>
+              </div>
+
+              <div class="font-weight-black  d-flex flex-column  align-center">
+                <div>
+                  Responsable
+                </div>
+                <div>
+                  {{ store.equipoDetalles.expand.responsable.usuario }}
+                </div>
+              </div>
+
+              <div class="font-weight-black  d-flex flex-column justify-center  align-center">
+                <div>
+                  creado
+                  
+                </div>
+
+                <div>
+                   {{ new Date( store.equipoDetalles.created).toLocaleDateString()  }}
+                </div>
+              </div>
+            </div>
+            <v-divider></v-divider>
+            <v-container>
+              <v-row class="">
+
+                <v-col cols="12" sm="4" v-for="(componente,index) in recorridoDetalles.length">
+                  <div style="border: 2px solid rgb(65, 104, 189); border-radius: 10px;">
+                    <v-sheet class="ma-2 pa-2 text-center font-weight-black">
+                      {{ recorridoDetalles[index] }} <v-icon :icon="iconosDetalles[index]"></v-icon> 
+                    </v-sheet>
+                    <v-divider></v-divider>
+                    <v-sheet class="ma-2 pa-2 text-center font-weight-black">
+                      {{ store.equipoDetalles[`${recorridoDetalles[index]}`] === "" ? '-' : store.equipoDetalles[`${recorridoDetalles[index]}`]  }} 
+                    </v-sheet>
+                  </div>
+                </v-col>
+              </v-row>
+
+              <v-carousel height="400" progress="warning"  hide-delimiter-background hide-delimiters show-arrows="hover" 
+                v-if="store.equipoDetalles.imagenes && store.equipoDetalles.imagenes.length > 0"
+              :cycle="false" touch>
+                <v-carousel-item v-for="(image, index) in store.equipoDetalles.imagenes" :key="index">
+                  <v-img  
+                    :src="image" alt="Preview"
+                    lazy-src="/images/pc.png">
+                    <template v-slot:placeholder>
+                      <div class="d-flex align-center justify-center fill-height">
+                        <v-progress-circular
+                          color="grey-lighten-4"
+                          indeterminate
+                        ></v-progress-circular>
+                      </div>
+                    </template>
+                  </v-img>
+                </v-carousel-item>
+              </v-carousel>
+            </v-container>
+
+          </v-card>
+        </div>
+      </template>
+  </DialogGeneralSimple>
+
+
+  <v-card height="1000px" color="background" position="relative" class="my-10 overflow-auto bg-none rounded d-flex flex-wrap justify-center align-start ga-2">
+    <CardImage color="surface" width="280"  height="260" v-for="(trabajador,index) in store.listaEquiposBD" :key="index"
+    src-image="/images/pc.png "
+    :ocultar-boton-seleccion="true"  
+    :title="trabajador.direccion" 
+    :subtitle="trabajador.expand.responsable.usuario"
+    button-name="">
       <template #menu>
           <MenuDropdown
             @editar=""
             @eliminar=""
-            @descripcion=""
+            @descripcion="obtenerDescripsion(trabajador)"
           />
         </template>>
     </CardImage>
-  </div>
+
+  </v-card>
 <v-btn @click="console.log(store.form)" >formulario</v-btn>
 <!-- <pre>
   {{ store.form }}
@@ -172,8 +259,15 @@
   {{ store.listaDeTrabajadores }}
 </pre> -->
 <pre>
-  {{ store.datosTrabajadores }}
+  {{ store.listaEquiposBD }}
 </pre>
+
+<div style="background-color: red; max-width: 900px;">
+  <v-card title="titulo">
+    <v-card-text>sdd</v-card-text>
+
+  </v-card>
+</div>
 </template>
 
 
@@ -231,8 +325,45 @@ function actualizarIPV4(){
   store.form.ipv_4 = ip[0].IP
   store.form.responsable= ip[0].ID
 }
+function obtenerDescripsion(objeto){
+  document.querySelector('#MostrarImagenes').click()
+  
+  
+  store.equipoDetalles = objeto
+  store.equipoDetalles.imagenes = store.obtenerArrayImagenes(objeto)
+  // console.log(store.obtenerArrayImagenes(objeto))
+  console.log(store.equipoDetalles)
+  
+}
+const recorridoDetalles=[
+  'almacenamiento',
+  'cpu',
+  'impresora',
+  'monitor',
+  'ram'
+]
+const iconosDetalles=[
+  'mdi-harddisk',
+  'mdi-cpu-64-bit',
+  'mdi-printer',
+  'mdi-monitor',
+  'mdi-memory'
 
-onMounted(()=>{
-  store.obtenerDatosTrabajadores()
+
+]
+
+onMounted( async()=>{
+  await store.obtenerDatosTrabajadores()
+  await store.obtenerEquiposDB()
+  
 })
 </script>
+
+
+<style scoped>
+.custom-card {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+</style>

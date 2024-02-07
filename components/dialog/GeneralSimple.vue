@@ -1,19 +1,19 @@
 <template>
-<div class="text-center">
-    <v-btn
-    v-show="!ocultarBoton"
-    :id="idBoton"
-    color="primary"
-    @click="dialog=true"
-    >
-       {{ props.nameBoton }}
-    </v-btn>
-</div>
+    <div class="text-center">
+        <v-btn
+        v-show="!ocultarBoton"
+        :id="idBoton"
+        color="primary"
+        @click="dialog=true"
+        >
+        {{ props.nameBoton }}
+        </v-btn>
+    </div>
     <v-dialog 
         v-model="dialog"
-        width="auto">
-        <slot name="contenido">
-        </slot>
+        max-width="900px">
+            <slot name="contenido">
+            </slot>
     </v-dialog>
 </template>
 
