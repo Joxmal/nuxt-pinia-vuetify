@@ -16,8 +16,8 @@ export const useEquipos = defineStore('useEquipos', {
         listaEquiposBD:'',
         //paginacion de los equipos
         paginacion:{
-            page:"",
-            perPage:"",
+            page:1,
+            perPage:50,
             totalItems:"",
             totalPages:"",
         },
@@ -37,9 +37,9 @@ export const useEquipos = defineStore('useEquipos', {
             almacenamiento:null,
         },
         cargando:false,
-        envioExitosoOficina:false,
-        eliminarExitosoOficina:false,
-        editarExitosoOficina:false,
+        envioExitosoEquipo:false,
+        eliminarExitosoEquipo:false,
+        editarExitosoEquipo:false,
         ocurrioUnError:false
     }), 
     getters:{
@@ -62,19 +62,40 @@ export const useEquipos = defineStore('useEquipos', {
     },
     actions:{
         async obtenerDatosTrabajadores(){
-            const records = await this.pb.collection('usuarios').getFullList({
-                sort: '-created',
-            });
-            this.datosTrabajadores = records
+            try {
+                this.cargando = true
+                const records = await this.pb.collection('usuarios').getFullList({
+                    sort: '-created',
+                });
+                this.datosTrabajadores = records
+    
+                this.cargando = false
+            } catch (error) {
+                console.error(error.message)
+                this.ocurrioUnError = true
+                setTimeout(() => {
+                    this.ocurrioUnError = false
+                }, 3000);
+            }
         },
         async crearEquipo(){
             try {
+                this.cargando = true
                 const record = await this.pb.collection('equipos').create(this.form);
                 console.log(record)
+                this.cargando = false
+                this.envioExitosoEquipo = true
+                setTimeout(() => {
+                    this.envioExitosoEquipo = false
+                }, 3000);
+                
+
             } catch (error) {
                 console.error(error.message)
-                console.error(error)
-                console.error(error.details)
+                this.ocurrioUnError = true
+                setTimeout(() => {
+                    this.ocurrioUnError = false
+                }, 3000);
             }
         },
         async obtenerEquiposDB(){
@@ -83,7 +104,7 @@ export const useEquipos = defineStore('useEquipos', {
                 //perPage = cantidad de items a mostrar por pagina
                 //totalItems = total de  items en la base de datos
                 //totalPages = total de paginas que se pueden mostrar
-                const {items,page,perPage,totalItems,totalPages} = await this.pb.collection('equipos').getList(1, 50, {
+                const {items,page,perPage,totalItems,totalPages} = await this.pb.collection('equipos').getList(this.paginacion.page, this.paginacion.perPage, {
                     sort: '-created',
                     expand:'responsable'
                 });
@@ -96,6 +117,31 @@ export const useEquipos = defineStore('useEquipos', {
                 this.paginacion.totalPages = totalPages
             } catch (error) {
                 console.log(error)
+                setTimeout(() => {
+                    this.ocurrioUnError = false
+                }, 3000);
+            }
+        },
+
+        async eliminarEquipo({IDequipo}){
+            try {
+
+                if (confirm('¿Desea Eliminar esta asistencia?')) {
+                    await this.pb.collection('equipos').delete(IDequipo);
+                    this.eliminarExitosoEquipo = true
+                    setTimeout(() => {
+                        this.eliminarExitosoEquipo = false
+                    }, 3000);
+                  }else{
+                    return
+                }
+
+            } catch (error) {
+                console.error(error.message)
+                this.ocurrioUnError = true
+                setTimeout(() => {
+                    this.ocurrioUnError = false
+                }, 3000);
             }
         },
         convertirImagenURL({collectionId="collectionId",id="id",name="name"}){

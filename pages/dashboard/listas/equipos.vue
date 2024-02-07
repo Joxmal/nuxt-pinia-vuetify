@@ -2,7 +2,7 @@
   <!-- alertas -->
   <div>
     <v-slide-x-transition group>
-      <AlertWarning v-show="store.eliminarExitosoOficina === true" key="1"
+      <AlertWarning v-show="store.eliminarExitosoEquipo === true" key="1"
         style="position: fixed; right: 20px; z-index: 20;" 
         mensaje="Eliminado con exito"
       />
@@ -10,7 +10,7 @@
         style="position: fixed; right: 20px; z-index: 20;" 
         mensaje="Cargando"
       /> 
-      <AlertSuccess v-show="store.editarExitosoOficina === true" key="3"
+      <AlertSuccess v-show="store.editarExitosoEquipo === true" key="3"
         style="position: fixed; right: 20px; z-index: 20;" 
         mensaje="Editado"
         icon="mdi-pencil-outline"
@@ -18,7 +18,11 @@
       <AlertError v-show="store.ocurrioUnError === true" key="4"
         style="position: fixed; right: 20px; z-index: 20;" 
         mensaje="ERROR"
-      /> 
+      />
+      <AlertSuccess v-show="store.envioExitosoEquipo === true" key="5"
+        style="position: fixed; right: 20px; z-index: 20;" 
+        mensaje="Cargado con exito"
+      />  
     </v-slide-x-transition>
   </div>
 
@@ -26,7 +30,7 @@
   <DialogForm
     id_boton="creacionEquipo"
     :titulo_dialog="'Creacion de equipo'"
-    @crear="store.crearEquipo()"
+    @crear="store.crearEquipo(),store.obtenerDatosTrabajadores()"
   >
     <template #contenido>
       <v-container>
@@ -153,44 +157,46 @@
   <DialogGeneralSimple id-boton="MostrarImagenes" :ocultar-boton="true">
       <template #contenido>
         <div style="width: 100%; margin: 0 auto; " >
-          <v-card height="auto" style="overflow: auto;" position="relative" v-if="Object.keys(store.equipoDetalles).length > 1" elevation="15" class="d-flex flex-column ga-2">
-
+          <v-card max-height="90vh" style="overflow: auto;" position="relative" v-if="Object.keys(store.equipoDetalles).length > 1" elevation="15" class="d-flex flex-column ga-2">
             <v-card-title class="text-center">{{ store.equipoDetalles.direccion }}</v-card-title>
             <v-sheet position="absolute" location="top right" class="ma-2"  variant="plain" >piso {{ store.equipoDetalles.piso }}</v-sheet>
 
             <v-divider></v-divider>
-            <div class="font-weight-black d-flex justify-space-between align-center">
-              
-              <div class="font-weight-black  d-flex flex-column  align-center">
-                <div>
-                  Direccion IP
+            <v-row>
+              <v-col cols="12" sm="4">
+                <div class="font-weight-black  d-flex flex-column  align-center">
+                  <div>
+                    Direccion IP
+                  </div>
+                  <div>
+                    {{ store.equipoDetalles.ipv_4 }}
+                  </div>
                 </div>
-                <div>
-                  {{ store.equipoDetalles.ipv_4 }}
-                </div>
-              </div>
+              </v-col>
 
-              <div class="font-weight-black  d-flex flex-column  align-center">
-                <div>
-                  Responsable
+              <v-col cols="12" sm="4">
+                <div class="font-weight-black  d-flex flex-column  align-center">
+                  <div>
+                    Responsable
+                  </div>
+                  <div>
+                    {{ store.equipoDetalles.expand.responsable.usuario }}
+                  </div>
                 </div>
-                <div>
-                  {{ store.equipoDetalles.expand.responsable.usuario }}
-                </div>
-              </div>
+              </v-col>
 
-              <div class="font-weight-black  d-flex flex-column justify-center  align-center">
-                <div>
-                  creado
-                  
+              <v-col cols="12" sm="4">
+                <div class="font-weight-black  d-flex flex-column  align-center">
+                  <div>
+                    creado
+                  </div>
+                  <div>
+                    {{ new Date( store.equipoDetalles.created).toLocaleDateString()  }}
+                  </div>
                 </div>
-
-                <div>
-                   {{ new Date( store.equipoDetalles.created).toLocaleDateString()  }}
-                </div>
-              </div>
-            </div>
-            <v-divider></v-divider>
+              </v-col>
+            </v-row>
+            <v-divider ></v-divider>
             <v-container>
               <v-row class="">
 
@@ -206,6 +212,8 @@
                   </div>
                 </v-col>
               </v-row>
+
+              <v-divider  class="my-4 border-opacity-0"></v-divider>
 
               <v-carousel height="400" progress="warning"  hide-delimiter-background hide-delimiters show-arrows="hover" 
                 v-if="store.equipoDetalles.imagenes && store.equipoDetalles.imagenes.length > 0"
@@ -226,30 +234,50 @@
                 </v-carousel-item>
               </v-carousel>
             </v-container>
-
           </v-card>
         </div>
       </template>
   </DialogGeneralSimple>
 
 
-  <v-card height="1000px" color="background" position="relative" class="my-10 overflow-auto bg-none rounded d-flex flex-wrap justify-center align-start ga-2">
-    <CardImage color="surface" width="280"  height="260" v-for="(trabajador,index) in store.listaEquiposBD" :key="index"
-    src-image="/images/pc.png "
-    :ocultar-boton-seleccion="true"  
-    :title="trabajador.direccion" 
-    :subtitle="trabajador.expand.responsable.usuario"
-    button-name="">
-      <template #menu>
+  <v-card max-height="1000px" color="background" elevation="10" border position="relative" class="my-10 py-8 overflow-auto bg-none rounded d-flex flex-wrap justify-center align-start ga-2">
+    <v-slide-y-transition group>
+      <CardImage color="surface" width="280"  height="260" v-for="(trabajador,index) in store.listaEquiposBD" :key="index"
+      src-image="/images/pc.png "
+      :ocultar-boton-seleccion="true"  
+      :title="trabajador.direccion" 
+      :subtitle="trabajador.expand.responsable.usuario"
+      button-name="">
+        <template #menu>
           <MenuDropdown
             @editar=""
-            @eliminar=""
+            @eliminar="eliminarEquipo({id:trabajador.id})"
             @descripcion="obtenerDescripsion(trabajador)"
           />
         </template>>
-    </CardImage>
-
+      </CardImage>
+    </v-slide-y-transition>
   </v-card>
+  {{ store.paginacion }}
+  <div class="d-flex justify-space-between align-center pa-2" style="position: relative;">
+    <v-pagination class="mx-auto" :density="'compact'" :total-visible="3" v-model="store.paginacion.page" :length="store.paginacion.totalPages"></v-pagination>
+    <div v-show="name !== 'xs'" style="position: absolute; right: 0; top: 50%;transform: translate(0%, -25%);">
+      <v-select
+        density="compact"
+        :items="[10,20,30,40,50,300,10000]"
+        v-model="store.paginacion.perPage"
+      />
+    </div>
+  </div>
+  <v-select
+  class="mx-auto"
+  style="width: 100px;"
+  v-show="name === 'xs'"
+  density="compact"
+  :items="[10,20,30,40,50,300]"
+  v-model="store.paginacion.perPage"
+/>
+ 
 <v-btn @click="console.log(store.form)" >formulario</v-btn>
 <!-- <pre>
   {{ store.form }}
@@ -273,6 +301,9 @@
 
 <script setup>
 import { useEquipos } from '~/stores/equipos';
+import { useDisplay } from 'vuetify'
+
+const { name } = useDisplay()
 
 function customFilter (itemTitle, queryText, item) {
     const trabajador = item.raw.trabajador.toLowerCase()
@@ -304,6 +335,11 @@ function clearImagePreview(){
   if(store.form.imagenes){
     delete store.form.imagenes
   }
+}
+
+async function eliminarEquipo({id}){
+  await store.eliminarEquipo({IDequipo:id})
+  await store.obtenerEquiposDB()
 }
 
 const rules = [
@@ -348,9 +384,13 @@ const iconosDetalles=[
   'mdi-printer',
   'mdi-monitor',
   'mdi-memory'
-
-
 ]
+
+const {paginacion} = storeToRefs(store)
+
+watch(paginacion,(newPage,oldPage)=>{
+  store.obtenerEquiposDB()
+},{ deep: true, })
 
 onMounted( async()=>{
   await store.obtenerDatosTrabajadores()
