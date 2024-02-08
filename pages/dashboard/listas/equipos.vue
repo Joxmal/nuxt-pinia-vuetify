@@ -30,6 +30,7 @@
   <DialogForm
     id_boton="creacionEquipo"
     :titulo_dialog="'Creacion de equipo'"
+    boton_titulo="Nuevo Equipo"
     @crear="store.crearEquipo(),store.obtenerDatosTrabajadores()"
   >
     <template #contenido>
@@ -154,6 +155,7 @@
     </template>
   </DialogForm>
 
+  <!-- dialogo oculto que abre los detalles -->
   <DialogGeneralSimple id-boton="MostrarImagenes" :ocultar-boton="true">
       <template #contenido>
         <div style="width: 100%; margin: 0 auto; " >
@@ -240,13 +242,32 @@
   </DialogGeneralSimple>
 
 
-  <v-card max-height="1000px" color="background" elevation="10" border position="relative" class="my-10 py-8 overflow-auto bg-none rounded d-flex flex-wrap justify-center align-start ga-2">
+  <v-row justify="center" class="mt-2" > 
+    <v-col cols="12" md="3">
+      <v-text-field label="usuario"  hide-details="auto" density="compact"></v-text-field>
+    </v-col>
+
+    <v-col cols="12" md="3">
+      <v-autocomplete :items="[0,1,2,3,4,5]" label="piso" hide-details="auto" density="compact"></v-autocomplete>
+    </v-col>
+    <v-col cols="12" md="3">
+      <v-autocomplete :items="useIPListaStore().listaDepartamento" label="Departamento" hide-details="auto" density="compact"></v-autocomplete>
+    </v-col>
+    <v-col cols="12" md="1">
+      <v-btn class="px-2">Buscar</v-btn>
+    </v-col>
+  </v-row>
+
+
+
+  <v-card max-height="700px" color="background" elevation="10" border position="relative"   
+    class="my-10 py-8 overflow-auto bg-none rounded d-flex flex-wrap justify-center align-start ga-2">
     <v-slide-y-transition group>
       <CardImage color="surface" width="280"  height="260" v-for="(trabajador,index) in store.listaEquiposBD" :key="index"
       src-image="/images/pc.png "
       :ocultar-boton-seleccion="true"  
       :title="trabajador.direccion" 
-      :subtitle="trabajador.expand.responsable.usuario"
+      :subtitle="`${trabajador.expand.responsable.usuario}<br> piso-${trabajador.piso} `"
       button-name="">
         <template #menu>
           <MenuDropdown
@@ -258,7 +279,6 @@
       </CardImage>
     </v-slide-y-transition>
   </v-card>
-  {{ store.paginacion }}
   <div class="d-flex justify-space-between align-center pa-2" style="position: relative;">
     <v-pagination class="mx-auto" :density="'compact'" :total-visible="3" v-model="store.paginacion.page" :length="store.paginacion.totalPages"></v-pagination>
     <div v-show="name !== 'xs'" style="position: absolute; right: 0; top: 50%;transform: translate(0%, -25%);">
@@ -289,13 +309,6 @@
 <pre>
   {{ store.listaEquiposBD }}
 </pre>
-
-<div style="background-color: red; max-width: 900px;">
-  <v-card title="titulo">
-    <v-card-text>sdd</v-card-text>
-
-  </v-card>
-</div>
 </template>
 
 
@@ -319,6 +332,7 @@ const images = ref([]);
 const imagePreview =ref([])
 /////reglas del tamaño 
 
+//obtener la imagen y agregarla al array 
 function previewImage(event){
   imagePreview.value = [];
   for (const file of images.value) {

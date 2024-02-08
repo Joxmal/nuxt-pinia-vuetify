@@ -16,8 +16,8 @@
           <p style="background-color: rgba(158, 184, 175, 0.671);" class="rounded-lg text-h5 text-grey-darken-4 font-weight-bold text-uppercase">
             {{ props.title }}  
           </p>
-          <p style="background-color: rgba(158, 184, 175, 0.671);" class="rounded-lg text-h5 text-blue-darken-4 font-weight-bold">
-            {{ props.subtitle }}  
+          <p v-html="props.subtitle" style="background-color: rgba(158, 184, 175, 0.671);" class="rounded-lg text-h5 text-blue-darken-4 font-weight-bold">
+
           </p>
         </div> 
       </v-card-text>

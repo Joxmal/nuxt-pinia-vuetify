@@ -24,7 +24,7 @@
 
         <v-card-actions>
           <v-spacer />
-          <v-btn
+          <v-btn position="absolute"
             color="blue-darken-1"
             variant="text"
             @click="isActive.value = false">
