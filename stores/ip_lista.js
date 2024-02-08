@@ -63,6 +63,15 @@ export const useIPListaStore = defineStore('useIPListaStore', {
             "DEPARTAMENTO SEGURIDAD",
             "INGENIEROS"
         ],
+
+        pisos:[
+            { piso: 0, nombre: 'Sotano',  },
+            { piso: 1, nombre: 'Primer piso',  },
+            { piso: 2, nombre: 'Segundo piso',  },
+            { piso: 3, nombre: 'Tercer piso',  },
+            { piso: 4, nombre: 'Despacho',  },
+            { piso: 5, nombre: 'Exteriores',  },
+          ]
     }),
 
 

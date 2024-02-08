@@ -25,13 +25,19 @@
     />  
   </v-slide-x-transition>
 </div>
-
 <!-- crear nuevo equipo -->
 <DialogForm
+
   id_boton="creacionEquipo"
   :titulo_dialog="'Creacion de equipo'"
   boton_titulo="Nuevo Equipo"
   @crear="store.crearEquipo(),store.obtenerEquiposDB()"
+  @modo-crear="modoEditar = false"
+  @editar-dialog-form="store.editarEquipo({id:IdEditar})"
+  :boton-reset-formulario="true"
+  @resetearFormulario="store.resetearForm()"
+  :modo-editar="modoEditar"
+
 >
   <template #contenido>
     <v-container>
@@ -64,9 +70,8 @@
             :items="store.listaDeTrabajadores"
             hint="Responsable del equipo"
             persistent-hint
-            :custom-filter="customFilter"
             item-title="trabajador"
-            item-value="valor"
+            item-value="ID"
             v-model="store.form.responsable"
             @update:model-value="actualizarIPV4"
           />
@@ -160,10 +165,7 @@
     </v-container>
   </template>
 </DialogForm>
-<!-- {{ store.filtroBusqueda }} <br> -->
-{{ variablesFiltroEquipos }} <br>
-{{ store.filtroBusqueda }} <br>
-{{ store.paginacion }}
+
 <!-- dialogo oculto que abre los detalles -->
 <DialogGeneralSimple id-boton="MostrarImagenes" :ocultar-boton="true">
     <template #contenido>
@@ -171,7 +173,6 @@
         <v-card max-height="90vh" style="overflow: auto;" position="relative" v-if="Object.keys(store.equipoDetalles).length > 1" elevation="15" class="d-flex flex-column ga-2">
           <v-card-title class="text-center">{{ store.equipoDetalles.direccion }}</v-card-title>
           <v-sheet position="absolute" location="top right" class="ma-2"  variant="plain" >piso {{ store.equipoDetalles.piso }}</v-sheet>
-
           <v-divider></v-divider>
           <v-row>
             <v-col cols="12" sm="4">
@@ -249,7 +250,6 @@
       </div>
     </template>
 </DialogGeneralSimple>
-
 <v-form @submit.prevent>
   <v-row justify="center" class="mt-2" > 
     <v-col cols="12" md="3">
@@ -257,7 +257,15 @@
     </v-col>
 
     <v-col cols="12" md="3">
-      <v-autocomplete v-model="variablesFiltroEquipos.piso" :items="[0,1,2,3,4,5]" label="Piso" hide-details="auto" density="compact"></v-autocomplete>
+      <v-autocomplete 
+        v-model="variablesFiltroEquipos.piso" 
+        :items="useIPListaStore().pisos" 
+        label="Piso"
+        item-title="nombre"
+        item-value="piso"
+        hide-details="auto" 
+        density="compact">
+      </v-autocomplete>
     </v-col>
     <v-col cols="12" md="3">
       <v-autocomplete v-model="variablesFiltroEquipos.departamento" :items="useIPListaStore().listaDepartamento" label="Departamento" hide-details="auto" density="compact"></v-autocomplete>
@@ -280,7 +288,7 @@
     button-name="">
       <template #menu>
         <MenuDropdown
-          @editar=""
+          @editar="editarDescripsion({IDequipo:trabajador.id,equipo:trabajador})"
           @eliminar="eliminarEquipo({id:trabajador.id})"
           @descripcion="obtenerDescripsion(trabajador)"
         />
@@ -342,7 +350,6 @@ const { name } = useDisplay()
 function customFilter (itemTitle, queryText, item) {
     const trabajador = item.raw.trabajador.toLowerCase()
     const valor = item.raw.ID.toLowerCase()
-    console.log(valor)
     const searchText = queryText.toLowerCase()
     return trabajador.indexOf(searchText) > -1 || valor.indexOf(searchText) > -1
   }
@@ -393,10 +400,13 @@ const rules = [
 
 function actualizarIPV4(){
   const ip = store.listaDeTrabajadores.filter((trabajador)=>{
-    return store.form.responsable == trabajador.trabajador
+    return store.form.responsable == trabajador.ID
   })
-  store.form.ipv_4 = ip[0].IP
-  store.form.responsable= ip[0].ID
+  
+  console.log(store.listaDeTrabajadores)
+  if(ip[0] && ip[0].IP){
+    store.form.ipv_4 = ip[0].IP
+  }
 }
 function obtenerDescripsion(objeto){
   document.querySelector('#MostrarImagenes').click()
@@ -407,6 +417,32 @@ function obtenerDescripsion(objeto){
   // console.log(store.obtenerArrayImagenes(objeto))
   console.log(store.equipoDetalles)
   
+}
+
+const modoEditar =ref(false)
+const IdEditar =ref()
+async function editarDescripsion({IDequipo, equipo}) {
+  console.log(equipo);
+  console.log(equipo.responsable);
+
+  store.form.piso = equipo.piso;
+  store.form.direccion = equipo.direccion;
+  store.form.ipv_4 = equipo.ipv_4;
+  store.form.monitor = equipo.monitor;
+  store.form.cpu = equipo.cpu;
+  store.form.impresora = equipo.impresora;
+  store.form.ram = equipo.ram;
+  store.form.almacenamiento = equipo.almacenamiento;
+
+  await Promise.all([
+    // Agrega aquí todas las asignaciones que deben completarse antes de store.form.responsable
+  ]);
+
+  store.form.responsable = equipo.responsable;
+
+  IdEditar.value = IDequipo;
+  document.querySelector('#creacionEquipo').click();
+  modoEditar.value = true;
 }
 const recorridoDetalles=[
   'almacenamiento',

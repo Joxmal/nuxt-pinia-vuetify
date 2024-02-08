@@ -157,7 +157,6 @@ export const useEquiposStore = defineStore('useEquiposStore', {
                 }, 3000);
             }
         },
-
         async eliminarEquipo({IDequipo}){
             try {
 
@@ -170,6 +169,23 @@ export const useEquiposStore = defineStore('useEquiposStore', {
                     }else{
                     return
                 }
+
+            } catch (error) {
+                console.error(error.message)
+                this.ocurrioUnError = true
+                setTimeout(() => {
+                    this.ocurrioUnError = false
+                }, 3000);
+            }
+        },
+        async editarEquipo({id}){
+            try {
+                await this.pb.collection('equipos').update(id,this.form);
+                this.editarExitosoEquipo = true
+                this.obtenerEquiposDB()
+                setTimeout(() => {
+                    this.editarExitosoEquipo = false
+                }, 3000);
 
             } catch (error) {
                 console.error(error.message)
@@ -194,7 +210,17 @@ export const useEquiposStore = defineStore('useEquiposStore', {
             } else {
                 return [];
             }
+        },
+        resetearForm(){
+            this.form.piso=null
+            this.form.direccion=""
+            this.form.responsable=""
+            this.form.ipv_4=""
+            this.form.monitor=""
+            this.form.cpu=""
+            this.form.impresora=""
+            this.form.ram=""
+            this.form.almacenamiento=null
         }
-        
     },
 })
