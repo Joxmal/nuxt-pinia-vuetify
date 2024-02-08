@@ -6,125 +6,125 @@ import autoTable  from "jspdf-autotable";
 
 
 export const useAsistenciasStore = defineStore('useAsistenciasStore', {
-    state: () => ({
-      pb_url: useRuntimeConfig().public.POCKETBASE_URL,
-      listaTotalEmpleados_oficina: undefined,
-      
-      listaDepartamento:undefined,
-      mapeo:false,
+  state: () => ({
+    pb_url: useRuntimeConfig().public.POCKETBASE_URL,
+    listaTotalEmpleados_oficina: undefined,
+    
+    listaDepartamento:undefined,
+    mapeo:false,
 
-      //formulario de creacion--edicion SE EUTILIZA EN LA DESCRIPSION (VA CAMBIANDO)
-      form : {
-        creador:useStoreConexion().avatarID,
-        item:'',
-        tipoReporte:null,
-        departamento:null,
-        funcionario:null,
-        horaEntrada:"08:00",
-        horaSalida:"14:30",
-        fechaEntrada:null,
-        fechaSalida:null,
-        descripsion:'',
-        status:false
-      },
-
-      //aqui se almacena el nombre de la card de la asistencia para mostrar el nombre de la persona que creo esa asistencia
-      nombreCardAsistencia:'',
-
-      //notificaciones
-      iconError:false,
-      iconCreate:false,
-      iconDelete:false,
-      //loading de las cards
-      loadinCards:true,
-
-      //lista de asistencia
-      asistenciaLista_Usuario: '',
-      conteoTotalAsistencia:'',
-
-      //datos del dialogo
-      dialogoDescripsion:'',
-
-      //ID de la asistencia al editar
-      ID_asistencia_editar:'id',
-      modoEditar:false,
-
-      tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'],
-
-      //seleccion del id de creacion (para buscar en la bd a partir de la ID del usuario)
-      seleccionUsuario:useStoreConexion().avatarID,
-
-      //paginacion para ver las cards
-      paginationItemsPorPagina:50,
-      pagination:1,
-      totalPage:5,
-
-      //filtros de busqueda para la base de datos
-      tipoReporteFiltro:['TODOS','PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'], 
-      variablesFiltro:{
-        filtroCreador: `creador="${useStoreConexion().avatarID}"`,
-        tipoAsistencia:'TODOS',
-        fechaPeticion: {
-          rango: {
-            activo:true,
-            desde: "2020-12-01",
-            hasta: "2040-12-01",
-          },
-          fecha:"2023-12-20"
-        }
-      }
-
-
-    }),
-    getters:{
-      conteoAsistencia: (state) => state.asistenciaLista_Usuario.items.length,
-      filtroBusqueda() {
-        const { fechaPeticion, filtroCreador, tipoAsistencia } = this.variablesFiltro;
-        const { rango, fecha } = fechaPeticion;
-      
-        let filterBuscar = "";
-      
-        if (rango.activo) {
-          if (filtroCreador === 'creador="jlpwz10ms03on6z"') {
-            filterBuscar += `(fechaEntrada >= "${rango.desde}" && fechaSalida <= "${rango.hasta}")`;
-          } else {
-            filterBuscar += `creador="${this.seleccionUsuario}" && (fechaEntrada >= "${rango.desde}" && fechaSalida <= "${rango.hasta}")`;
-          }
-      
-          if (tipoAsistencia !== "TODOS") {
-            filterBuscar += ` && tipoReporte = "${tipoAsistencia}"`;
-          }
-        } else {
-          if (filtroCreador === 'creador="jlpwz10ms03on6z"') {
-            filterBuscar += `fechaEntrada ~ "${fecha}"`;
-          } else {
-            filterBuscar += `creador="${this.seleccionUsuario}" && fechaEntrada ~ "${fecha}"`;
-          }
-      
-          if (tipoAsistencia !== "TODOS") {
-            filterBuscar += ` && tipoReporte = "${tipoAsistencia}"`;
-          }
-        }
-      
-        return filterBuscar;
-      },
-      contadorTiposAsistencia(){
-        const reportes = {};
-        if (this.asistenciaLista_Usuario !== '') {
-          this.asistenciaLista_Usuario.items.forEach(item => {
-            const tipoReporte = item.tipoReporte;
-            if (tipoReporte in reportes) {
-              reportes[tipoReporte]++;
-            } else {
-              reportes[tipoReporte] = 1;
-            }
-          });
-          return reportes
-        }
-      }
-
-
+    //formulario de creacion--edicion SE EUTILIZA EN LA DESCRIPSION (VA CAMBIANDO)
+    form : {
+      creador:useStoreConexion().avatarID,
+      item:'',
+      tipoReporte:null,
+      departamento:null,
+      funcionario:null,
+      horaEntrada:"08:00",
+      horaSalida:"14:30",
+      fechaEntrada:null,
+      fechaSalida:null,
+      descripsion:'',
+      status:false
     },
+
+    //aqui se almacena el nombre de la card de la asistencia para mostrar el nombre de la persona que creo esa asistencia
+    nombreCardAsistencia:'',
+
+    //notificaciones
+    iconError:false,
+    iconCreate:false,
+    iconDelete:false,
+    //loading de las cards
+    loadinCards:true,
+
+    //lista de asistencia
+    asistenciaLista_Usuario: '',
+    conteoTotalAsistencia:'',
+
+    //datos del dialogo
+    dialogoDescripsion:'',
+
+    //ID de la asistencia al editar
+    ID_asistencia_editar:'id',
+    modoEditar:false,
+
+    tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'],
+
+    //seleccion del id de creacion (para buscar en la bd a partir de la ID del usuario)
+    seleccionUsuario:useStoreConexion().avatarID,
+
+    //paginacion para ver las cards
+    paginationItemsPorPagina:50,
+    pagination:1,
+    totalPage:5,
+
+    //filtros de busqueda para la base de datos
+    tipoReporteFiltro:['TODOS','PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'], 
+    variablesFiltro:{
+      filtroCreador: `creador="${useStoreConexion().avatarID}"`,
+      tipoAsistencia:'TODOS',
+      fechaPeticion: {
+        rango: {
+          activo:true,
+          desde: "2020-12-01",
+          hasta: "2040-12-01",
+        },
+        fecha:"2023-12-20"
+      }
+    }
+
+
+  }),
+  getters:{
+    conteoAsistencia: (state) => state.asistenciaLista_Usuario.items.length,
+    filtroBusqueda() {
+      const { fechaPeticion, filtroCreador, tipoAsistencia } = this.variablesFiltro;
+      const { rango, fecha } = fechaPeticion;
+    
+      let filterBuscar = "";
+    
+      if (rango.activo) {
+        if (filtroCreador === 'creador="jlpwz10ms03on6z"') {
+          filterBuscar += `(fechaEntrada >= "${rango.desde}" && fechaSalida <= "${rango.hasta}")`;
+        } else {
+          filterBuscar += `creador="${this.seleccionUsuario}" && (fechaEntrada >= "${rango.desde}" && fechaSalida <= "${rango.hasta}")`;
+        }
+    
+        if (tipoAsistencia !== "TODOS") {
+          filterBuscar += ` && tipoReporte = "${tipoAsistencia}"`;
+        }
+      } else {
+        if (filtroCreador === 'creador="jlpwz10ms03on6z"') {
+          filterBuscar += `fechaEntrada ~ "${fecha}"`;
+        } else {
+          filterBuscar += `creador="${this.seleccionUsuario}" && fechaEntrada ~ "${fecha}"`;
+        }
+    
+        if (tipoAsistencia !== "TODOS") {
+          filterBuscar += ` && tipoReporte = "${tipoAsistencia}"`;
+        }
+      }
+    
+      return filterBuscar;
+    },
+    contadorTiposAsistencia(){
+      const reportes = {};
+      if (this.asistenciaLista_Usuario !== '') {
+        this.asistenciaLista_Usuario.items.forEach(item => {
+          const tipoReporte = item.tipoReporte;
+          if (tipoReporte in reportes) {
+            reportes[tipoReporte]++;
+          } else {
+            reportes[tipoReporte] = 1;
+          }
+        });
+        return reportes
+      }
+    }
+
+
+  },
   actions:{
     resetearReporte(){
       this.form.item=''
@@ -430,7 +430,4 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
   }
 
   },
-
-
-    
 })

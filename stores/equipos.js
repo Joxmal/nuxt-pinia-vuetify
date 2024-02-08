@@ -3,7 +3,7 @@ import PocketBase from 'pocketbase'
 
 
 
-export const useEquipos = defineStore('useEquipos', {
+export const useEquiposStore = defineStore('useEquiposStore', {
     state: () => ({
         pb: new PocketBase(useRuntimeConfig().public.POCKETBASE_URL),
 
@@ -40,25 +40,58 @@ export const useEquipos = defineStore('useEquipos', {
         envioExitosoEquipo:false,
         eliminarExitosoEquipo:false,
         editarExitosoEquipo:false,
-        ocurrioUnError:false
+        ocurrioUnError:false,
+        //varibles usadas para el filtro de busqueda sql
+        variablesFiltroEquipos:{
+            usuario: "",
+            piso:'',
+            departamento:'',
+        },
+        variablePrueba:''
     }), 
     getters:{
         listaDeTrabajadores(state){
             const seleccionDepartamento = state.datosTrabajadores.filter((usuario)=>{
                 return usuario.departamento == state.form.direccion 
             })
-          const seleccionTrabajador = seleccionDepartamento.map(trabajador=>(
+            const seleccionTrabajador = seleccionDepartamento.map(trabajador=>(
             {
                 trabajador: trabajador.usuario,
                 ID: trabajador.id,
                 IP: trabajador.IP,
                 departamento: trabajador.departamento,
             }
-          ),
+            ),
             state.form.responsable=""
-          );
+            );
             return seleccionTrabajador
         },
+        filtroBusqueda() {
+            const { usuario, piso, departamento } = this.variablesFiltroEquipos;
+            let filterBuscar = "";
+          
+            if (usuario === "" && piso === "" && departamento === "") {
+              filterBuscar = "";
+            } else {
+              if (usuario !== "") {
+                filterBuscar += `responsable.usuario ~ "${usuario}"`;
+              }
+              if (departamento !== "" && departamento !== null) {
+                if (filterBuscar !== "") {
+                  filterBuscar += " && ";
+                }
+                filterBuscar += `direccion ~ "${departamento}"`;
+              }
+              if (piso !== "" && piso !== null) {
+                if (filterBuscar !== "") {
+                  filterBuscar += " && ";
+                }
+                filterBuscar += `piso = "${piso}"`;
+              }
+            }
+          
+            return filterBuscar;
+        }
     },
     actions:{
         async obtenerDatosTrabajadores(){
@@ -68,7 +101,7 @@ export const useEquipos = defineStore('useEquipos', {
                     sort: '-created',
                 });
                 this.datosTrabajadores = records
-    
+
                 this.cargando = false
             } catch (error) {
                 console.error(error.message)
@@ -91,6 +124,7 @@ export const useEquipos = defineStore('useEquipos', {
                 
 
             } catch (error) {
+                this.cargando = false
                 console.error(error.message)
                 this.ocurrioUnError = true
                 setTimeout(() => {
@@ -106,7 +140,8 @@ export const useEquipos = defineStore('useEquipos', {
                 //totalPages = total de paginas que se pueden mostrar
                 const {items,page,perPage,totalItems,totalPages} = await this.pb.collection('equipos').getList(this.paginacion.page, this.paginacion.perPage, {
                     sort: '-created',
-                    expand:'responsable'
+                    expand:'responsable',
+                    filter: this.filtroBusqueda
                 });
                 console.log(items)
                 this.listaEquiposBD = items
@@ -132,7 +167,7 @@ export const useEquipos = defineStore('useEquipos', {
                     setTimeout(() => {
                         this.eliminarExitosoEquipo = false
                     }, 3000);
-                  }else{
+                    }else{
                     return
                 }
 
