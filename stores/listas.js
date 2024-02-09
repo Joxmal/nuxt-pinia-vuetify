@@ -6,7 +6,13 @@ import PocketBase from 'pocketbase'
 export const useListasStore = defineStore('useListasStore', {
     state: () => ({
         pb: new PocketBase(useRuntimeConfig().public.POCKETBASE_URL),
-        listas:[]
+        listas:[],
+        //json de cada area
+        jsonDepartamentos:{},
+        jsonCpu:{},
+        jsonImpresora:{},
+        jsonTarjeta_madre:{},
+        
     }), 
     getters:{
         //conteoAsistencia: (state) => state.asistenciaLista_Usuario.items.length,
@@ -25,6 +31,18 @@ export const useListasStore = defineStore('useListasStore', {
                     sort: '-created',
                 });
                 this.listas = records
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async cargarNuevoJson(){
+            const data = {
+                "Departamentos": this.jsonDepartamentos,
+            };
+            try {
+                // you can also fetch all records at once via getFullList
+                const record = await this.pb.collection('listas').update('liok3xxaykcstan', data);
+                console.log(record)
             } catch (error) {
                 console.log(error)
             }
