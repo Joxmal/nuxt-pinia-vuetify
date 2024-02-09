@@ -37,7 +37,7 @@
           <v-row>
             <v-col cols="12" md="6">
               <v-autocomplete
-                :items="useIPListaStore().listaDepartamento"
+                :items="useListasStore().listaDepartamento"
                 label="Nombre Oficina"
                 hint="Nombre de la oficina"
                 persistent-hint

@@ -63,6 +63,8 @@ export const useStoreConexion = defineStore('useStoreConexion', {
                 this.avatarID = `${authData.record.id}`
 
                 useAsistenciasStore().seleccionUsuario = useStoreConexion().avatarID
+                useListasStore().obtenerListas()
+
             } catch (error) {
                 console.error(error)
                 this.errorInicio = true

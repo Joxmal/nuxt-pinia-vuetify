@@ -94,7 +94,7 @@
             persistent-hint
             open-text="abrir"
             close-text="cerrar"
-            :items="store.listaDepartamento"
+            :items="useListasStore().listaDepartamento"
             v-model="store.form.departamento"
             >
           

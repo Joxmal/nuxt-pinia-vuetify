@@ -41,7 +41,7 @@
     
                         <v-col cols="12" sm="6" >
                             <v-autocomplete
-                                :items="store.listaDepartamento"
+                                :items="useListasStore().listaDepartamento"
                                 label="Departamento"
                                 hint="departamento al que pertenece el usuario"
                                 persistent-hint

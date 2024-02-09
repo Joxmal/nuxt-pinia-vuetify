@@ -57,7 +57,7 @@
         <v-col cols="12" md="4">
           <v-autocomplete
             label="Dirección"
-            :items="useIPListaStore().listaDepartamento"
+            :items="useListasStore().listaDepartamento"
             hint="ubicacion del departamento"
             persistent-hint
             v-model="store.form.direccion"
@@ -268,7 +268,7 @@
       </v-autocomplete>
     </v-col>
     <v-col cols="12" md="3">
-      <v-autocomplete v-model="variablesFiltroEquipos.departamento" :items="useIPListaStore().listaDepartamento" label="Departamento" hide-details="auto" density="compact"></v-autocomplete>
+      <v-autocomplete v-model="variablesFiltroEquipos.departamento" :items="useListasStore().listaDepartamento" label="Departamento" hide-details="auto" density="compact"></v-autocomplete>
     </v-col>
     <v-col cols="12" md="1">
       <v-btn type="submit" @click="store.obtenerEquiposDB()" class="px-2">Buscar</v-btn>
