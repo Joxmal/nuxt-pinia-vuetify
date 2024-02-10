@@ -3,67 +3,46 @@
   <div>
     <v-slide-x-transition group>
       <AlertError v-show="useListasStore().ocurrioUnError === true" key="1"
-        style="position: fixed; right: 20px; z-index: 20;" 
-        mensaje="ERROR"
-      />
+        style="position: fixed; right: 20px; z-index: 20" mensaje="ERROR" />
       <AlertSuccess v-show="useListasStore().envioExitoso === true" key="2"
-      style="position: fixed; right: 20px; z-index: 20;" 
-      mensaje="Cargado con exito"
-      />  
+        style="position: fixed; right: 20px; z-index: 20" mensaje="Cargado con exito" />
     </v-slide-x-transition>
   </div>
 
   <v-expansion-panels variant="popout" class="my-4">
     <!-- departamento  -->
     <v-expansion-panel>
-      <v-expansion-panel-title class="font-weight-black"
-        >Departamentos</v-expansion-panel-title
-      >
+      <v-expansion-panel-title class="font-weight-black"><v-icon color="secondary" icon="mdi-home-group" class="mr-2"/> Departamentos</v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-card color="" class="mx-auto">
           <v-card-subtitle>Lista de cada departamento</v-card-subtitle>
           <v-card-text>
             <div class="d-flex ga-2 flex-wrap aling-center py-2">
               <v-scroll-y-transition group>
-                <v-chip
-                  closable
-                  @click:close="
-                    eliminarItemLista({
-                      listaDelItem: itemsDepartamento,
-                      posicion: i,
-                      jsonPinia: 'jsonDepartamentos',
-                    }),
-                      (activarBotonDepartamento = true)
-                  "
-                  v-for="(item, i) in itemsDepartamento.listaDepartamento"
-                  :key="item"
-                  class="text-center"
-                >
+                <v-chip closable @click:close="
+                  eliminarItemLista({
+                    listaDelItem: itemsDepartamento,
+                    posicion: i,
+                    jsonPinia: 'jsonDepartamentos',
+                  }),
+                  (activarBotonDepartamento = true)
+                  " v-for="(item, i) in itemsDepartamento.listaDepartamento" :key="item" class="text-center">
                   {{ item }}
                 </v-chip>
               </v-scroll-y-transition>
             </div>
             <v-form @submit.prevent v-if="useStoreConexion().avatarRole === 'superUser'">
-              <v-text-field
-                @keyup.enter="
-                  agregarNuevoItem({
-                    nuevoItem: NuevoDepartamento,
-                    listaDelItem: itemsDepartamento,
-                    jsonPinia: 'jsonDepartamentos',
-                  }),
-                    (activarBotonDepartamento = true)
-                "
-                v-model="NuevoDepartamento"
-              ></v-text-field>
+              <v-text-field @keyup.enter="
+                agregarNuevoItem({
+                  nuevoItem: NuevoDepartamento,
+                  listaDelItem: itemsDepartamento,
+                  jsonPinia: 'jsonDepartamentos',
+                }),
+                (activarBotonDepartamento = true)
+                " v-model="NuevoDepartamento"></v-text-field>
               <v-card-actions>
-                <v-btn
-                  :disabled="!activarBotonDepartamento"
-                  @click="actualizarListas"
-                  variant="flat"
-                  class="mx-auto"
-                  color="primary"
-                  >ACTUALIZAR BASE DE DATOS</v-btn
-                >
+                <v-btn :disabled="!activarBotonDepartamento" @click="actualizarListas" variant="flat" class="mx-auto"
+                  color="primary">ACTUALIZAR BASE DE DATOS</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -72,54 +51,37 @@
     </v-expansion-panel>
     <!-- CPU -->
     <v-expansion-panel>
-      <v-expansion-panel-title class="font-weight-black"
-        >CPU</v-expansion-panel-title
-      >
+      <v-expansion-panel-title class="font-weight-black"><v-icon color="secondary" icon="mdi-cpu-64-bit" class="mr-2"/>CPU</v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-card color="" class="mx-auto">
           <v-card-subtitle>Lista de cada CPU</v-card-subtitle>
           <v-card-text>
             <div class="d-flex ga-2 flex-wrap aling-center py-2">
               <v-scroll-y-transition group>
-                <v-chip
-                  v-for="(item, i) in itemsCpu.cpu"
-                  :key="item"
-                  closable
-                  class="text-center"
-                  @click:close="
-                    eliminarItemLista({
-                      listaDelItem: itemsCpu,
-                      posicion: i,
-                      jsonPinia: 'jsonCpu',
-                    }),
-                      (activarBotonCpu = true)
-                  "
-                >
+                <v-chip v-for="(item, i) in itemsCpu.cpu" :key="item" closable class="text-center" @click:close="
+                  eliminarItemLista({
+                    listaDelItem: itemsCpu,
+                    posicion: i,
+                    jsonPinia: 'jsonCpu',
+                  }),
+                  (activarBotonCpu = true)
+                  ">
                   {{ item }}
                 </v-chip>
               </v-scroll-y-transition>
             </div>
             <v-form @submit.prevent v-if="useStoreConexion().avatarRole === 'superUser'">
-              <v-text-field
-                @keyup.enter="
-                  agregarNuevoItem({
-                    nuevoItem: NuevoCpu,
-                    listaDelItem: itemsCpu,
-                    jsonPinia: 'jsonCpu',
-                  }),
-                    (activarBotonCpu = true)
-                "
-                v-model="NuevoCpu"
-              ></v-text-field>
+              <v-text-field @keyup.enter="
+                agregarNuevoItem({
+                  nuevoItem: NuevoCpu,
+                  listaDelItem: itemsCpu,
+                  jsonPinia: 'jsonCpu',
+                }),
+                (activarBotonCpu = true)
+                " v-model="NuevoCpu"></v-text-field>
               <v-card-actions>
-                <v-btn
-                  :disabled="!activarBotonCpu"
-                  @click="actualizarListas"
-                  variant="flat"
-                  class="mx-auto"
-                  color="primary"
-                  >ACTUALIZAR BASE DE DATOS</v-btn
-                >
+                <v-btn :disabled="!activarBotonCpu" @click="actualizarListas" variant="flat" class="mx-auto"
+                  color="primary">ACTUALIZAR BASE DE DATOS</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -128,54 +90,37 @@
     </v-expansion-panel>
     <!--Monitor-->
     <v-expansion-panel>
-      <v-expansion-panel-title class="font-weight-black"
-        >Monitor</v-expansion-panel-title
-      >
+      <v-expansion-panel-title class="font-weight-black"><v-icon color="secondary" icon="mdi-monitor-star" class="mr-2"/>Monitor</v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-card color="" class="mx-auto">
           <v-card-subtitle>Lista de cada Monitor</v-card-subtitle>
           <v-card-text>
             <div class="d-flex ga-2 flex-wrap aling-center py-2">
               <v-scroll-y-transition group>
-                <v-chip
-                  v-for="(item, i) in itemsMonitor.monitor"
-                  :key="item"
-                  closable
-                  class="text-center"
-                  @click:close="
-                    eliminarItemLista({
-                      listaDelItem: itemsMonitor,
-                      posicion: i,
-                      jsonPinia: 'jsonMonitor',
-                    }),
-                      (activarBotonMonitor = true)
-                  "
-                >
+                <v-chip v-for="(item, i) in itemsMonitor.monitor" :key="item" closable class="text-center" @click:close="
+                  eliminarItemLista({
+                    listaDelItem: itemsMonitor,
+                    posicion: i,
+                    jsonPinia: 'jsonMonitor',
+                  }),
+                  (activarBotonMonitor = true)
+                  ">
                   {{ item }}
                 </v-chip>
               </v-scroll-y-transition>
             </div>
             <v-form @submit.prevent v-if="useStoreConexion().avatarRole === 'superUser'">
-              <v-text-field
-                @keyup.enter="
-                  agregarNuevoItem({
-                    nuevoItem: NuevoMonitor,
-                    listaDelItem: itemsMonitor,
-                    jsonPinia: 'jsonMonitor',
-                  }),
-                    (activarBotonMonitor = true)
-                "
-                v-model="NuevoMonitor"
-              ></v-text-field>
+              <v-text-field @keyup.enter="
+                agregarNuevoItem({
+                  nuevoItem: NuevoMonitor,
+                  listaDelItem: itemsMonitor,
+                  jsonPinia: 'jsonMonitor',
+                }),
+                (activarBotonMonitor = true)
+                " v-model="NuevoMonitor"></v-text-field>
               <v-card-actions>
-                <v-btn
-                  :disabled="!activarBotonMonitor"
-                  @click="actualizarListas"
-                  variant="flat"
-                  class="mx-auto"
-                  color="primary"
-                  >ACTUALIZAR BASE DE DATOS</v-btn
-                >
+                <v-btn :disabled="!activarBotonMonitor" @click="actualizarListas" variant="flat" class="mx-auto"
+                  color="primary">ACTUALIZAR BASE DE DATOS</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -185,55 +130,39 @@
 
     <!--Impresora-->
     <v-expansion-panel>
-      <v-expansion-panel-title class="font-weight-black"
-        >Impresora</v-expansion-panel-title
-      >
+      <v-expansion-panel-title class="font-weight-black"><v-icon color="secondary" icon="mdi-printer" class="mr-2"/>Impresora</v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-card color="" class="mx-auto">
           <v-card-subtitle>Lista de cada Impresora</v-card-subtitle>
           <v-card-text>
             <div class="d-flex ga-2 flex-wrap aling-center py-2">
               <v-scroll-y-transition group>
-                <v-chip
-                  v-for="(item, i) in itemsImpresora.impresora"
-                  :key="item"
-                  closable
-                  class="text-center"
+                <v-chip v-for="(item, i) in itemsImpresora.impresora" :key="item" closable class="text-center"
                   @click:close="
                     eliminarItemLista({
                       listaDelItem: itemsImpresora,
                       posicion: i,
                       jsonPinia: 'jsonImpresora',
                     }),
-                      (activarBotonImpresora = true)
-                  "
-                >
+                    (activarBotonImpresora = true)
+                    ">
                   {{ item }}
                 </v-chip>
               </v-scroll-y-transition>
             </div>
             <v-form @submit.prevent v-if="useStoreConexion().avatarRole === 'superUser'">
-              <v-text-field
-                @keyup.enter="
-                  agregarNuevoItem({
-                    nuevoItem: NuevoImpresora,
-                    listaDelItem: itemsImpresora,
-                    jsonPinia: 'jsonImpresora',
-                  }),
-                    (activarBotonImpresora = true)
-                "
-                v-model="NuevoImpresora"
-              >
+              <v-text-field @keyup.enter="
+                agregarNuevoItem({
+                  nuevoItem: NuevoImpresora,
+                  listaDelItem: itemsImpresora,
+                  jsonPinia: 'jsonImpresora',
+                }),
+                (activarBotonImpresora = true)
+                " v-model="NuevoImpresora">
               </v-text-field>
               <v-card-actions>
-                <v-btn
-                  :disabled="!activarBotonImpresora"
-                  @click="actualizarListas"
-                  variant="flat"
-                  class="mx-auto"
-                  color="primary"
-                  >ACTUALIZAR BASE DE DATOS</v-btn
-                >
+                <v-btn :disabled="!activarBotonImpresora" @click="actualizarListas" variant="flat" class="mx-auto"
+                  color="primary">ACTUALIZAR BASE DE DATOS</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -243,55 +172,81 @@
 
     <!--tarjeta Madre-->
     <v-expansion-panel>
-      <v-expansion-panel-title class="font-weight-black"
-        >Tarjeta Madre</v-expansion-panel-title
-      >
+      <v-expansion-panel-title class="font-weight-black"><v-icon color="secondary" icon="mdi-chip" class="mr-2"/>Tarjeta Madre</v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-card color="" class="mx-auto">
           <v-card-subtitle>Lista de cada Tarjeta Madre</v-card-subtitle>
           <v-card-text>
             <div class="d-flex ga-2 flex-wrap aling-center py-2">
               <v-scroll-y-transition group>
-                <v-chip
-                  v-for="(item, i) in itemsTarjetaMadre.tarjeta_madre"
-                  :key="item"
-                  closable
-                  class="text-center"
+                <v-chip v-for="(item, i) in itemsTarjetaMadre.tarjeta_madre" :key="item" closable class="text-center"
                   @click:close="
                     eliminarItemLista({
                       listaDelItem: itemsTarjetaMadre,
                       posicion: i,
                       jsonPinia: 'jsonTarjeta_madre',
                     }),
-                      (activarBotonImpresora = true)
-                  "
-                >
+                    (activarBotonImpresora = true)
+                    ">
                   {{ item }}
                 </v-chip>
               </v-scroll-y-transition>
             </div>
             <v-form @submit.prevent v-if="useStoreConexion().avatarRole === 'superUser'">
-              <v-text-field
-                @keyup.enter="
-                  agregarNuevoItem({
-                    nuevoItem: NuevoTarjetaMadre,
-                    listaDelItem: itemsTarjetaMadre,
-                    jsonPinia: 'jsonTarjeta_madre',
-                  }),
-                    (activarBotonTarjetaMadre = true)
-                "
-                v-model="NuevoTarjetaMadre"
-              >
+              <v-text-field @keyup.enter="
+                agregarNuevoItem({
+                  nuevoItem: NuevoTarjetaMadre,
+                  listaDelItem: itemsTarjetaMadre,
+                  jsonPinia: 'jsonTarjeta_madre',
+                }),
+                (activarBotonTarjetaMadre = true)
+                " v-model="NuevoTarjetaMadre">
               </v-text-field>
               <v-card-actions>
-                <v-btn
-                  :disabled="!activarBotonTarjetaMadre"
-                  @click="actualizarListas"
-                  variant="flat"
-                  class="mx-auto"
-                  color="primary"
-                  >ACTUALIZAR BASE DE DATOS</v-btn
-                >
+                <v-btn :disabled="!activarBotonTarjetaMadre" @click="actualizarListas" variant="flat" class="mx-auto"
+                  color="primary">ACTUALIZAR BASE DE DATOS</v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
+
+    <!--tooners-->
+    <v-expansion-panel >
+      <v-expansion-panel-title class=" font-weight-black"><v-icon color="secondary" icon="mdi-water-plus-outline" class="mr-2"/> Tooners Modelos  </v-expansion-panel-title>
+      <v-expansion-panel-text>
+        <v-card color="" class="mx-auto">
+          <v-card-subtitle>Lista de cada Tooner</v-card-subtitle>
+          <v-card-text>
+            <div class="d-flex ga-2 flex-wrap aling-center py-2">
+              <v-scroll-y-transition group>
+                <v-chip v-for="(item, i) in itemsTooner.tooners" :key="item" closable class="text-center"
+                  @click:close="
+                    eliminarItemLista({
+                      listaDelItem: itemsTooner,
+                      posicion: i,
+                      jsonPinia: 'jsonTooners',
+                    }),
+                    (activarBotonTooner = true)
+                    ">
+                  {{ item }}
+                </v-chip>
+              </v-scroll-y-transition>
+            </div>
+            <v-form @submit.prevent v-if="useStoreConexion().avatarRole === 'superUser'">
+              <v-text-field @keyup.enter="
+                agregarNuevoItem({
+                  nuevoItem: NuevoTooner,
+                  listaDelItem: itemsTooner,
+                  jsonPinia: 'jsonTooners',
+                }),
+                (activarBotonTooner = true)
+                " v-model="NuevoTooner">
+              </v-text-field>
+              <v-card-actions>
+                <v-btn :disabled="!activarBotonTooner" @click="actualizarListas" variant="flat" class="mx-auto"
+                  color="primary">ACTUALIZAR BASE DE DATOS</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -336,6 +291,12 @@ const itemsTarjetaMadre = ref({
 });
 const NuevoTarjetaMadre = ref("");
 const activarBotonTarjetaMadre = ref(false);
+//Tooners -----------------------------------------------
+const itemsTooner = ref({
+  tooners: "",
+});
+const NuevoTooner = ref("");
+const activarBotonTooner = ref(false);
 // -----------------------------------------------
 
 function agregarNuevoItem({ nuevoItem, listaDelItem, jsonPinia }) {
@@ -383,9 +344,8 @@ onMounted(async () => {
   itemsCpu.value.cpu = [...useListasStore().listaCPU];
   itemsMonitor.value.monitor = [...useListasStore().listaMonitor];
   itemsImpresora.value.impresora = [...useListasStore().listaImpresoras];
-  itemsTarjetaMadre.value.tarjeta_madre = [
-    ...useListasStore().listaTarjetaMadre,
-  ];
+  itemsTarjetaMadre.value.tarjeta_madre = [...useListasStore().listaTarjetaMadre,];
+  itemsTooner.value.tooners = [...useListasStore().listaTooner,]
 
   console.log(useListasStore().listaDepartamento);
 });

@@ -13,6 +13,7 @@ export const useListasStore = defineStore('useListasStore', {
         jsonMonitor:[],
         jsonImpresora:[],
         jsonTarjeta_madre:[],
+        jsonTooners:[],
         
         envioExitoso:false,
         ocurrioUnError:false,
@@ -21,10 +22,11 @@ export const useListasStore = defineStore('useListasStore', {
     getters:{
         //conteoAsistencia: (state) => state.asistenciaLista_Usuario.items.length,
         listaCPU: (state) => state.listas.cpu.cpu,
-        listaDepartamento: (state) =>  state.listas.Departamentos.listaDepartamento,
-        listaImpresoras: (state) =>  state.listas.impresora.impresora,
-        listaMonitor: (state) =>  state.listas.monitor.monitor,
-        listaTarjetaMadre: (state) => state.listas.tarjeta_madre.tarjeta_madre,
+        listaDepartamento: (state) =>  state.listas.Departamentos.listaDepartamento.sort(),
+        listaImpresoras: (state) =>  state.listas.impresora.impresora.sort(),
+        listaMonitor: (state) =>  state.listas.monitor.monitor.sort(),
+        listaTarjetaMadre: (state) => state.listas.tarjeta_madre.tarjeta_madre.sort(),
+        listaTooner: (state) => state.listas.tooners.tooners.sort(),
 
     },
     actions:{
@@ -56,6 +58,9 @@ export const useListasStore = defineStore('useListasStore', {
             }
             if(this.jsonMonitor.length !== 0){
                 data.monitor = this.jsonMonitor
+            }
+            if(this.jsonTooners.length !== 0){
+                data.tooners = this.jsonTooners
             }
             console.log(data)
             try {

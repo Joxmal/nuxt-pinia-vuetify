@@ -391,8 +391,8 @@ function previewImage(event){
 
       image.onload = () => {
         const canvas = document.createElement('canvas');
-        const maxWidth = 900;
-        const maxHeight = 900;
+        const maxWidth = 800;
+        const maxHeight = 800;
         let width = image.width;
         let height = image.height;
 
@@ -419,7 +419,7 @@ function previewImage(event){
           });
 
           compressedImages.value.push(compressedImageFile);
-        }, 'image/webp', 0.9);
+        }, 'image/webp', 0.8);
       };
     };
 
@@ -444,7 +444,7 @@ async function eliminarEquipo({id}){
 
 const rules = [
   value => {
-    return !value || !value.length || value[0].size < 2000000 || 'cada archivo de pesar menos de 2MB'
+    return !value || !value.length || value[0].size < 8000000 || 'cada archivo de pesar menos de 8MB'
   },
 ]
 //------------------------
