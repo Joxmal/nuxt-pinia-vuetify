@@ -27,12 +27,12 @@ export const useEquiposStore = defineStore('useEquiposStore', {
         //formulario para crear oficina
         form:{
             piso:null,
-            direccion:"",
-            responsable:"",
+            direccion:null,
+            responsable:null,
             ipv_4: "",
-            monitor:'',
-            cpu:'',
-            impresora:'',
+            monitor:null,
+            cpu:null,
+            impresora:null,
             ram:null,
             almacenamiento:null,
         },

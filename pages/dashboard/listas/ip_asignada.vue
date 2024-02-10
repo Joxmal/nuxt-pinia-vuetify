@@ -25,7 +25,8 @@
                         <v-col cols="12" sm="6" >
                             <v-text-field
                                 label="IP"
-                                hint="IP asignada al equipo y usuario"
+                                hint="IP asignada al equipo y usuario (se recomienda colocar)"
+                                persistent-hint
                                 v-model="data.ip"
                                 required>
                             </v-text-field>
@@ -54,7 +55,8 @@
                             <v-text-field
                                 label="Cedula"
                                 v-model="data.cedula"
-                                hint="cedula del usuario SOLO NUMEROS"
+                                hint="cedula del usuario SOLO NUMEROS (OPCIONAL)"
+                                persistent-hint
                                 required
                                 type="number"
                                 >

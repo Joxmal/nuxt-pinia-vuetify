@@ -8,10 +8,9 @@
                 <v-toolbar-title  >INICIO</v-toolbar-title>
               </nuxt-link>
           </template>
-            <v-btn  :loading="storeReset.loading" @click="storeReset.resetDataFromDB()" variant="text" icon="mdi-restart"></v-btn>
-            <template v-slot:append>
-              <avatar-general/>
-            
+
+          <template v-slot:append>
+            <avatar-general/>
           </template>
       </v-app-bar>
 
@@ -97,10 +96,8 @@
 
 <script setup>
 import {useStoreConexion} from '~/stores/useStoreConexion'
-import {useResetStorage} from '~/stores/reset'
 
 const store = useStoreConexion()
-const storeReset =useResetStorage()
 
 const loading = ref(false)
 

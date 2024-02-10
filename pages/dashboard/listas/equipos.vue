@@ -31,7 +31,7 @@
   id_boton="creacionEquipo"
   :titulo_dialog="'Creacion de equipo'"
   boton_titulo="Nuevo Equipo"
-  @crear="store.crearEquipo(),store.obtenerEquiposDB()"
+  @crear="crearEquipo"
   @modo-crear="modoEditar = false"
   @editar-dialog-form="store.editarEquipo({id:IdEditar})"
   :boton-reset-formulario="true"
@@ -45,7 +45,6 @@
       <v-row>
         <v-col cols="12" md="4">
           <v-select
-            :rules="ruleNoEmpty"
             label="Piso"
             :items="[0,1,2,3,4,5]"
             hint="5 = fuera del edificio"
@@ -88,9 +87,10 @@
         </v-col>
 
         <v-col cols="12" md="4">
-          <v-text-field
-            :rules="ruleNoEmpty"
+          <v-autocomplete
             label="Monitor"
+            :items="useListasStore().listaMonitor"
+            :rules="ruleNoEmpty"
             hint="colocar el monitor de la pc"
             persistent-hint
             v-model="store.form.monitor"
@@ -98,9 +98,10 @@
         </v-col>
 
         <v-col cols="12" md="4">
-          <v-text-field
-            :rules="ruleNoEmpty"
+          <v-autocomplete
             label="CPU"
+            :items="useListasStore().listaCPU"
+            :rules="ruleNoEmpty"
             hint="colocar el CPU de la pc"
             persistent-hint
             v-model="store.form.cpu"
@@ -108,8 +109,10 @@
         </v-col>
 
         <v-col cols="12" md="4">
-          <v-text-field
+          <v-autocomplete
             label="Impresora"
+            :rules="ruleNoEmpty"
+            :items="useListasStore().listaImpresoras"
             hint="(opcional) colocar impresora"
             persistent-hint
             v-model="store.form.impresora"
@@ -334,6 +337,8 @@
 <script setup>
 import { useEquiposStore } from '~/stores/equipos';
 import { useDisplay } from 'vuetify'
+import PocketBase from 'pocketbase';
+const pb = new PocketBase('https://oficina-sgi.pockethost.io');
 
 //no permitir caracteres vacios vuetify
 const ruleNoEmpty = [
@@ -361,6 +366,7 @@ const store = useEquiposStore()
 const images = ref([]);
 const imagePreview =ref([])
 /////reglas del tamaño 
+const compressedImages = ref([]);
 
 //obtener la imagen y agregarla al array 
 function previewImage(event){
@@ -371,7 +377,57 @@ function previewImage(event){
       imagePreview.value.push(e.target.result);
   };  reader.readAsDataURL(file);
   }
-  store.form.imagenes = images.value
+
+//-----------------------------------------------------
+//creando imagenes comprimidas
+  const files = event.target.files;
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const image = new Image();
+      image.src = e.target.result;
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const maxWidth = 900;
+        const maxHeight = 900;
+        let width = image.width;
+        let height = image.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          if (width > height) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          } else {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0, width, height);
+
+        canvas.toBlob((blob) => {
+          const compressedImageFile = new File([blob], file.name, {
+            type: 'image/webp',
+            lastModified: Date.now(),
+          });
+
+          compressedImages.value.push(compressedImageFile);
+        }, 'image/webp', 0.9);
+      };
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  store.form.imagenes = compressedImages.value
+
 }
 
 function clearImagePreview(){
@@ -415,8 +471,33 @@ function obtenerDescripsion(objeto){
   store.equipoDetalles = objeto
   store.equipoDetalles.imagenes = store.obtenerArrayImagenes(objeto)
   // console.log(store.obtenerArrayImagenes(objeto))
-  console.log(store.equipoDetalles)
-  
+  console.log(store.equipoDetalles) 
+}
+
+async function crearEquipo() {
+  const form = store.form;
+
+  // Validar campos obligatorios
+  const requiredFields = {
+    piso: 'elige un piso',
+    direccion: 'escoge una dirección de oficina',
+    responsable: 'escoge un responsable',
+    monitor: 'escoge un monitor',
+    cpu: 'escoge un CPU',
+    impresora: 'escoge una impresora',
+    ram: 'escoge una memoria RAM',
+    almacenamiento: 'escoge una cantidad de almacenamiento'
+  };
+
+  for (const field in requiredFields) {
+    if (form[field] === null) {
+      alert(requiredFields[field]);
+      return;
+    }
+  }
+
+  await store.crearEquipo();
+  await store.obtenerEquiposDB();
 }
 
 const modoEditar =ref(false)

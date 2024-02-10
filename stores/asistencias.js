@@ -121,7 +121,36 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         });
         return reportes
       }
+    },
+
+    obtenerFechaHoraActual_8am(){
+      const fechaActual = new Date();
+      fechaActual.setHours(8, 0, 0, 0); // Establecer la hora a las 8 am
+    
+      const anio = fechaActual.getFullYear();
+      const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+      const dia = String(fechaActual.getDate()).padStart(2, '0');
+      const horas = String(fechaActual.getHours()).padStart(2, '0');
+      const minutos = String(fechaActual.getMinutes()).padStart(2, '0');
+    
+      const fechaHoraActual = `${anio}-${mes}-${dia}T${horas}:${minutos}`;
+      return fechaHoraActual;
+    },
+    obtenerFechaHoraActual_2pm(){
+      const fechaActual = new Date();
+      fechaActual.setHours(14, 0, 0, 0); // Establecer la hora a las 8 am
+    
+      const anio = fechaActual.getFullYear();
+      const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+      const dia = String(fechaActual.getDate()).padStart(2, '0');
+      const horas = String(fechaActual.getHours()).padStart(2, '0');
+      const minutos = String(fechaActual.getMinutes()).padStart(2, '0');
+    
+      const fechaHoraActual = `${anio}-${mes}-${dia}T${horas}:${minutos}`;
+      return fechaHoraActual;
     }
+
+    
 
 
   },
@@ -133,8 +162,6 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       this.form.funcionario=null,
       this.form.horaEntrada="08:00",
       this.form.horaSalida="14:30",
-      this.form.fechaEntrada=null,
-      this.form.fechaSalida=null,
       this.form.descripsion='',
       this.form.status=false
     },
@@ -160,14 +187,16 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         this.obtenerDiaActual()
 
     },
-    async crearReporte(data){
+    async crearReporte(){
       this.form.creador= useStoreConexion().avatarID
+
+      const data = {...this.form}
+      data.fechaEntrada = new Date(data.fechaEntrada).toISOString()
+      data.fechaSalida = new Date(data.fechaSalida).toISOString()
 
       try {
         const pb = new PocketBase(this.pb_url)
         const record = await pb.collection('reportes').create(data);
-        console.log("reporte")
-        console.log(record)
 
         this.iconCreate= true
         setTimeout(() => {

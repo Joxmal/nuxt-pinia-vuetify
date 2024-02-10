@@ -5,7 +5,7 @@ import PocketBase from 'pocketbase'
 
 export const useListasStore = defineStore('useListasStore', {
     state: () => ({
-        pb: new PocketBase(useRuntimeConfig().public.POCKETBASE_URL),
+        pb_url:useRuntimeConfig().public.POCKETBASE_URL,
         listas:[],
         //json de cada area
         jsonDepartamentos:[],
@@ -14,7 +14,10 @@ export const useListasStore = defineStore('useListasStore', {
         jsonImpresora:[],
         jsonTarjeta_madre:[],
         
-    }), 
+        envioExitoso:false,
+        ocurrioUnError:false,
+    }),
+    persist:persistedState, 
     getters:{
         //conteoAsistencia: (state) => state.asistenciaLista_Usuario.items.length,
         listaCPU: (state) => state.listas.cpu.cpu,
@@ -26,9 +29,10 @@ export const useListasStore = defineStore('useListasStore', {
     },
     actions:{
         async obtenerListas(){
+            const pb = new PocketBase(this.pb_url)
             try {
                 // you can also fetch all records at once via getFullList
-                const record = await this.pb.collection('listas').getOne('liok3xxaykcstan', {
+                const record = await pb.collection('listas').getOne('liok3xxaykcstan', {
                 });
                 this.listas = record
                 console.log("datos de listas cargados")
@@ -37,6 +41,7 @@ export const useListasStore = defineStore('useListasStore', {
             }
         },
         async cargarNuevoJson(){
+            const pb = new PocketBase(this.pb_url)
             let data = {}
             if(this.jsonDepartamentos.length !== 0){
                 data.Departamentos = this.jsonDepartamentos
@@ -55,10 +60,19 @@ export const useListasStore = defineStore('useListasStore', {
             console.log(data)
             try {
                 // you can also fetch all records at once via getFullList
-                const record = await this.pb.collection('listas').update('liok3xxaykcstan', data);
+                const record = await pb.collection('listas').update('liok3xxaykcstan', data);
                 console.log(record)
+
+                this.envioExitoso = true
+                setTimeout(() => {
+                this.envioExitoso = false
+                }, 3000);
             } catch (error) {
                 console.log(error)
+                this.ocurrioUnError = true
+                setTimeout(() => {
+                this.ocurrioUnError = false
+                }, 3000);
             }
         },
 
