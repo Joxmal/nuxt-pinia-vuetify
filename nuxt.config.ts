@@ -7,6 +7,9 @@ export default defineNuxtConfig({
   app: {
     
   },
+  plugins:[
+
+  ],
   devtools: { enabled: true },
   css: [
     'vuetify/lib/styles/main.sass',

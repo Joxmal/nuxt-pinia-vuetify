@@ -1,9 +1,17 @@
 <template>
+  <div>
+    <ChartJsDoughnutPorcentaje
+    />
+  </div>
 
+<pre>
+  {{ useEstadisticas().listaReportes }}
+</pre>
 </template>
 
 <script setup>
-definePageMeta({
-  middleware:'autenticacion',
+
+onMounted(()=>{
+  useEstadisticas().obtenerDatosReportes()
 })
 </script>
