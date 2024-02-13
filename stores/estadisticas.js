@@ -9,7 +9,13 @@ export const useEstadisticas = defineStore('useEstadisticas', {
         listaReportes:[],
         ListaReportesFiltrada:null,
         
+        //---------------asistencias
         ListaTotalAsistencias:0,
+        totalAsistenciasCategorias:0,
+        //---------------equipos
+        listaTotalEquiposPorTrabajador:0,
+        totalEquiposPorOficina:0,
+
         cargando:false,
     }), 
     persist:persistedState.localStorage, 
@@ -91,38 +97,66 @@ export const useEstadisticas = defineStore('useEstadisticas', {
             this.ListaReportesFiltrada = resultado
             return resultado
         },
-
-        listaDeTrabajadores(){
-            const lista = {...this.ListaReportesFiltrada}
-            let nuevoObjeto = {};
-            for (let key in lista) {
-                if (lista.hasOwnProperty(key)) {
-                  const asistencias = lista[key].Asistencias;
-                  const totalAsistencias = asistencias.total;
-                  nuevoObjeto[key] = totalAsistencias;
-                }
+        ///esta lista es solo de ASISTENCIAS
+        listaDeTrabajadores() {
+          const lista = { ...this.ListaReportesFiltrada };
+          const nuevoObjeto = {};
+          const sumaAsistenciasCategorias = Object.values(lista).reduce((acumulador, persona) => {
+            const asistencias = persona.Asistencias;
+            Object.keys(asistencias).forEach(key => {
+              if (key !== "total") {
+                acumulador[key] = (acumulador[key] || 0) + asistencias[key];
               }
-
-              const objeto = {
-                labels: Object.keys(nuevoObjeto),
-                data: Object.values(nuevoObjeto)
-              };
-
-              const DataAsistenciasPersonalTotal ={
-                labels: objeto.labels,
-                datasets: [
-                  {
-                    backgroundColor: [  '#8549ba','#00a950','#166a8f','#acc236','#537bc4','#f53794','#f67019','#4dc9f6','#58595b','#8549ba','#00a950','#166a8f','#acc236','#537bc4','#f53794','#f67019','#4dc9f6','#58595b'
-                ],
-                    data: objeto.data,
-              
-                  }
-                ]
-              }  
-
-              this.ListaTotalAsistencias= DataAsistenciasPersonalTotal
-              return DataAsistenciasPersonalTotal
-
+            });
+            return acumulador;
+          }, {});
+        
+          const totalAsistenciasCategorias = {
+            labels: Object.keys(sumaAsistenciasCategorias),
+            data: Object.values(sumaAsistenciasCategorias)
+          };
+        
+          const BarData = {
+            labels: totalAsistenciasCategorias.labels,
+            datasets: [
+              {
+                backgroundColor: ['rgba(133, 73, 186, 0.6)', 'rgba(0, 169, 80, 0.6)', 'rgba(22, 106, 143, 0.6)', 'rgba(172, 194, 54, 0.6)', 'rgba(83, 123, 196, 0.6)', 'rgba(245, 55, 148, 0.6)', 'rgba(246, 112, 25, 0.6)', 'rgba(77, 201, 246, 0.6)', 'rgba(88, 89, 91, 0.6)'],
+                data: totalAsistenciasCategorias.data
+              }
+            ]
+          };
+        
+          this.totalAsistenciasCategorias = BarData;
+          // ----------------
+        
+          for (let key in lista) {
+            if (lista.hasOwnProperty(key)) {
+              const asistencias = lista[key].Asistencias;
+              const totalAsistencias = asistencias.total;
+              nuevoObjeto[key] = totalAsistencias;
+            }
+          }
+        
+          const objeto = {
+            labels: Object.keys(nuevoObjeto),
+            data: Object.values(nuevoObjeto)
+          };
+        
+          const DataAsistenciasPersonalTotal = {
+            labels: objeto.labels,
+            datasets: [
+              {
+                backgroundColor: ['#8549ba', '#00a950', '#166a8f', '#acc236', '#537bc4', '#f53794', '#f67019', '#4dc9f6', '#58595b', '#8549ba', '#00a950', '#166a8f', '#acc236', '#537bc4', '#f53794', '#f67019', '#4dc9f6', '#58595b'],
+                data: objeto.data,
+              }
+            ]
+          };
+        
+          this.ListaTotalAsistencias = DataAsistenciasPersonalTotal;
+          return DataAsistenciasPersonalTotal;
         },
+        /// esta lista es de los equipos
+
+
     },
 })

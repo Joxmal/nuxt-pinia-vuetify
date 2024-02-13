@@ -1,22 +1,3 @@
 <template>
-  <div>
-  </div>
-<pre>
-  {{ useEstadisticas().ListaTotalAsistencias }}
-
-</pre>  
-
-
-
+sdd
 </template>
-
-<script setup>
-
-
-
-
-
-
-
-
-</script>

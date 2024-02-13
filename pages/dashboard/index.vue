@@ -19,14 +19,16 @@
           Asistencias Por Categoria
         </v-card-title>
         <v-divider :thickness="3" class="text-blue border-opacity-100"></v-divider>
-        <ChartJsBar :view="true"/>
+        <ChartJsBar 
+          :view="viewCharts"
+          :chart-data="useEstadisticas().totalAsistenciasCategorias !== 0 ? useEstadisticas().totalAsistenciasCategorias : null  " 
+        />
 
       </v-card>
     </v-col>
-
-    
   </v-row>
 
+  <v-divider :thickness="3" class="text-blue border-opacity-100 my-5"></v-divider>
 
 </template>
 
@@ -55,6 +57,8 @@ onBeforeMount(async()=>{
 })
 
 onMounted(async () => {
-
+setTimeout(() => {
+  console.log(useEstadisticas().totalAsistenciasCategorias) 
+}, 2000);
 })
 </script>
