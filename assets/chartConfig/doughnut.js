@@ -1,3 +1,5 @@
+  // import ChartJSPluginDatalabels from 'chartjs-plugin-datalabels';
+
 export const DefaultchartData = {
   labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
   datasets: [
@@ -21,8 +23,8 @@ export const DefaultOptions = {
   plugins: {
     title: {
       display: true,
-      text: 'Custom Chart Title',
-      padding: {top: 0, left: 0, right: 0, bottom: 25}
+      // text: 'Custom Chart Title',
+      padding: {top: 0, left: 0, right: 0, bottom: 10}
     },
     
     datalabels: {
@@ -53,7 +55,7 @@ export const DefaultOptions = {
       
       labels:{
         color: 'rgba(89, 229, 182, 1)',
-        padding:20,
+        padding:30,
       }
     },
     tooltip: {
@@ -61,3 +63,4 @@ export const DefaultOptions = {
     },
   }
 }
+
