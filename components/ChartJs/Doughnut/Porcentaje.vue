@@ -1,7 +1,7 @@
 <template>
   <Doughnut v-if="props.view" id="DoughnutJS"
     style="max-height: 400px;"
-    :data="props.chartData" :options="props.options" :plugins="[ChartJSPluginDatalabels,doughnutLabel]" 
+    :data="props.chartData"  :options="props.options" :plugins="[ChartJSPluginDatalabels,doughnutLabel,legenMargin]" 
   />
 </template>
   
@@ -15,7 +15,6 @@
 
   const doughnutLabel = {
   id: 'doughnutLabel',
-
   beforeDatasetsDraw(chart, args ,pluginOptions) {
     const { ctx, data } = chart;
     // console.log(data)
@@ -32,6 +31,18 @@
     ctx.fillText(`${sumaTotalData}`, xCoor, yCoor);
   }
 }
+
+const legenMargin ={
+  id:'legenMargin',
+  beforeInit(chart, legend ,options){
+    const fitValue = chart.legend.fit;
+    chart.legend.fit = function fit(){
+      fitValue.bind(chart.legend)();
+      return this.height += 10
+    }
+  }
+}
+
 
 
   ChartJS.register(ArcElement, Tooltip, Legend,Title),{

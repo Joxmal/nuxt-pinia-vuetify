@@ -45,22 +45,30 @@ export const DefaultOptions = {
         return `${percentage.toFixed(1)}%`;
       }),
       font: {
-        weight: 'bold'
+        weight: 'bold',
+        size: 16
       }
     },
 
     legend: {
       display: true,
       position: 'bottom',
+
       
       labels:{
-        color: 'rgba(89, 229, 182, 1)',
-        padding:30,
-      }
+        color: 'hsla(218, 78%, 53%, 1)',
+        padding:20,
+        font: {
+          size: 18,
+          weight: "bold"
+        },
+        
+      },
     },
     tooltip: {
 
     },
-  }
+  },
+
 }
 
