@@ -2,9 +2,9 @@
   <v-card elevation="15"
     class="">
     <v-img
-      class="align-end text-white"
+      class="align-end text-white blur-lg"
       height="200"
-      :src="props.srcImage"
+      :lazy-src="props.srcImage"
       cover
     >
 

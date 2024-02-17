@@ -253,6 +253,8 @@
       </div>
     </template>
 </DialogGeneralSimple>
+
+<!-- barra de busqueda -->
 <v-form @submit.prevent>
   <v-row justify="center" class="mt-2" > 
     <v-col cols="12" md="3">

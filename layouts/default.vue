@@ -34,22 +34,22 @@
           density="compact"
           nav
         >
-          <v-list-item @click="MostrarMenu('inicio'),drawer= true" prepend-icon="mdi-view-dashboard" value="inicio"/>
+          <!-- <v-list-item @click="MostrarMenu('inicio'),drawer= true" prepend-icon="mdi-view-dashboard" value="inicio"/> -->
 
           <v-list-item @click="MostrarMenu('listas'),drawer= true" prepend-icon="mdi-list-status" value="listas"/>
 
-          <v-list-item @click="MostrarMenu('reporte'),drawer= true" prepend-icon="mdi-desktop-classic" value="reporte"/>
+          <v-list-item @click="MostrarMenu('asitencias'),drawer= true" prepend-icon="mdi-desktop-classic" value="asitencias"/>
 
           <v-list-item @click="MostrarMenu('impresoras'),drawer= true" prepend-icon="mdi-printer-outline" value="impresoras"/>
 
-          <v-list-item @click="MostrarMenu('sistemas'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/>
+          <!-- <v-list-item @click="MostrarMenu('sistemas'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/> -->
         </v-list>
       </v-navigation-drawer>
 
       <v-navigation-drawer
         class=""
         border="right"
-        v-model="drawer" width="175"
+        v-model="drawer" width="200"
         @mouseenter="drawer= true"
         >
         <v-list>
@@ -60,8 +60,8 @@
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
 
-            <!-- Reportes -->
-          <nuxt-link v-show="ViewMenu=='reporte'" :class="listaNavegacion.class" :to="lista.path" v-for="lista in listaNavegacion.reportes" :key="lista.value" style="text-decoration: none;">
+            <!-- asitencias -->
+          <nuxt-link v-show="ViewMenu=='asitencias'" :class="listaNavegacion.class" :to="lista.path" v-for="lista in listaNavegacion.asitencias" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
 
@@ -76,7 +76,7 @@
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
 
-          <!-- sistemas -->
+          <!-- impresoras -->
           <nuxt-link v-show="ViewMenu=='impresoras'" :class="listaNavegacion.class"  :to="lista.path" v-for="lista in listaNavegacion.impresoras" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
@@ -103,7 +103,7 @@ const loading = ref(false)
 
 const drawer = ref(false)
 const categoria = ref()
-const ViewMenu= ref('inicio')
+const ViewMenu= ref('listas')
 
 
 function MostrarMenu(valor){
@@ -125,7 +125,7 @@ const listaNavegacion = {
     2:{ icon:'mdi-account', value:'Usuarios', path:'/dashboard/listas/ip_asignada'}, 
     3:{ icon:'mdi-desktop-tower-monitor', value:'equipos', path:'/dashboard/listas/equipos'}, 
   },
-  reportes:{
+  asitencias:{
     1:{ icon:'mdi-file-chart', value:'asistencia', path:'/dashboard/reportes/generarAsistencia'},
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },
@@ -136,7 +136,7 @@ const listaNavegacion = {
   },
   impresoras:{
     1:{ icon:'mdi-map-marker-star-outline', value:'ubicaciones', path:'/dashboard/impresoras'},
-    2:{ icon:'mdi-folder-plus', value:'numeros'}, 
+    2:{ icon:'mdi-water-plus', value:'tonner Modelo', path:'/dashboard/impresoras/tonnersModelos'},
     3:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },
 
@@ -153,6 +153,6 @@ function cerrarbarra() {
 </script>
 
 
-<style>
+<style scoped>
 
 </style>

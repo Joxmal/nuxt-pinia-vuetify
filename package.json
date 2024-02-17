@@ -6,7 +6,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "preview": "cross-env PORT=8001 node .output/server/index.mjs",
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
