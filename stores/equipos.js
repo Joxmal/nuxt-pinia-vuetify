@@ -143,7 +143,8 @@ export const useEquiposStore = defineStore('useEquiposStore', {
                     expand:'responsable',
                     filter: this.filtroBusqueda
                 });
-                console.log(items)
+                // console.log("base de datos")
+                // console.log(items)
                 this.listaEquiposBD = items
 
                 this.paginacion.page = page

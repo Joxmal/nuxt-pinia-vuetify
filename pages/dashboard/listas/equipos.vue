@@ -467,13 +467,15 @@ function actualizarIPV4(){
   }
 }
 function obtenerDescripsion(objeto){
+  const nuevoObjeto = {...objeto}
+
   document.querySelector('#MostrarImagenes').click()
   
-  
-  store.equipoDetalles = objeto
-  store.equipoDetalles.imagenes = store.obtenerArrayImagenes(objeto)
-  // console.log(store.obtenerArrayImagenes(objeto))
-  console.log(store.equipoDetalles) 
+  store.equipoDetalles = nuevoObjeto
+  store.equipoDetalles.imagenes = store.obtenerArrayImagenes(nuevoObjeto)
+  // console.log(nuevoObjeto)
+  // console.log(store.obtenerArrayImagenes(nuevoObjeto))
+  // console.log(store.equipoDetalles) 
 }
 
 async function crearEquipo() {
@@ -504,6 +506,7 @@ async function crearEquipo() {
 
 const modoEditar =ref(false)
 const IdEditar =ref()
+
 async function editarDescripsion({IDequipo, equipo}) {
   console.log(equipo);
   console.log(equipo.responsable);
@@ -527,6 +530,7 @@ async function editarDescripsion({IDequipo, equipo}) {
   document.querySelector('#creacionEquipo').click();
   modoEditar.value = true;
 }
+
 const recorridoDetalles=[
   'almacenamiento',
   'cpu',

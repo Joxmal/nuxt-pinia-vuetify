@@ -85,7 +85,7 @@
       </v-navigation-drawer>
       <v-main >
 
-          <v-container>
+          <v-container class="scroller">
               <slot />
           </v-container>
 
@@ -127,7 +127,7 @@ const listaNavegacion = {
   },
   asitencias:{
     1:{ icon:'mdi-file-chart', value:'asistencia', path:'/dashboard/reportes/generarAsistencia'},
-    3:{ icon:'mdi-alert-decagram', value:'importante'}, 
+    2:{ icon:'mdi-alert-decagram', value:'importante'}, 
   },
   sistemas:{
     1:{ icon:'mdi-ip-outline', value:'adadd', path:'/dashboard/sistemas/ip'},
@@ -137,7 +137,7 @@ const listaNavegacion = {
   impresoras:{
     1:{ icon:'mdi-map-marker-star-outline', value:'ubicaciones', path:'/dashboard/impresoras'},
     2:{ icon:'mdi-water-plus', value:'tonner Modelo', path:'/dashboard/impresoras/tonnersModelos'},
-    3:{ icon:'mdi-alert-decagram', value:'importante'}, 
+    3:{ icon:'mdi-water-alert', value:'Recargas', path:'/dashboard/impresoras/toonersRecargas'},
   },
 
 }

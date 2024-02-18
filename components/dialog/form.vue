@@ -1,7 +1,7 @@
 <template>
   <v-dialog max-width="900px" persistent>
     <template v-slot:activator="{ props } ">
-      <v-btn v-show="!prop.ocultar_boton" :style="classBtn" color="indigo-lighten-5" @click="$emit('modoCrear')" :id="prop.id_boton || 'boton-dialogo'" v-bind="props"> {{ boton_titulo || "NUEVO" }}</v-btn>
+      <v-btn v-show="!prop.ocultar_boton" :style="classBtn" v-bind="props" color="indigo-lighten-5" @click="$emit('modoCrear')" :id="prop.id_boton || 'boton-dialogo'" > {{ boton_titulo || "NUEVO" }}</v-btn>
     </template>
 
     <template v-slot:default="{ isActive }">
@@ -26,24 +26,24 @@
           <v-card-actions>
             <v-spacer />
             <v-btn position="absolute"
-              color="blue-darken-1"
-              variant="text"
-              @click="isActive.value = false">
+              color="red-darken-1"
+              variant="tonal"
+              @click="$emit('cerrar'),isActive.value = false ">
               Cerrar
             </v-btn>
               <div v-show="!prop.ocultarBotones">
               <v-btn v-if="modoEditar"
                 type="submit"
-                color="blue-darken-1"
-                variant="text"
+                color="yellow-darken-1"
+                variant="tonal"
                 @click="$emit('editarDialogForm')">
                 Editar
               </v-btn>
     
               <v-btn v-else
                 type="submit"
-                color="blue-darken-1"
-                variant="text"
+                color="green"
+                variant="tonal"
                 @click="$emit('crear')">
                 Crear
               </v-btn>
@@ -74,7 +74,8 @@ const prop = defineProps([
 defineEmits([
   'crear',
   'modoCrear',
-  'editarDialogForm'
+  'editarDialogForm',
+  'cerrar'
 ])
 
 

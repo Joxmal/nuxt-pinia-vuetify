@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="15"
+  <v-card border="colorLink sm" elevation="15"
     class="">
     <v-img
       class="align-end text-white blur-lg"

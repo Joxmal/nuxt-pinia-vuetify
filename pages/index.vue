@@ -30,13 +30,8 @@ a{
   color: blue;
 }
 
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;               /* width of the entire scrollbar */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(56, 255, 46);    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */  /* creates padding around scroll thumb */
+*{
+  scrollbar-color: #3f51b5 transparent !important;
+  scrollbar-width: thin !important;
 }
 </style>
