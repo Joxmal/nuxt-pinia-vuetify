@@ -67,7 +67,7 @@ export default defineNuxtPlugin(nuxtApp=>{
         directives,
         ssr: false,
         theme:{
-             defaultTheme: 'myCustomDARKTheme',
+            defaultTheme: 'myCustomDARKTheme',
             variations:{
                 colors:['primary','secondary'],
                 lighten:4,
