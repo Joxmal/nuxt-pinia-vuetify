@@ -25,7 +25,7 @@
   </v-slide-x-transition>
 </div>
 
-<!-- crear nuevo equipo -->
+<!-- crear nuevo modelo de tooner -->
 <DialogForm
 
   id_boton="creacionModeloTooner"
@@ -81,7 +81,7 @@
     </v-container>
   </template>
 </DialogForm>
-
+<!-- //barra de busqueda -->
 <v-form @submit.prevent>
   <v-row justify="center" class="mt-2" > 
     <v-col cols="12" md="4">
@@ -107,7 +107,7 @@
     </v-col>
   </v-row>
 </v-form>
-
+<!-- cards de los modelos -->
 <v-card height="650px" color="background" elevation="10" border position="relative"   
   class="my-10 py-8 overflow-auto bg-none rounded d-flex flex-wrap justify-center align-start ga-2">
   <v-slide-y-transition group>
@@ -129,7 +129,7 @@
     </CardImage>
   </v-slide-y-transition>
 </v-card>
-
+<!-- paginacion -->
 <div class="d-flex justify-space-between align-center pa-2" style="position: relative;">
   <v-pagination 
     class="mx-auto" 

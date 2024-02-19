@@ -213,7 +213,7 @@
     </v-expansion-panel>
 
     <!--tooners-->
-    <v-expansion-panel >
+    <!-- <v-expansion-panel >
       <v-expansion-panel-title class=" font-weight-black"><v-icon color="secondary" icon="mdi-water-plus-outline" class="mr-2"/> Tooners Modelos  </v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-card color="" class="mx-auto">
@@ -252,7 +252,7 @@
           </v-card-text>
         </v-card>
       </v-expansion-panel-text>
-    </v-expansion-panel>
+    </v-expansion-panel> -->
   </v-expansion-panels>
 </template>
 
