@@ -94,6 +94,15 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
                 this[propiedad] = false
             }, 3000);
         },
+        formatearForm(){
+            this.formToonerRecarga.nro_item = null
+            this.formToonerRecarga.tooner_modelo = null
+            this.formToonerRecarga.nro_regargas= 1
+            this.formToonerRecarga.fecha_entrada =""
+            this.formToonerRecarga.activo = true
+            this.formToonerRecarga.descripsion = ""
+            this.formToonerRecarga.direccion = null
+        },
         async obtenerToonersRecargas(){
             const {items,totalItems,totalPages} = await this.pb.collection('tooners_recargas').getList(this.toonerModeloRecarga.page, this.toonerModeloRecarga.perPage, {
                 filter: this.filtroBusquedaRecargaToner,
@@ -120,8 +129,11 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
         },
         async EnviartonerRecarga(){
             const data = {...this.formToonerRecarga}
+            console.log(data.fecha_entrada)
+            let fecha = data.fecha_entrada
+
+
             data.fecha_entrada = new Date(data.fecha_entrada).toISOString()
-            console.log(data)
             if(data.descripsion === ""){
                 delete data.descripsion
             }
@@ -132,6 +144,34 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
                 this.obtenerToonersRecargas()
             } catch (error) {
                 console.error(error.response)
+                this.notificacion("ocurrioUnError")
+            }
+        },
+        async eliminarTonerRecarga({ID}){
+            try {
+                if(confirm("¿Quieres eliminar el toner?")){
+                    await this.pb.collection('tooners_recargas').delete(ID);
+                    this.notificacion("eliminarExitoso")
+                    this.obtenerToonersRecargas()
+                }else{
+                    return
+                }
+            } catch (error) {
+                console.table(error)
+                this.notificacion("ocurrioUnError")
+            }
+        },
+        async editarTonerRecarga({ID}){
+
+
+            const data = {...this.formToonerRecarga}
+            try {
+                const record = await this.pb.collection('tooners_recargas').update(ID, data);
+                this.notificacion("eliminarExitoso")
+                this.obtenerToonersRecargas()
+
+            } catch (error) {
+                console.table(error)
                 this.notificacion("ocurrioUnError")
             }
         },

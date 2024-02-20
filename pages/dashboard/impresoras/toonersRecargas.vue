@@ -24,15 +24,21 @@
     />  
   </v-slide-x-transition>
 </div>
+editar: {{ modoEditar }} <hr>
+<pre>
+  {{ storeToonersRecargas.formToonerRecarga }}
 
+</pre>
+<pre>
+  {{storeToonersRecargas.FiltrotonerRecarga}} <br>
+  {{ storeToonersRecargas.filtroBusquedaRecargaToner }}
+</pre>
 <!-- crear nuevo modelo de tooner -->
 <DialogForm
   @crear="storeToonersRecargas.EnviartonerRecarga()"
-
   id_boton="creacionModeloTooner"
   :titulo_dialog="tituloDialogToonerRecarga"
   boton_titulo="Nuevo Toner"
-
   @cerrar="modoEditar = false"
   :modo-editar="modoEditar"
 >
@@ -53,10 +59,10 @@
               </template>
         </DialogGeneralSimple>
 
-        <CardImage class="mx-auto mt-2" color="surface" width="280"  height="100"  
+        <CardImage class="mx-auto mt-2" color="surface" width="280"  height="120"  
         src-image="/images/toonerImage.png " 
         ocultar-boton-seleccion
-        :subtitle="`${tonerSeleccionado.marca} <br> <b style='color:black;'>${tonerSeleccionado.modelo}</b>`"
+        :title="`${tonerSeleccionado.marca} <br> <b style='color:black;'>${tonerSeleccionado.modelo}</b>`"
         >
         </CardImage>
       </v-col>
@@ -103,7 +109,8 @@
         <v-col cols="12">
           <v-autocomplete label="departamento" 
               :items="useListasStore().listaDepartamento"
-              v-model="storeToonersRecargas.formToonerRecarga.direccion">
+              v-model="storeToonersRecargas.formToonerRecarga.direccion"
+              :rules="ruleNoEmpty">
 
             </v-autocomplete>
         </v-col>
@@ -123,10 +130,7 @@
     </v-container>
   </template>
 </DialogForm>
-<pre>
-  {{storeToonersRecargas.FiltrotonerRecarga}} <br>
-  {{ storeToonersRecargas.filtroBusquedaRecargaToner }}
-</pre>
+
 <!-- buscador -->
 <v-form @submit.prevent>
     <v-row align="center" align-content="center" justify="center" class="mt-2" > 
@@ -205,7 +209,8 @@
     button-name="">
       <template #menu>
         <MenuDropdown
-
+          @editar="editarDescripsion({toner:tonerRecarga})"
+          @eliminar="storeToonersRecargas.eliminarTonerRecarga({ID:tonerRecarga.id})"
         />
 
         <v-btn @click="storeToonersRecargas.restarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="compact" icon="mdi-minus" color="warning" position="absolute" style="bottom: 0; left: 10px;"></v-btn>
@@ -262,10 +267,32 @@ const { name } = useDisplay()
 
 const tituloDialogToonerRecarga = ref("crear nuevo Tooner")
 
-const IdEditar = ref()
-const modoEditar =ref(false)
-const tituloDialogModeloTooner = ref("Crear Modelo de Tooner")
 
+// ID DEL TONER A EDITAR
+const IdEditar = ref()
+
+
+const modoEditar =ref(false)
+function editarDescripsion({toner}){
+  console.log(toner)
+  
+  storeToonersRecargas.formToonerRecarga.nro_item = toner.nro_item
+  storeToonersRecargas.formToonerRecarga.tooner_modelo = toner.tooner_modelo
+  storeToonersRecargas.formToonerRecarga.nro_regargas= toner.nro_regargas
+  storeToonersRecargas.formToonerRecarga.fecha_entrada = new Date(toner.fecha_entrada).toISOString().slice(0, -8)
+  storeToonersRecargas.formToonerRecarga.activo = toner.activo
+  storeToonersRecargas.formToonerRecarga.descripsion = toner.descripsion
+  storeToonersRecargas.formToonerRecarga.direccion = toner.direccion
+
+
+
+  document.querySelector('#creacionModeloTooner').click();
+  IdEditar.value = toner.id
+  modoEditar.value = true
+  console.log(toner.fecha_entrada)
+  console.log(storeToonersRecargas.formToonerRecarga.fecha_entrada)
+  console.log( storeToonersRecargas.formToonerRecarga.fecha_entrada.slice(0,-8))
+}
 
 // function activarModoEditar({tooner}){
 //   modoEditar.value = true;
@@ -330,9 +357,9 @@ watch(
     () => modoEditar.value,
     (newValor) => {
       if(modoEditar.value == false){
-        tituloDialogModeloTooner.value = "Crear Modelo Tooner"
+        tituloDialogToonerRecarga.value = "Crear Modelo Tooner"
       }else{
-        tituloDialogModeloTooner.value = "Editar Modelo Tooner"
+        tituloDialogToonerRecarga.value = "Editar Modelo Tooner"
       }
     },{flush:'post'}
   )
