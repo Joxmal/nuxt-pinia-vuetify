@@ -8,9 +8,13 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
         pb: new PocketBase(useRuntimeConfig().public.POCKETBASE_URL),
 
         formToonerRecarga:{
-            marca:"",
-            modelo:"",
-            descripsion:""
+            "nro_item": null,
+            "tooner_modelo": null,
+            "nro_regargas": 1,
+            "fecha_entrada": "",
+            "activo": true,
+            "descripsion": "",
+            "direccion":null
         },
 
         itemsToonerRecarga:null,
@@ -21,15 +25,14 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             totalPages:"",
         },
 
-        FiltroToonerRecarga:{
+        FiltrotonerRecarga:{
+            nro_item:null,
             marca:null,
             modelo:null,
+            departamento:null,
+            tonerInactivo:false
         },
 
-        FiltrobusquedaRecarga_autocomplete:{
-            marca:[''],
-            modelo:[''],
-        },
 
 
         cargando:false,
@@ -37,11 +40,50 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
         eliminarExitoso:false,
         editarExitoso:false,
         ocurrioUnError:false,
+
     }),
 
 
     getters:{
-
+        filtroBusquedaRecargaToner() {
+            const { nro_item, marca, modelo, departamento, tonerInactivo } = this.FiltrotonerRecarga;
+        
+            let filterBuscar = "";
+        
+            if (marca === null && modelo === null && departamento === null  && tonerInactivo === false && nro_item === null) {
+                filterBuscar = "";
+                console.log("vacio");
+            } else {
+                if (marca !== null) {
+                    filterBuscar += `tooner_modelo.marca = "${marca}"`;
+                }
+                if (modelo !== null) {
+                    if (filterBuscar !== null && marca !== null) {
+                        filterBuscar += " && ";
+                    }
+                    filterBuscar += `tooner_modelo.modelo = "${modelo}"`;
+                }
+                if (departamento !== null) {
+                    if (filterBuscar !== null && (marca !== null || modelo !== null)) {
+                        filterBuscar += " && ";
+                    }
+                    filterBuscar += `direccion = "${departamento}"`;
+                }
+                if (tonerInactivo !== null) {
+                    if (filterBuscar !== null && (marca !== null || modelo !== null || departamento !== null)) {
+                        filterBuscar += " && ";
+                    }
+                    filterBuscar += `activo = ${!tonerInactivo}`;
+                }
+                if (nro_item !== null) {
+                    if (filterBuscar !== null && (marca !== null || modelo !== null || departamento !== null || tonerInactivo !== null)) {
+                        filterBuscar += " && ";
+                    }
+                    filterBuscar += `nro_item ~ "${nro_item}"`;
+                }
+            }
+            return filterBuscar;
+        }
 
     },
 
@@ -53,14 +95,82 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             }, 3000);
         },
         async obtenerToonersRecargas(){
-            const {items} = await this.pb.collection('tooners_recargas').getList(1, 50, {
-                filter: '',
-                sort: '-created',
+            const {items,totalItems,totalPages} = await this.pb.collection('tooners_recargas').getList(this.toonerModeloRecarga.page, this.toonerModeloRecarga.perPage, {
+                filter: this.filtroBusquedaRecargaToner,
+                sort: '-activo',
                 expand:"tooner_modelo",
                 fields:'*,expand.tooner_modelo.marca,nro_item,expand.tooner_modelo.modelo '
             });
-            console.log(items)
+
+            this.toonerModeloRecarga.totalItems = totalItems
+            this.toonerModeloRecarga.totalPages = totalPages
+
+            
             this.itemsToonerRecarga = items
+
+            // this.itemsToonerRecarga.forEach((toner)=>{
+            //     if(toner.activo === true){
+            //         toner.bgColor = "surface"
+            //     }else{
+            //         toner.bgColor = "red"
+            //     }
+            // })
+
+            console.log(items)
+        },
+        async EnviartonerRecarga(){
+            const data = {...this.formToonerRecarga}
+            data.fecha_entrada = new Date(data.fecha_entrada).toISOString()
+            console.log(data)
+            if(data.descripsion === ""){
+                delete data.descripsion
+            }
+            try {
+                const record = await this.pb.collection('tooners_recargas').create(data);
+                console.log(record)
+                this.notificacion("envioExitoso")
+                this.obtenerToonersRecargas()
+            } catch (error) {
+                console.error(error.response)
+                this.notificacion("ocurrioUnError")
+            }
+        },
+
+        async sumarTonerRegarca({nroActual,ID}){
+            try {
+                const numeroActual = Number(nroActual)
+                const data = {
+                    "nro_regargas": numeroActual+1
+                };
+                
+                const record = await this.pb.collection('tooners_recargas').update(ID, data);
+                this.notificacion("envioExitoso")
+                this.obtenerToonersRecargas()
+            } catch (error) {
+                console.error(error)
+                this.notificacion("ocurrioUnError")
+
+            }
+            
+        },
+        async restarTonerRegarca({nroActual,ID}){
+            try {
+                const numeroActual = Number(nroActual)
+                const data = {
+                    "nro_regargas": numeroActual-1
+                };
+                if(nroActual <= 0){
+                    alert("no puede ser menor que 0")
+                    return
+                }
+                const record = await this.pb.collection('tooners_recargas').update(ID, data);
+                this.notificacion("envioExitoso")
+                this.obtenerToonersRecargas()
+            } catch (error) {
+                console.error(error.response)
+                this.notificacion("ocurrioUnError")
+                
+            }
         }
     },
     

@@ -27,9 +27,11 @@
 
 <!-- crear nuevo modelo de tooner -->
 <DialogForm
+  @crear="storeToonersRecargas.EnviartonerRecarga()"
+
   id_boton="creacionModeloTooner"
   :titulo_dialog="tituloDialogToonerRecarga"
-  boton_titulo="Nuevo Tooner"
+  boton_titulo="Nuevo Toner"
 
   @cerrar="modoEditar = false"
   :modo-editar="modoEditar"
@@ -42,7 +44,10 @@
               <template #contenido>
                 <div style="width: 80%; margin: 0 auto; " >
                   <v-card max-height="90vh" style="overflow: auto;" position="relative"  elevation="15" class="d-flex flex-column ga-2">
-                  
+                    <EncapsulamientoImpresorasTonerModelo
+                      modo-seleccion
+                      @seleccion-modelo="capturarTonerModelo"
+                    />
                   </v-card>
                 </div>
               </template>
@@ -51,7 +56,7 @@
         <CardImage class="mx-auto mt-2" color="surface" width="280"  height="100"  
         src-image="/images/toonerImage.png " 
         ocultar-boton-seleccion
-        subtitle="Marca <br> <b style='color:red;'> Modelo</b> "
+        :subtitle="`${tonerSeleccionado.marca} <br> <b style='color:black;'>${tonerSeleccionado.modelo}</b>`"
         >
         </CardImage>
       </v-col>
@@ -61,11 +66,12 @@
         <v-col cols="12" md="6">
           <v-text-field
             label="Nro Item"
-            maxlength="20"
+            maxlength="30"
             counter
             :rules="ruleNoEmpty"
             hint="numero unico del tooner"
             persistent-hint
+            v-model="storeToonersRecargas.formToonerRecarga.nro_item"
           >
           </v-text-field>
         </v-col>
@@ -77,6 +83,7 @@
             min="0" max="100"
             hint="Marca del Tooner"
             persistent-hint
+            v-model="storeToonersRecargas.formToonerRecarga.nro_regargas"
           >
           </v-text-field>
         </v-col>
@@ -86,10 +93,19 @@
             <v-card-title class="text-center">fecha de entrada</v-card-title>
             <v-divider :thickness="3" class="border-opacity-50"></v-divider>
             <v-sheet class="mt-2 d-flex flex-column justify-center align-center font-weight-black">
-              <input class="mx-auto" type="datetime-local" min="2023-01-01" max="2024-12-30"
+              <input class="mx-auto" type="datetime-local" min="2023-01-01" max="2025-12-30"
+              v-model="storeToonersRecargas.formToonerRecarga.fecha_entrada"
               >
             </v-sheet>
           </v-card>
+        </v-col>
+
+        <v-col cols="12">
+          <v-autocomplete label="departamento" 
+              :items="useListasStore().listaDepartamento"
+              v-model="storeToonersRecargas.formToonerRecarga.direccion">
+
+            </v-autocomplete>
         </v-col>
 
         <v-col cols="12">
@@ -99,6 +115,7 @@
             hint="Descripsion del Modelo de Tooner (opcional)"
             maxlength="400"
             persistent-hint
+            v-model="storeToonersRecargas.formToonerRecarga.descripsion"
           >
           </v-textarea>
         </v-col>
@@ -106,19 +123,140 @@
     </v-container>
   </template>
 </DialogForm>
+<pre>
+  {{storeToonersRecargas.FiltrotonerRecarga}} <br>
+  {{ storeToonersRecargas.filtroBusquedaRecargaToner }}
+</pre>
+<!-- buscador -->
+<v-form @submit.prevent>
+    <v-row align="center" align-content="center" justify="center" class="mt-2" > 
+      <v-col cols="12" md="2">
+        <v-text-field
+          density="compact"
+          hide-details="auto"
+          label="nro Item"
+          v-model="storeToonersRecargas.FiltrotonerRecarga.nro_item"
+        />
+      </v-col>
 
+      <v-col cols="12" md="2">
+        <v-autocomplete 
+          :items="storeToonersModelos.FiltrobusquedaMarcaModelo_autocomplete.marca"
+          label="Marca"
+          hide-details="auto" 
+          density="compact"
+          v-model="storeToonersRecargas.FiltrotonerRecarga.marca">
+          
+        </v-autocomplete>
+      </v-col>
+
+      <v-col cols="12" md="2">
+        <v-autocomplete 
+          :items="storeToonersModelos.FiltrobusquedaMarcaModelo_autocomplete.modelo"
+          label="Modelo"
+          hide-details="auto" 
+          density="compact"
+          v-model="storeToonersRecargas.FiltrotonerRecarga.modelo"
+          >
+        </v-autocomplete>
+      </v-col>
+  
+      <v-col cols="12" md="2">
+        <v-autocomplete 
+          :items="useListasStore().listaDepartamento"
+          label="Departamento"
+          hide-details="auto" 
+          density="compact"
+          v-model="storeToonersRecargas.FiltrotonerRecarga.departamento">
+        </v-autocomplete>
+      </v-col>
+
+      <v-col cols="12" md="1">
+        <v-btn @click="storeToonersRecargas.obtenerToonersRecargas()" width="100%" type="submit"  class="px-2">Buscar</v-btn>
+      </v-col>
+    </v-row>
+    <v-row align="center" align-content="center" justify="center">
+      <div>
+        <v-switch
+        v-model="storeToonersRecargas.FiltrotonerRecarga.tonerInactivo"
+        inset
+        density="compact"
+        base-color="primary"
+        :color="storeToonersRecargas.FiltrotonerRecarga.tonerInactivo === false ? 'secondary' : 'red' "
+        hide-details
+        append-icon="mdi-cog-off"
+        prepend-icon="mdi-cog"
+        >
+        </v-switch>
+      </div>
+    </v-row>
+</v-form>
+
+
+<!-- cards de los tooners -->
+<v-card height="650px" color="background" elevation="10" border position="relative"   
+  class="my-10 py-8 overflow-auto bg-none rounded d-flex flex-wrap justify-center align-start ga-2">
+  <v-slide-y-transition group>
+    <CardImage :color="tonerRecarga.activo ? 'surface': 'red-lighten-2'" width="350"  height="230" v-for="(tonerRecarga,index) in storeToonersRecargas.itemsToonerRecarga" :key="index"
+    src-image="/images/toonerImage.png "
+    ocultar-boton-seleccion  
+    :title="`${tonerRecarga.direccion}`" 
+    :subtitle="` ${tonerRecarga.expand.tooner_modelo.marca} <br> ${tonerRecarga.expand.tooner_modelo.modelo}<br> <b style='color:black;'>${tonerRecarga.nro_item}</b>`"
+    button-name="">
+      <template #menu>
+        <MenuDropdown
+
+        />
+
+        <v-btn @click="storeToonersRecargas.restarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="compact" icon="mdi-minus" color="warning" position="absolute" style="bottom: 0; left: 10px;"></v-btn>
+        <v-btn @click="storeToonersRecargas.sumarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="compact" icon="mdi-plus" color="success" position="absolute" style="bottom: 0; right: 10px;"></v-btn>
+        <v-sheet border :class="tonerRecarga.nro_regargas > 5 ? 'text-warning' : 'text-success'" class="text-h4 px-2 rounded-lg" density="compact" color="surface" elevation="20" position="absolute" location="top">
+          {{ tonerRecarga.nro_regargas }}
+        </v-sheet>
+      </template>>
+    </CardImage>
+  </v-slide-y-transition>
+</v-card>
+
+<!-- paginacion -->
+<div class="d-flex justify-space-between align-center pa-2" style="position: relative;">
+    <v-pagination 
+      class="mx-auto" 
+      :density="'compact'" 
+      v-model="storeToonersRecargas.toonerModeloRecarga.page" 
+      :total-visible="3" 
+      :length="storeToonersRecargas.toonerModeloRecarga.totalPages">
+    </v-pagination>
+    <div v-show="name !== 'xs'" style="position: absolute; right: 0; top: 50%;transform: translate(0%, -25%);">
+      <v-select
+        density="compact"
+        :items="[10,20,30,40,50,300,10000]"
+        v-model="storeToonersRecargas.toonerModeloRecarga.perPage"
+      />
+    </div>
+  </div>
+<pre>
+  {{ storeToonersRecargas.toonerModeloRecarga }}
+</pre>
+
+<hr>
+<pre>
+    {{ storeToonersRecargas.formToonerRecarga }}
+</pre>
+<hr>
 <pre>
   {{ storeToonersRecargas.itemsToonerRecarga }}
 </pre>
 
-
-<v-btn @click="storeToonersRecargas.obtenerToonersRecargas()"> +</v-btn>
 </template>
 
 <script setup>
 import { useDisplay } from 'vuetify'
 import {useToonersRecargasStore} from '~/stores/impresoras/toonerRecargas'
+import {useToonerModeloStore} from '~/stores/impresoras/toonerModelo'
+
 const storeToonersRecargas = useToonersRecargasStore()
+const storeToonersModelos = useToonerModeloStore()
 
 const { name } = useDisplay()
 
@@ -126,18 +264,17 @@ const tituloDialogToonerRecarga = ref("crear nuevo Tooner")
 
 const IdEditar = ref()
 const modoEditar =ref(false)
-function activarModoEditar({tooner}){
-  modoEditar.value = true;
-  document.querySelector('#creacionModeloTooner').click();
+const tituloDialogModeloTooner = ref("Crear Modelo de Tooner")
 
 
-  storeToonerModelo.formToonerModelo.marca = tooner.marca
-  storeToonerModelo.formToonerModelo.modelo = tooner.modelo
-  storeToonerModelo.formToonerModelo.descripsion = tooner.descripsion
-
-  IdEditar.value = tooner.id
-
-}
+// function activarModoEditar({tooner}){
+//   modoEditar.value = true;
+//   document.querySelector('#creacionModeloTooner').click();
+//   storeToonerModelo.formToonerModelo.marca = tooner.marca
+//   storeToonerModelo.formToonerModelo.modelo = tooner.modelo
+//   storeToonerModelo.formToonerModelo.descripsion = tooner.descripsion
+//   IdEditar.value = tooner.id
+// }
 
 const ruleNoEmpty = [
   value => {
@@ -145,4 +282,58 @@ const ruleNoEmpty = [
     return 'Debe rellenar el campo'
   },
 ]
+
+
+const tonerInactivo = ref(false)
+
+function capturarTonerModelo(event){
+  tonerSeleccionado.value.marca = event.marca
+  tonerSeleccionado.value.modelo = event.modelo
+  tonerSeleccionado.value.id = event.id
+
+  storeToonersRecargas.formToonerRecarga.tooner_modelo = event.id
+
+  console.log(event)
+  console.log(tonerSeleccionado.value)
+}
+
+const tonerSeleccionado = ref({
+  marca:'',
+  modelo:'',
+  id:''
+})
+
+onBeforeMount(async()=>{
+  await storeToonersRecargas.obtenerToonersRecargas()
+  storeToonersRecargas.formToonerRecarga.fecha_entrada = useAsistenciasStore().obtenerFechaHoraActual_8am
+  await storeToonersModelos.ObtenerModeloTooner()
+})
+
+const {toonerModeloRecarga} = storeToRefs(storeToonersRecargas)
+
+watch(
+    () => toonerModeloRecarga.value.page,
+    (newValor) => {
+      storeToonersRecargas.obtenerToonersRecargas()
+    },{deep:true, flush:'post'}
+  )
+  
+  watch(
+    () => toonerModeloRecarga.value.perPage,
+    (newValor) => {
+      storeToonersRecargas.obtenerToonersRecargas()
+    },{deep:true, flush:'post'}
+  )
+  
+
+  watch(
+    () => modoEditar.value,
+    (newValor) => {
+      if(modoEditar.value == false){
+        tituloDialogModeloTooner.value = "Crear Modelo Tooner"
+      }else{
+        tituloDialogModeloTooner.value = "Editar Modelo Tooner"
+      }
+    },{flush:'post'}
+  )
 </script>
