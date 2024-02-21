@@ -6,6 +6,19 @@ import PocketBase from 'pocketbase'
 export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
     state: () => ({
         pb: new PocketBase(useRuntimeConfig().public.POCKETBASE_URL),
+        
+        descripsionTonerRecargaDescripsion:"",
+        descripsionTonerRecarga:{
+            "nro item": null,
+            "toner marca": null,
+            "toner modelo": null,
+            "nro regargas": null,
+            "fecha entrada": "",
+            "activo": true,
+            "direccion":null,
+            "fecha salida":null
+        },
+
 
         formToonerRecarga:{
             "nro_item": null,
@@ -104,7 +117,7 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             this.formToonerRecarga.direccion = null
         },
         async obtenerToonersRecargas(){
-            const {items,totalItems,totalPages} = await this.pb.collection('tooners_recargas').getList(this.toonerModeloRecarga.page, this.toonerModeloRecarga.perPage, {
+            const {items,totalItems,totalPages} = await this.pb.collection('toners_recargas').getList(this.toonerModeloRecarga.page, this.toonerModeloRecarga.perPage, {
                 filter: this.filtroBusquedaRecargaToner,
                 sort: '-activo',
                 expand:"tooner_modelo",
@@ -129,16 +142,12 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
         },
         async EnviartonerRecarga(){
             const data = {...this.formToonerRecarga}
-            console.log(data.fecha_entrada)
-            let fecha = data.fecha_entrada
-
-
             data.fecha_entrada = new Date(data.fecha_entrada).toISOString()
             if(data.descripsion === ""){
                 delete data.descripsion
             }
             try {
-                const record = await this.pb.collection('tooners_recargas').create(data);
+                const record = await this.pb.collection('toners_recargas').create(data);
                 console.log(record)
                 this.notificacion("envioExitoso")
                 this.obtenerToonersRecargas()
@@ -150,7 +159,7 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
         async eliminarTonerRecarga({ID}){
             try {
                 if(confirm("¿Quieres eliminar el toner?")){
-                    await this.pb.collection('tooners_recargas').delete(ID);
+                    await this.pb.collection('toners_recargas').delete(ID);
                     this.notificacion("eliminarExitoso")
                     this.obtenerToonersRecargas()
                 }else{
@@ -165,13 +174,15 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
 
 
             const data = {...this.formToonerRecarga}
+            data.fecha_entrada = new Date(data.fecha_entrada).toISOString()
             try {
-                const record = await this.pb.collection('tooners_recargas').update(ID, data);
-                this.notificacion("eliminarExitoso")
+                const record = await this.pb.collection('toners_recargas').update(ID, data);
+                this.notificacion("envioExitoso")
                 this.obtenerToonersRecargas()
 
             } catch (error) {
-                console.table(error)
+                console.log(error)
+                console.log(error.response)
                 this.notificacion("ocurrioUnError")
             }
         },
@@ -182,12 +193,20 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
                 const data = {
                     "nro_regargas": numeroActual+1
                 };
+                const dataListaFecha={
+                    "toner": ID,
+                    "recarga": new Date().toISOString()              
+                }
+                const sumarTonerRecarga = this.pb.collection('toners_recargas').update(ID, data);
+                const crearFechaEnLista = this.pb.collection('toner_recargas_ListaFecha').create(dataListaFecha);
                 
-                const record = await this.pb.collection('tooners_recargas').update(ID, data);
+                await Promise.all([sumarTonerRecarga,crearFechaEnLista])
+                
                 this.notificacion("envioExitoso")
                 this.obtenerToonersRecargas()
             } catch (error) {
                 console.error(error)
+                console.error(error.response)
                 this.notificacion("ocurrioUnError")
 
             }
@@ -203,13 +222,26 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
                     alert("no puede ser menor que 0")
                     return
                 }
-                const record = await this.pb.collection('tooners_recargas').update(ID, data);
+                const record = await this.pb.collection('toners_recargas').update(ID, data);
                 this.notificacion("envioExitoso")
                 this.obtenerToonersRecargas()
             } catch (error) {
                 console.error(error.response)
                 this.notificacion("ocurrioUnError")
                 
+            }
+        },
+        async activar_desativarTonerRegarga({statusToner,ID}){
+            try {      
+            const data = {
+                "activo": !statusToner
+            }
+            const record = await this.pb.collection('toners_recargas').update(ID, data);
+            this.obtenerToonersRecargas()
+            this.notificacion("envioExitoso")
+            } catch (error) {
+                console.log(error)
+                this.notificacion("ocurrioUnError")
             }
         }
     },

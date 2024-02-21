@@ -19,12 +19,19 @@
           <v-list-item @click="$emit('editar')" density="compact" append-icon="mdi-pencil" class="cursor">
             editar
           </v-list-item>
+
           <v-list-item @click="$emit('eliminar')" density="compact" append-icon="mdi-delete-empty" class="cursor">
             eliminar
           </v-list-item>
+          
           <v-list-item v-if="!ocultarDescripsion" @click="$emit('descripcion')" density="compact" append-icon="mdi-view-dashboard" class="cursor">
             descripcion
           </v-list-item>
+
+          <v-list-item v-if="opcionExtra" @click="$emit(`${opcionExtra}`)" density="compact" append-icon="mdi-yin-yang" class="cursor">
+            {{opcionExtra}}
+          </v-list-item>
+
         </v-list-item>
       </v-list>
     </v-menu>
@@ -41,6 +48,9 @@ defineProps({
     ocultarDescripsion:{
       type:Boolean,
       default: false
+    },
+    opcionExtra:{
+      type:String,
     }
 })
 </script>

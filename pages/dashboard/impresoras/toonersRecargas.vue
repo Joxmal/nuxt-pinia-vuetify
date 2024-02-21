@@ -24,16 +24,92 @@
     />  
   </v-slide-x-transition>
 </div>
-editar: {{ modoEditar }} <hr>
-<pre>
-  {{ storeToonersRecargas.formToonerRecarga }}
+<!-- Dialogo que muestra los detalles de cada toner -->
+<DialogGeneralSimple id-boton="MostrarDetallesTonerRecargas" name-boton="adds" :ocultar-boton="true">
+    <template #contenido>
+      <div style="width: 100%; margin: 0 auto; " >
+        <v-card max-height="90vh" style="overflow: auto;" position="relative" elevation="15" class="d-flex flex-column ga-2">
+          <v-card-title class="text-center"> DETALLES DEL TONER</v-card-title>
+          <v-sheet position="absolute" location="top right" class="ma-2"  variant="plain" >piso </v-sheet>
+          <v-divider></v-divider>
+          <v-row>
+            <v-col cols="12" sm="4">
+              <div class=" d-flex flex-column  align-center">
+                <div class="font-weight-black">
+                  Nro Item
+                </div>
+                <div class="font-bold">
+                  {{  storeToonersRecargas.descripsionTonerRecarga['nro item'] }}
+                </div>
+              </div>
+            </v-col>
 
-</pre>
-<pre>
-  {{storeToonersRecargas.FiltrotonerRecarga}} <br>
-  {{ storeToonersRecargas.filtroBusquedaRecargaToner }}
-</pre>
-<!-- crear nuevo modelo de tooner -->
+            <v-col cols="12" sm="4">
+              <div class=" d-flex flex-column  align-center">
+                <div class="font-weight-black">
+                  Marca
+                </div>
+                <div class="font-bold">
+                  {{ storeToonersRecargas.descripsionTonerRecarga['toner marca'] }}
+                </div>
+              </div>
+            </v-col>
+
+            <v-col cols="12" sm="4">
+              <div class=" d-flex flex-column  align-center">
+                <div class="font-weight-black">
+                  Modelo
+                </div>
+                <div class="font-bold">
+                  {{ storeToonersRecargas.descripsionTonerRecarga['toner modelo'] }}
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-divider ></v-divider>
+          <v-container>
+            <v-row class="">
+
+
+            </v-row>
+
+            <v-divider  class="my-4 border-opacity-0"></v-divider>
+
+            
+            <v-row class="">
+              <v-col cols="12"  sm="4" v-for="(valor,clave) in storeToonersRecargas.descripsionTonerRecarga" :key="clave" >
+                <div   style="border: 2px solid rgb(65, 104, 189); border-radius: 10px;">
+                  <v-sheet class="ma-1 pa-1 text-center font-weight-black">
+                    {{ capitalizarPrimeraLetra(clave) }} 
+                  </v-sheet>
+                  <v-divider></v-divider>
+                  <v-sheet class="ma-1 pa-1 text-center font-weight-black">
+                    {{ valor }}  
+                  </v-sheet>
+                </div>
+              </v-col>
+
+              <v-col cols="12">
+                <div   style="border: 2px solid rgb(65, 104, 189); border-radius: 10px;">
+                  <v-sheet class="ma-1 pa-1 text-center font-weight-black">
+                    Descripsion
+                  </v-sheet>
+                  <v-divider></v-divider>
+                  <v-sheet class="ma-1 pa-1 text-center font-weight-black">
+                    {{ storeToonersRecargas.descripsionTonerRecargaDescripsion }} 
+                  </v-sheet>
+                </div>
+              </v-col>
+            </v-row>
+
+          </v-container>
+        </v-card>
+      </div>
+    </template>
+</DialogGeneralSimple>
+
+
+<!-- crear nuevo modelo de toner -->
 <DialogForm
   @crear="storeToonersRecargas.EnviartonerRecarga()"
   id_boton="creacionModeloTooner"
@@ -41,6 +117,7 @@ editar: {{ modoEditar }} <hr>
   boton_titulo="Nuevo Toner"
   @cerrar="modoEditar = false"
   :modo-editar="modoEditar"
+  @editar-dialog-form="storeToonersRecargas.editarTonerRecarga({ID:IdEditar})"
 >
   <template #contenido>
     <!-- seleccion del medelo de tooner -->
@@ -209,12 +286,15 @@ editar: {{ modoEditar }} <hr>
     button-name="">
       <template #menu>
         <MenuDropdown
-          @editar="editarDescripsion({toner:tonerRecarga})"
           @eliminar="storeToonersRecargas.eliminarTonerRecarga({ID:tonerRecarga.id})"
+          @editar="editarDescripsion({toner:tonerRecarga})"
+          @descripcion="abrirDialogoDescripsion({toner:tonerRecarga})"
+          opcion-extra="Activar-Desactivar"
+          @Activar-Desactivar="storeToonersRecargas.activar_desativarTonerRegarga({statusToner:tonerRecarga.activo,ID:tonerRecarga.id})"
         />
 
         <v-btn @click="storeToonersRecargas.restarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="compact" icon="mdi-minus" color="warning" position="absolute" style="bottom: 0; left: 10px;"></v-btn>
-        <v-btn @click="storeToonersRecargas.sumarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="compact" icon="mdi-plus" color="success" position="absolute" style="bottom: 0; right: 10px;"></v-btn>
+        <v-btn @click="storeToonersRecargas.sumarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="compact" icon="mdi-plus" color="success" position="absolute" style="bottom: 5px; right: 5px;"></v-btn>
         <v-sheet border :class="tonerRecarga.nro_regargas > 5 ? 'text-warning' : 'text-success'" class="text-h4 px-2 rounded-lg" density="compact" color="surface" elevation="20" position="absolute" location="top">
           {{ tonerRecarga.nro_regargas }}
         </v-sheet>
@@ -240,25 +320,13 @@ editar: {{ modoEditar }} <hr>
       />
     </div>
   </div>
-<pre>
-  {{ storeToonersRecargas.toonerModeloRecarga }}
-</pre>
-
-<hr>
-<pre>
-    {{ storeToonersRecargas.formToonerRecarga }}
-</pre>
-<hr>
-<pre>
-  {{ storeToonersRecargas.itemsToonerRecarga }}
-</pre>
-
 </template>
 
 <script setup>
 import { useDisplay } from 'vuetify'
 import {useToonersRecargasStore} from '~/stores/impresoras/toonerRecargas'
 import {useToonerModeloStore} from '~/stores/impresoras/toonerModelo'
+import {convertirFechaUTC} from "~/assets/funciones_reuzables/times"
 
 const storeToonersRecargas = useToonersRecargasStore()
 const storeToonersModelos = useToonerModeloStore()
@@ -273,13 +341,14 @@ const IdEditar = ref()
 
 
 const modoEditar =ref(false)
+
 function editarDescripsion({toner}){
   console.log(toner)
   
   storeToonersRecargas.formToonerRecarga.nro_item = toner.nro_item
   storeToonersRecargas.formToonerRecarga.tooner_modelo = toner.tooner_modelo
   storeToonersRecargas.formToonerRecarga.nro_regargas= toner.nro_regargas
-  storeToonersRecargas.formToonerRecarga.fecha_entrada = new Date(toner.fecha_entrada).toISOString().slice(0, -8)
+  storeToonersRecargas.formToonerRecarga.fecha_entrada = convertirFechaUTC(toner.fecha_entrada)
   storeToonersRecargas.formToonerRecarga.activo = toner.activo
   storeToonersRecargas.formToonerRecarga.descripsion = toner.descripsion
   storeToonersRecargas.formToonerRecarga.direccion = toner.direccion
@@ -289,19 +358,30 @@ function editarDescripsion({toner}){
   document.querySelector('#creacionModeloTooner').click();
   IdEditar.value = toner.id
   modoEditar.value = true
-  console.log(toner.fecha_entrada)
-  console.log(storeToonersRecargas.formToonerRecarga.fecha_entrada)
-  console.log( storeToonersRecargas.formToonerRecarga.fecha_entrada.slice(0,-8))
+
 }
 
-// function activarModoEditar({tooner}){
-//   modoEditar.value = true;
-//   document.querySelector('#creacionModeloTooner').click();
-//   storeToonerModelo.formToonerModelo.marca = tooner.marca
-//   storeToonerModelo.formToonerModelo.modelo = tooner.modelo
-//   storeToonerModelo.formToonerModelo.descripsion = tooner.descripsion
-//   IdEditar.value = tooner.id
-// }
+function abrirDialogoDescripsion({toner}){
+  document.querySelector("#MostrarDetallesTonerRecargas").click()
+  console.log(toner)
+
+storeToonersRecargas.descripsionTonerRecarga["nro item"]= toner.nro_item
+storeToonersRecargas.descripsionTonerRecarga["toner marca"]= toner.expand.tooner_modelo.marca
+storeToonersRecargas.descripsionTonerRecarga["toner modelo"]= toner.expand.tooner_modelo.modelo
+storeToonersRecargas.descripsionTonerRecarga["nro regargas"]= toner.nro_regargas
+storeToonersRecargas.descripsionTonerRecarga["fecha entrada"]= new Date(toner.fecha_entrada).toLocaleString()
+storeToonersRecargas.descripsionTonerRecarga.activo= toner.activo === true ? 'OPERATIVO' : 'INOPERATIVO'
+storeToonersRecargas.descripsionTonerRecargaDescripsion= toner.descripsion
+storeToonersRecargas.descripsionTonerRecarga.direccion= toner.direccion
+storeToonersRecargas.descripsionTonerRecarga["fecha salida"]= toner.fecha_salida
+
+if(storeToonersRecargas.descripsionTonerRecarga["fecha salida"].length === 0){
+  storeToonersRecargas.descripsionTonerRecarga["fecha salida"] = "---------"
+}else{
+  storeToonersRecargas.descripsionTonerRecarga["fecha salida"] = new Date(toner.fecha_salida).toLocaleString()
+}
+}
+
 
 const ruleNoEmpty = [
   value => {
@@ -363,4 +443,8 @@ watch(
       }
     },{flush:'post'}
   )
+
+  function capitalizarPrimeraLetra(texto) {
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
 </script>

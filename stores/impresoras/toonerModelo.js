@@ -95,7 +95,7 @@ export const useToonerModeloStore = defineStore('useToonerModeloStore', {
                     delete data.descripsion
                 }
                 console.log(data)
-                const record = await this.pb.collection('tooners_modelos').create(data);
+                const record = await this.pb.collection('toners_modelos').create(data);
                 console.log(record)
                 this.notificacion("envioExitoso")
                 this.ObtenerModeloTooner()
@@ -115,7 +115,7 @@ export const useToonerModeloStore = defineStore('useToonerModeloStore', {
         async ObtenerModeloTooner(){
             try {
                 this.cargando = true
-                const {items,page,perPage,totalItems,totalPages} = await this.pb.collection('tooners_modelos').getList(this.toonerModeloPaginacion.page, this.toonerModeloPaginacion.perPage, {
+                const {items,page,perPage,totalItems,totalPages} = await this.pb.collection('toners_modelos').getList(this.toonerModeloPaginacion.page, this.toonerModeloPaginacion.perPage, {
                     sort: '-created',
                     filter: this.filtroBusquedaModeloTooner,
                 });
@@ -161,7 +161,7 @@ export const useToonerModeloStore = defineStore('useToonerModeloStore', {
         async eliminarModeloTooner({id}){
             try {
                 if(confirm("¿Desea eliminar este modelo?")){
-                    await this.pb.collection('tooners_modelos').delete(id);
+                    await this.pb.collection('toners_modelos').delete(id);
                     await this.ObtenerModeloTooner()
                     this.notificacion("eliminarExitoso")
                 }
@@ -178,7 +178,7 @@ export const useToonerModeloStore = defineStore('useToonerModeloStore', {
                 delete data.descripsion
             }
             try {
-                const record = await this.pb.collection('tooners_modelos').update(id, data);
+                const record = await this.pb.collection('toners_modelos').update(id, data);
                 await this.ObtenerModeloTooner()
                 this.notificacion("editarExitoso") 
                 console.log(record)
