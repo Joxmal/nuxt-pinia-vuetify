@@ -1,4 +1,10 @@
 <template>
+  <!-- <pre>
+    {{ storeToonersRecargas.descripsionTonerRecarga }}
+    {{ storeToonersRecargas.descripsionTonerListaRecarga }}
+  </pre> -->
+  {{ storeToonersRecargas.toonerModeloRecarga.totalItems }}
+
 <div>
   <v-slide-x-transition group>
     <AlertWarning v-show="storeToonersRecargas.eliminarExitoso === true" key="1"
@@ -89,6 +95,29 @@
                 </div>
               </v-col>
 
+              <v-divider></v-divider>
+              <div class="text-center text-h6 mx-auto inline">Recargas del toner</div>
+              <v-divider class="border-opacity-0"></v-divider>
+
+              <v-slide-x-transition group>
+                <v-col cols="3" v-for="(valor,clave) in storeToonersRecargas.descripsionTonerListaRecarga" :key="clave">
+                  <v-card position="relative">
+                    <v-card-title class="text-center mx-auto">
+                      {{ clave+1 }}
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text class="text-center">
+                      {{ new Date(valor.recarga).toLocaleDateString('es-ES',{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }}
+                    </v-card-text>
+                    <v-btn @click="storeToonersRecargas.restarTonerRegarca2({toner:valor})" density="compact" position="absolute" location="top right" icon="mdi-delete-forever"></v-btn>
+                  </v-card>
+
+                </v-col>
+              </v-slide-x-transition>
+              
+              <v-divider></v-divider>
+
+
               <v-col cols="12">
                 <div   style="border: 2px solid rgb(65, 104, 189); border-radius: 10px;">
                   <v-sheet class="ma-1 pa-1 text-center font-weight-black">
@@ -96,7 +125,7 @@
                   </v-sheet>
                   <v-divider></v-divider>
                   <v-sheet class="ma-1 pa-1 text-center font-weight-black">
-                    {{ storeToonersRecargas.descripsionTonerRecargaDescripsion }} 
+                    {{ storeToonersRecargas.descripsionTonerRecargaDescripsion }}
                   </v-sheet>
                 </div>
               </v-col>
@@ -275,8 +304,11 @@
 
 
 <!-- cards de los tooners -->
+<div class="d-flex justify-center mt-10"> 
+  <v-card elevation="10" color="primary" class="pa-2 rounded-lg text-center font-weight-bold  text-h6">{{ storeToonersRecargas.toonerModeloRecarga.totalItems }}</v-card>
+</div>
 <v-card height="650px" color="background" elevation="10" border position="relative"   
-  class="my-10 py-8 overflow-auto bg-none rounded d-flex flex-wrap justify-center align-start ga-2">
+  class=" py-8 overflow-auto bg-none rounded d-flex flex-wrap justify-center align-start ga-2">
   <v-slide-y-transition group>
     <CardImage :color="tonerRecarga.activo ? 'surface': 'red-lighten-2'" width="350"  height="230" v-for="(tonerRecarga,index) in storeToonersRecargas.itemsToonerRecarga" :key="index"
     src-image="/images/toonerImage.png "
@@ -293,8 +325,8 @@
           @Activar-Desactivar="storeToonersRecargas.activar_desativarTonerRegarga({statusToner:tonerRecarga.activo,ID:tonerRecarga.id})"
         />
 
-        <v-btn @click="storeToonersRecargas.restarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="compact" icon="mdi-minus" color="warning" position="absolute" style="bottom: 0; left: 10px;"></v-btn>
-        <v-btn @click="storeToonersRecargas.sumarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="compact" icon="mdi-plus" color="success" position="absolute" style="bottom: 5px; right: 5px;"></v-btn>
+        <!-- <v-btn @click="storeToonersRecargas.restarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="compact" icon="mdi-minus" color="warning" position="absolute" style="bottom: 0; left: 10px;"></v-btn> -->
+        <v-btn size="large" @click="storeToonersRecargas.sumarTonerRegarca({ID:tonerRecarga.id,nroActual:tonerRecarga.nro_regargas})" density="comfortable" icon="mdi-plus" color="success" position="absolute" style="bottom: 5px; right: 5px;"></v-btn>
         <v-sheet border :class="tonerRecarga.nro_regargas > 5 ? 'text-warning' : 'text-success'" class="text-h4 px-2 rounded-lg" density="compact" color="surface" elevation="20" position="absolute" location="top">
           {{ tonerRecarga.nro_regargas }}
         </v-sheet>
@@ -380,6 +412,11 @@ if(storeToonersRecargas.descripsionTonerRecarga["fecha salida"].length === 0){
 }else{
   storeToonersRecargas.descripsionTonerRecarga["fecha salida"] = new Date(toner.fecha_salida).toLocaleString()
 }
+
+
+storeToonersRecargas.obtenerTonerListaRecargas({ID:toner.id})
+
+
 }
 
 

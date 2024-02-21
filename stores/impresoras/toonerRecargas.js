@@ -18,12 +18,13 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             "direccion":null,
             "fecha salida":null
         },
+        descripsionTonerListaRecarga:null,
 
 
         formToonerRecarga:{
             "nro_item": null,
             "tooner_modelo": null,
-            "nro_regargas": 1,
+            "nro_regargas": 0,
             "fecha_entrada": "",
             "activo": true,
             "descripsion": "",
@@ -212,23 +213,32 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             }
             
         },
-        async restarTonerRegarca({nroActual,ID}){
+        async restarTonerRegarca2({toner}){
+
             try {
-                const numeroActual = Number(nroActual)
-                const data = {
-                    "nro_regargas": numeroActual-1
-                };
-                if(nroActual <= 0){
-                    alert("no puede ser menor que 0")
+                if(confirm("¿Quieres eleminar esta recarga?")){
+                    //eliminar el item en la lista de la fecha de recarga
+                    const eliminarListaRecarga = this.pb.collection('toner_recargas_ListaFecha').delete(toner.id);
+    
+                    //restar uno en las recargas totales
+                    const numeroActual = Number(toner.expand.toner.nro_regargas)
+                    const data = {
+                        "nro_regargas": numeroActual-1
+                    };
+                    const restartonerRecarga = this.pb.collection('toners_recargas').update(toner.expand.toner.id, data);
+    
+                    await Promise.all([eliminarListaRecarga,restartonerRecarga])
+                    console.log(toner)
+                    this.obtenerToonersRecargas()
+                    this.obtenerTonerListaRecargas({ID:toner.expand.toner.id})
+                }else{
                     return
                 }
-                const record = await this.pb.collection('toners_recargas').update(ID, data);
-                this.notificacion("envioExitoso")
-                this.obtenerToonersRecargas()
+
             } catch (error) {
+                console.error(error)
                 console.error(error.response)
                 this.notificacion("ocurrioUnError")
-                
             }
         },
         async activar_desativarTonerRegarga({statusToner,ID}){
@@ -236,12 +246,37 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             const data = {
                 "activo": !statusToner
             }
+            if (data.activo === false){
+                data["fecha_salida"] = new Date().toISOString()
+                console.log(data)
+            }else{
+                data["fecha_salida"] = null
+                console.log(data)
+            }
+
             const record = await this.pb.collection('toners_recargas').update(ID, data);
             this.obtenerToonersRecargas()
             this.notificacion("envioExitoso")
             } catch (error) {
                 console.log(error)
+                console.log(error.response)
                 this.notificacion("ocurrioUnError")
+            }
+        },
+        async obtenerTonerListaRecargas({ID}){
+            console.log(ID)
+            try {
+                const record = await this.pb.collection('toner_recargas_ListaFecha').getFullList({
+                    sort:"-created",
+                    filter:`toner="${ID}"`,
+                    expand:"toner",
+                    fields:'*,expand.toner.id,expand.toner.nro_regargas'
+                });
+                console.log(record)
+                this.descripsionTonerListaRecarga = record
+            } catch (error) {
+                console.error(error)
+                console.error(error.response)
             }
         }
     },
