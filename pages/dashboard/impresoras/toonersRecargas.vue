@@ -1,8 +1,4 @@
 <template>
-  <pre>
-    {{ storeToonersRecargas.FiltrotonerRecarga }}
-  </pre>
-  {{ storeToonersRecargas.filtroBusquedaRecargaToner }}
 <div>
   <v-slide-x-transition group>
     <AlertWarning v-show="storeToonersRecargas.eliminarExitoso === true" key="1"
