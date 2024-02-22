@@ -44,7 +44,11 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             marca:null,
             modelo:null,
             departamento:null,
-            tonerInactivo:false
+            tonerInactivo:false,
+            rangoFechas:{
+                desde:null,
+                hasta:null,
+            }
         },
 
 
@@ -57,15 +61,17 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
 
     }),
 
-
+    // fecha_entrada >= "2024-02-21" && fecha_entrada <= "2024-02-22"
     getters:{
         filtroBusquedaRecargaToner() {
-            const { nro_item, marca, modelo, departamento, tonerInactivo } = this.FiltrotonerRecarga;
+            const { nro_item, marca, modelo, departamento, tonerInactivo,rangoFechas } = this.FiltrotonerRecarga;
+
+            const {desde,hasta} = rangoFechas
         
-            let filterBuscar = "";
+            let filterBuscar = `fecha_entrada >= "${desde}" && fecha_entrada <= "${hasta}" && `;
         
             if (marca === null && modelo === null && departamento === null  && tonerInactivo === false && nro_item === null) {
-                filterBuscar = "";
+                filterBuscar = `fecha_entrada >= "${desde}" && fecha_entrada <= "${hasta}" `;
                 console.log("vacio");
             } else {
                 if (marca !== null) {
@@ -97,6 +103,17 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
                 }
             }
             return filterBuscar;
+        },
+        //muestra el total de las recargas dependiendo de la consulta
+        TotalRecargas:(state)=>{
+            if(state.itemsToonerRecarga !== null){
+                const objeto = [...state.itemsToonerRecarga]
+                let recargasTotal = 0
+                objeto.forEach((toner=>{
+                    recargasTotal += toner.nro_regargas
+                }))
+                return recargasTotal
+            }
         }
 
     },
@@ -118,6 +135,7 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             this.formToonerRecarga.direccion = null
         },
         async obtenerToonersRecargas(){
+            this.cargando = true
             const {items,totalItems,totalPages} = await this.pb.collection('toners_recargas').getList(this.toonerModeloRecarga.page, this.toonerModeloRecarga.perPage, {
                 filter: this.filtroBusquedaRecargaToner,
                 sort: '-activo',
@@ -138,6 +156,7 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             //         toner.bgColor = "red"
             //     }
             // })
+            this.cargando = false
 
             console.log(items)
         },

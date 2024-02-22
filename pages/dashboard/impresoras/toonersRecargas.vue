@@ -1,10 +1,8 @@
 <template>
-  <!-- <pre>
-    {{ storeToonersRecargas.descripsionTonerRecarga }}
-    {{ storeToonersRecargas.descripsionTonerListaRecarga }}
-  </pre> -->
-  {{ storeToonersRecargas.toonerModeloRecarga.totalItems }}
-
+  <pre>
+    {{ storeToonersRecargas.FiltrotonerRecarga }}
+  </pre>
+  {{ storeToonersRecargas.filtroBusquedaRecargaToner }}
 <div>
   <v-slide-x-transition group>
     <AlertWarning v-show="storeToonersRecargas.eliminarExitoso === true" key="1"
@@ -239,67 +237,83 @@
 
 <!-- buscador -->
 <v-form @submit.prevent>
-    <v-row align="center" align-content="center" justify="center" class="mt-2" > 
-      <v-col cols="12" md="2">
-        <v-text-field
-          density="compact"
-          hide-details="auto"
-          label="nro Item"
-          v-model="storeToonersRecargas.FiltrotonerRecarga.nro_item"
-        />
-      </v-col>
+  <v-row align="center" align-content="center" justify="center">
+    <v-col cols="4" sm="3"
+      class="d-flex justify-center flex-column text-center pa-2 font-weight-black">
+      <v-sheet class="">
+        DESDE
+        <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.desde" >
+      </v-sheet>
 
-      <v-col cols="12" md="2">
-        <v-autocomplete 
-          :items="storeToonersModelos.FiltrobusquedaMarcaModelo_autocomplete.marca"
-          label="Marca"
-          hide-details="auto" 
-          density="compact"
-          v-model="storeToonersRecargas.FiltrotonerRecarga.marca">
-          
-        </v-autocomplete>
-      </v-col>
+      <v-sheet class="">
+        HASTA
+        <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.hasta">
+      </v-sheet>
+    </v-col>
+  </v-row>
 
-      <v-col cols="12" md="2">
-        <v-autocomplete 
-          :items="storeToonersModelos.FiltrobusquedaMarcaModelo_autocomplete.modelo"
-          label="Modelo"
-          hide-details="auto" 
-          density="compact"
-          v-model="storeToonersRecargas.FiltrotonerRecarga.modelo"
-          >
-        </v-autocomplete>
-      </v-col>
-  
-      <v-col cols="12" md="2">
-        <v-autocomplete 
-          :items="useListasStore().listaDepartamento"
-          label="Departamento"
-          hide-details="auto" 
-          density="compact"
-          v-model="storeToonersRecargas.FiltrotonerRecarga.departamento">
-        </v-autocomplete>
-      </v-col>
-
-      <v-col cols="12" md="1">
-        <v-btn @click="storeToonersRecargas.obtenerToonersRecargas()" width="100%" type="submit"  class="px-2">Buscar</v-btn>
-      </v-col>
-    </v-row>
-    <v-row align="center" align-content="center" justify="center">
-      <div>
-        <v-switch
-        v-model="storeToonersRecargas.FiltrotonerRecarga.tonerInactivo"
-        inset
+  <v-row align="center" align-content="center" justify="center" class="mt-2" > 
+    <v-col cols="12" md="2">
+      <v-text-field
         density="compact"
-        base-color="primary"
-        :color="storeToonersRecargas.FiltrotonerRecarga.tonerInactivo === false ? 'secondary' : 'red' "
-        hide-details
-        append-icon="mdi-cog-off"
-        prepend-icon="mdi-cog"
+        hide-details="auto"
+        label="nro Item"
+        v-model="storeToonersRecargas.FiltrotonerRecarga.nro_item"
+      />
+    </v-col>
+
+    <v-col cols="12" md="2">
+      <v-autocomplete 
+        :items="storeToonersModelos.FiltrobusquedaMarcaModelo_autocomplete.marca"
+        label="Marca"
+        hide-details="auto" 
+        density="compact"
+        v-model="storeToonersRecargas.FiltrotonerRecarga.marca">
+        
+      </v-autocomplete>
+    </v-col>
+
+    <v-col cols="12" md="2">
+      <v-autocomplete 
+        :items="storeToonersModelos.FiltrobusquedaMarcaModelo_autocomplete.modelo"
+        label="Modelo"
+        hide-details="auto" 
+        density="compact"
+        v-model="storeToonersRecargas.FiltrotonerRecarga.modelo"
         >
-        </v-switch>
-      </div>
-    </v-row>
+      </v-autocomplete>
+    </v-col>
+
+    <v-col cols="12" md="2">
+      <v-autocomplete 
+        :items="useListasStore().listaDepartamento"
+        label="Departamento"
+        hide-details="auto" 
+        density="compact"
+        v-model="storeToonersRecargas.FiltrotonerRecarga.departamento">
+      </v-autocomplete>
+    </v-col>
+
+    <v-col cols="12" md="1">
+      <v-btn @click="storeToonersRecargas.obtenerToonersRecargas()" width="100%" type="submit"  class="px-2">Buscar</v-btn>
+    </v-col>
+  </v-row>
+
+  <v-row align="center" align-content="center" justify="center">
+    <div>
+      <v-switch
+      v-model="storeToonersRecargas.FiltrotonerRecarga.tonerInactivo"
+      inset
+      density="compact"
+      base-color="primary"
+      :color="storeToonersRecargas.FiltrotonerRecarga.tonerInactivo === false ? 'secondary' : 'red' "
+      hide-details
+      append-icon="mdi-cog-off"
+      prepend-icon="mdi-cog"
+      >
+      </v-switch>
+    </div>
+  </v-row>
 </v-form>
 
 
@@ -330,35 +344,46 @@
         <v-sheet border :class="tonerRecarga.nro_regargas > 5 ? 'text-warning' : 'text-success'" class="text-h4 px-2 rounded-lg" density="compact" color="surface" elevation="20" position="absolute" location="top">
           {{ tonerRecarga.nro_regargas }}
         </v-sheet>
-      </template>>
+      </template>
     </CardImage>
   </v-slide-y-transition>
 </v-card>
 
 <!-- paginacion -->
 <div class="d-flex justify-space-between align-center pa-2" style="position: relative;">
-    <v-pagination 
-      class="mx-auto" 
-      :density="'compact'" 
-      v-model="storeToonersRecargas.toonerModeloRecarga.page" 
-      :total-visible="3" 
-      :length="storeToonersRecargas.toonerModeloRecarga.totalPages">
-    </v-pagination>
-    <div v-show="name !== 'xs'" style="position: absolute; right: 0; top: 50%;transform: translate(0%, -25%);">
-      <v-select
-        density="compact"
-        :items="[10,20,30,40,50,300,10000]"
-        v-model="storeToonersRecargas.toonerModeloRecarga.perPage"
-      />
-    </div>
+  <v-pagination 
+    class="mx-auto" 
+    :density="'compact'" 
+    v-model="storeToonersRecargas.toonerModeloRecarga.page" 
+    :total-visible="3" 
+    :length="storeToonersRecargas.toonerModeloRecarga.totalPages">
+  </v-pagination>
+  <div v-show="name !== 'xs'" style="position: absolute; right: 0; top: 50%;transform: translate(0%, -25%);">
+    <v-select
+      density="compact"
+      :items="[10,20,30,40,50,300,10000]"
+      v-model="storeToonersRecargas.toonerModeloRecarga.perPage"
+    />
   </div>
+</div>
+<v-card class="mb-16">
+    <v-card-title class="text-center font-weight-black text-h6">CONTEO TONERS RECARGAS</v-card-title>
+    <v-card-text>
+      <div class="py-1 text-h6">
+        <v-divider></v-divider>
+        <v-chip>1</v-chip> Total de recargas: {{ storeToonersRecargas.TotalRecargas }}
+        <v-divider></v-divider>
+      </div>
+    </v-card-text>
+</v-card>
 </template>
 
 <script setup>
 import { useDisplay } from 'vuetify'
 import {useToonersRecargasStore} from '~/stores/impresoras/toonerRecargas'
 import {useToonerModeloStore} from '~/stores/impresoras/toonerModelo'
-import {convertirFechaUTC} from "~/assets/funciones_reuzables/times"
+import {convertirFechaUTC,obtenerPrimerDiaMes,obtenerUltimoDiaMes} from "~/assets/funciones_reuzables/times"
+
 
 const storeToonersRecargas = useToonersRecargasStore()
 const storeToonersModelos = useToonerModeloStore()
@@ -419,16 +444,12 @@ storeToonersRecargas.obtenerTonerListaRecargas({ID:toner.id})
 
 }
 
-
 const ruleNoEmpty = [
   value => {
     if (value) return true
     return 'Debe rellenar el campo'
   },
 ]
-
-
-const tonerInactivo = ref(false)
 
 function capturarTonerModelo(event){
   tonerSeleccionado.value.marca = event.marca
@@ -448,12 +469,20 @@ const tonerSeleccionado = ref({
 })
 
 onBeforeMount(async()=>{
+  FiltrotonerRecarga.value.rangoFechas.desde = obtenerPrimerDiaMes()
+  FiltrotonerRecarga.value.rangoFechas.hasta = obtenerUltimoDiaMes()
+
   await storeToonersRecargas.obtenerToonersRecargas()
   storeToonersRecargas.formToonerRecarga.fecha_entrada = useAsistenciasStore().obtenerFechaHoraActual_8am
   await storeToonersModelos.ObtenerModeloTooner()
+
 })
 
-const {toonerModeloRecarga} = storeToRefs(storeToonersRecargas)
+onMounted(()=>{
+  setTimeout(() => {
+  }, 2000);
+})
+const {toonerModeloRecarga,FiltrotonerRecarga} = storeToRefs(storeToonersRecargas)
 
 watch(
     () => toonerModeloRecarga.value.page,
@@ -481,7 +510,10 @@ watch(
     },{flush:'post'}
   )
 
-  function capitalizarPrimeraLetra(texto) {
+
+  //la primera letra estara en mayuscula
+function capitalizarPrimeraLetra(texto) {
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
+
 </script>
