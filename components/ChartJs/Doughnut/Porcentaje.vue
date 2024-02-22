@@ -1,6 +1,6 @@
 <template>
   <Doughnut v-if="props.view" id="DoughnutJS"
-    style="max-height: 400px;"
+    style="max-height: 90%;"
     :data="props.chartData"  :options="props.options" :plugins="[ChartJSPluginDatalabels,doughnutLabel,legenMargin]" 
   />
 </template>

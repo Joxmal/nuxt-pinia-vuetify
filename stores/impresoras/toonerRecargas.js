@@ -46,6 +46,7 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
             departamento:null,
             tonerInactivo:false,
             rangoFechas:{
+                activo:false,
                 desde:null,
                 hasta:null,
             }
@@ -66,13 +67,18 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
         filtroBusquedaRecargaToner() {
             const { nro_item, marca, modelo, departamento, tonerInactivo,rangoFechas } = this.FiltrotonerRecarga;
 
-            const {desde,hasta} = rangoFechas
-        
-            let filterBuscar = `fecha_entrada >= "${desde}" && fecha_entrada <= "${hasta}" && `;
-        
+            const {desde,hasta,activo} = rangoFechas
+            
+            let filterBuscar = `fecha_entrada >= "${desde} 00:00:00.000Z" && fecha_entrada <= "${hasta} 23:59:59.999Z" && `;
+            if(!activo){
+                filterBuscar = ""
+            }
+
             if (marca === null && modelo === null && departamento === null  && tonerInactivo === false && nro_item === null) {
-                filterBuscar = `fecha_entrada >= "${desde}" && fecha_entrada <= "${hasta}" `;
-                console.log("vacio");
+                filterBuscar = `fecha_entrada >= "${desde} 00:00:00.000Z" && fecha_entrada <= "${hasta} 23:59:59.999Z" `;
+                if(!activo){
+                    filterBuscar = ""
+                }
             } else {
                 if (marca !== null) {
                     filterBuscar += `tooner_modelo.marca = "${marca}"`;

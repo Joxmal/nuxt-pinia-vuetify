@@ -138,6 +138,7 @@ const listaNavegacion = {
     1:{ icon:'mdi-map-marker-star-outline', value:'ubicaciones', path:'/dashboard/impresoras'},
     2:{ icon:'mdi-water-plus', value:'toner Modelo', path:'/dashboard/impresoras/tonnersModelos'},
     3:{ icon:'mdi-water-alert', value:'Recargas', path:'/dashboard/impresoras/toonersRecargas'},
+    4:{ icon:'mdi-chart-bar', value:'Estadisticas', path:'/dashboard/impresoras/estadisticas'},
   },
 
 }

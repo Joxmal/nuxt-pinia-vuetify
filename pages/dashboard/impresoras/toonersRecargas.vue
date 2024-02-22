@@ -230,21 +230,24 @@
     </v-container>
   </template>
 </DialogForm>
-
 <!-- buscador -->
 <v-form @submit.prevent>
   <v-row align="center" align-content="center" justify="center">
     <v-col cols="4" sm="3"
       class="d-flex justify-center flex-column text-center pa-2 font-weight-black">
-      <v-sheet class="">
-        DESDE
-        <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.desde" >
-      </v-sheet>
-
-      <v-sheet class="">
-        HASTA
-        <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.hasta">
-      </v-sheet>
+      <v-sheet><v-checkbox v-model="FiltrotonerRecarga.rangoFechas.activo" :density="'compact'" label=" Filtrar por fecha de entrada" hide-details="auto"></v-checkbox> </v-sheet>
+      <div v-if="FiltrotonerRecarga.rangoFechas.activo">
+        <v-divider></v-divider>
+        <v-sheet class="">
+          DESDE
+          <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.desde" >
+        </v-sheet>
+  
+        <v-sheet class="">
+          HASTA
+          <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.hasta">
+        </v-sheet>
+      </div>
     </v-col>
   </v-row>
 
@@ -379,7 +382,9 @@ import { useDisplay } from 'vuetify'
 import {useToonersRecargasStore} from '~/stores/impresoras/toonerRecargas'
 import {useToonerModeloStore} from '~/stores/impresoras/toonerModelo'
 import {convertirFechaUTC,obtenerPrimerDiaMes,obtenerUltimoDiaMes} from "~/assets/funciones_reuzables/times"
-
+definePageMeta({
+  middleware:'autenticacion'
+})
 
 const storeToonersRecargas = useToonersRecargasStore()
 const storeToonersModelos = useToonerModeloStore()
