@@ -54,12 +54,6 @@ export const useEstadisticasStore = defineStore('useEstadisticasStore', {
                 const labels = [];
                 const data = [];
 
-                this.excel.totalRecargasPorDepartamento = {
-                    labels,
-                    data
-                }
-                
-    
                 newLista.forEach((departamento)=>{
                     const nombreDepartamento = departamento.departamento;
     
@@ -71,7 +65,19 @@ export const useEstadisticasStore = defineStore('useEstadisticasStore', {
                         data[index]++;
                       }
                 });
-                console.log(labels)
+
+                //formatear para el excel
+                const excelDate = [["Departamendo","recargas"]]
+                labels.forEach((departamento,i)=> excelDate.push([departamento,data[i]]))
+
+                let sumaTotal = 0
+                data.forEach(recarga => sumaTotal += recarga);
+                excelDate.push(["Total",sumaTotal])
+
+                this.excel.totalRecargasPorDepartamento = excelDate
+                //-------------------
+
+
                 const DataDoughnut = {
                     labels,
                     datasets: [{
@@ -140,46 +146,26 @@ export const useEstadisticasStore = defineStore('useEstadisticasStore', {
             this.itemsEstadisticas = records
         },
 
-
-        imprimirExcelTotalRecargas(){
-            const datosExcel = {...this.excel.totalRecargasPorDepartamento}
-            const datosOrdenados = {
-                labels: ['Nombre', 'Cantidad'],
-                data: [['Departamento', 'Cantidad de recargas']]
-            };
-
-            for (let i = 0; i < datosExcel.labels.length; i++) {
-                datosOrdenados.data.push([datosExcel.labels[i], datosExcel.data[i]]);
-            }
-
-            let totalData = 0 
-            datosExcel.data.forEach((data)=> totalData += data)
-          
-            datosOrdenados.data.push(['TOTAL',totalData])
-
-            console.log(datosOrdenados.data)
-
-            const ws = XLSX.utils.aoa_to_sheet(datosOrdenados.data);
+        imprimirExcelTotalRecargas({data,nombreArchivo,nombreHoja,encabezado}){
+            const ws = XLSX.utils.aoa_to_sheet(data);
             const wb = XLSX.utils.book_new();
             wb.Props={
                 Title:"Excel de toners",
                 Subject:"se muestras las recargas de toners de cada departamento",
                 Author:"josé Rafael Montes Gonzalez",
-                CreatedDate: new Date()
+                CreatedDate: new Date(),
             }
-
-            
             //crear el archivo excel (hoja,datos, nombre de hoja)
-            XLSX.utils.book_append_sheet(wb, ws, "Reporte");
+            XLSX.utils.book_append_sheet(wb, ws, `${nombreHoja}`);
             
             // Ajustar el ancho de la columna
             ws['!cols'] = [{ wch: 40 }, { wch: 20 }]; // Define el ancho de la primera y segunda columna
             
             //añadir encabezados
-            XLSX.utils.sheet_add_aoa(ws, [["Departamentos", "Nro Recargas"]], { origin: "A1" });
+            XLSX.utils.sheet_add_aoa(ws, [encabezado], { origin: "A1" });
 
 
-            XLSX.writeFile(wb, "TonerReporte.xlsx", { compression: true });
+            XLSX.writeFile(wb, `${nombreArchivo}.xlsx`, { compression: true });
 
             // /* Descargar el archivo */
             // const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });

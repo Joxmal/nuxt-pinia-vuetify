@@ -131,7 +131,6 @@
     </template>
 </DialogGeneralSimple>
 
-
 <!-- crear nuevo modelo de toner -->
 <DialogForm
   @crear="storeToonersRecargas.EnviartonerRecarga()"
@@ -234,17 +233,24 @@
 <!-- buscador -->
 <v-form @submit.prevent>
   <v-row align="center" align-content="center" justify="center">
-    <v-col cols="4" sm="3"
-      class="d-flex justify-center flex-column text-center pa-2 font-weight-black">
-      <v-sheet class="">
-        DESDE
-        <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.desde" >
-      </v-sheet>
+    <v-col style="border: 2px solid rgb(54, 177, 218);border-radius: 30px; overflow: ;" cols="8" sm="3"
+      class="d-flex justify-center flex-column text-center pa-2 font-weight-bold">
+      <div class="d-flex justify-center align-center ">
+        <v-checkbox v-model="FiltrotonerRecarga.rangoFechas.activo" :density="'compact'" :hide-details="'auto'"/>Fecha de entrada
+      </div>
+      <div v-if="FiltrotonerRecarga.rangoFechas.activo" >
+        <div>
+          DESDE
+          <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.desde" >
+        </div>
 
-      <v-sheet class="">
-        HASTA
-        <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.hasta">
-      </v-sheet>
+  
+        <div>
+          HASTA
+          <input class="" type="date" min="2023-01-01" max="2024-12-30" v-model="FiltrotonerRecarga.rangoFechas.hasta">
+        </div>
+
+      </div>
     </v-col>
   </v-row>
 

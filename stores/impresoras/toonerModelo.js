@@ -130,6 +130,7 @@ export const useToonerModeloStore = defineStore('useToonerModeloStore', {
                 console.log(items)
             } catch (error) {
                 console.error(error.response)
+                console.error(error)
                 this.notificacion("ocurrioUnError")
                 this.cargando = false
             }

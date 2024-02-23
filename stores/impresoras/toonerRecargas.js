@@ -108,6 +108,7 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
                     filterBuscar += `nro_item ~ "${nro_item}"`;
                 }
             }
+
             return filterBuscar;
         },
         //muestra el total de las recargas dependiendo de la consulta

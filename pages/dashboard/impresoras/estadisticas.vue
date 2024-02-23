@@ -62,7 +62,15 @@
     </v-col>
   </v-row>
 
-  <v-btn color="primary" class="my-16" @click="storeEstadisticas.imprimirExcelTotalRecargas()">Descargar Excel</v-btn>
+  <v-btn color="primary" class="my-16" 
+    @click="storeEstadisticas.imprimirExcelTotalRecargas({
+      data:storeEstadisticas.excel.totalRecargasPorDepartamento,
+      encabezado:['Departamentos','Nro Recargas'],
+      nombreArchivo:'TonerReporteRecargas',
+      nombreHoja:'Reporte'
+      })">
+    Descargar Excel
+  </v-btn>
 </template>
 
 <script setup>
