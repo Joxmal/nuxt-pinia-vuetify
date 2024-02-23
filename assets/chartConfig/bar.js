@@ -1,19 +1,6 @@
 
 export const defaultBarData = {
-  labels: [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ],
+  labels: ['January','February','March','April','May','June','July','August','September','October','November','December'],
   datasets: [
     {
       backgroundColor: [
@@ -45,7 +32,9 @@ export const defaultBarOption = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
-    legend: { display: false },
+    legend: { 
+      display: false, 
+    },
     title: {
       display: false,
       // text: 'Custom Chart Title',

@@ -24,7 +24,6 @@
             />  
         </v-slide-x-transition>
     </div>
-
     <v-row  align="center" align-content="center" justify="center">
         <v-col   cols="10" sm="4" class="d-flex justify-center flex-column text-center pa-2 font-weight-black">
             <div style="border: 1px solid lightblue;" >
@@ -46,24 +45,24 @@
             <v-btn color="primary" @click="storeEstadisticas.obtenerToonersRecargas()" width="100%" type="submit"  class="px-2">Buscar</v-btn>
         </v-col>
     </v-row>
-
+  
     <v-row>
-        <v-col cols="12">
-          <v-card height="700"  class="mx-auto">
-            <v-card-title class=" text-center font-weight-black text-h5 text-secondary">
-              Conteo de recargas
-            </v-card-title>
-            <v-divider :thickness="3" class="text-blue border-opacity-100"></v-divider>
-            <ChartJsDoughnutPorcentaje
-            :options="DefaultOptions"
-            :chart-data="storeEstadisticas.DataDoughnut !== null  ? storeEstadisticas.DataDoughnut : null "
-            :view="storeEstadisticas.DataDoughnut !== null ? true : false"/>
-        </v-card>
+    <v-col cols="12">
+      <v-card height="700"  class="mx-auto">
+        <v-card-title class=" text-center font-weight-black text-h5 text-secondary">
+          Conteo de recargas : {{ storeEstadisticas.totalBarJS }}
+        </v-card-title>
         <v-divider :thickness="3" class="text-blue border-opacity-100"></v-divider>
-          
-        </v-col>
-    </v-row>
+        <ChartJsBar
+        :options="DefaultOptions"
+        :chart-data="storeEstadisticas.DataBarJS !== null  ? storeEstadisticas.DataBarJS : null "
+        :view="viewCharts"/>
+      </v-card>
+      <v-divider :thickness="3" class="text-blue border-opacity-100"></v-divider>
+    </v-col>
+  </v-row>
 
+  <v-btn color="primary" class="my-16" @click="storeEstadisticas.imprimirExcelTotalRecargas()">Descargar Excel</v-btn>
 </template>
 
 <script setup>
@@ -76,6 +75,9 @@ definePageMeta({
 const storeEstadisticas = useEstadisticasStore()
 const {FiltroEstadisticas} = storeToRefs(storeEstadisticas)
 
+//activar la vista de los chartsJS
+const viewCharts = ref(false)
+
 onBeforeMount(()=>{
     storeEstadisticas.FiltroEstadisticas.rangoFechas.desde = obtenerPrimerDiaMes()
     storeEstadisticas.FiltroEstadisticas.rangoFechas.hasta = obtenerUltimoDiaMes()
@@ -83,6 +85,7 @@ onBeforeMount(()=>{
 
 onMounted(async()=>{
     await storeEstadisticas.obtenerToonersRecargas()
+    viewCharts.value = true
 })
 
 const DefaultOptions = {

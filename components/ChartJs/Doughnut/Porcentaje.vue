@@ -45,6 +45,8 @@ const legenMargin ={
 
 
 
+
+
   ChartJS.register(ArcElement, Tooltip, Legend,Title),{
   id: 'DoughnutJS'
 }

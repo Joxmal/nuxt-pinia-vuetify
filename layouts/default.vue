@@ -43,6 +43,9 @@
           <v-list-item @click="MostrarMenu('impresoras'),drawer= true" prepend-icon="mdi-printer-outline" value="impresoras"/>
 
           <!-- <v-list-item @click="MostrarMenu('sistemas'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/> -->
+
+
+          <v-list-item @click="MostrarMenu('testing'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/>
         </v-list>
       </v-navigation-drawer>
 
@@ -78,6 +81,11 @@
 
           <!-- impresoras -->
           <nuxt-link v-show="ViewMenu=='impresoras'" :class="listaNavegacion.class"  :to="lista.path" v-for="lista in listaNavegacion.impresoras" :key="lista.value" style="text-decoration: none;">
+            <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
+          </nuxt-link>
+
+          <!-- testing -->
+          <nuxt-link v-show="ViewMenu=='testing'" :class="listaNavegacion.class"  :to="lista.path" v-for="lista in listaNavegacion.testing" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
         </v-list>
@@ -139,6 +147,9 @@ const listaNavegacion = {
     2:{ icon:'mdi-water-plus', value:'toner Modelo', path:'/dashboard/impresoras/tonnersModelos'},
     3:{ icon:'mdi-water-alert', value:'Recargas', path:'/dashboard/impresoras/toonersRecargas'},
     4:{ icon:'mdi-chart-bar', value:'Estadisticas', path:'/dashboard/impresoras/estadisticas'},
+  },
+  testing:{
+    1:{ icon:'mdi-map-marker-star-outline', value:'testing_1', path:'/dashboard/testing'},
   },
 
 }
