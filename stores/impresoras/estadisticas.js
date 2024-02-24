@@ -163,7 +163,10 @@ export const useEstadisticasStore = defineStore('useEstadisticasStore', {
             
             //añadir encabezados
             XLSX.utils.sheet_add_aoa(ws, [encabezado], { origin: "A1" });
-
+            
+            wb.Sheets[nombreHoja]["A1"].s = { font: { bold: true },color: { rgb: "FFFFAA00" } };
+            
+            console.log(wb.Sheets)
 
             XLSX.writeFile(wb, `${nombreArchivo}.xlsx`, { compression: true });
 
