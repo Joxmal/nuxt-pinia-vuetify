@@ -16,21 +16,39 @@
   </div> -->
 
 
-  <v-row class="my-5">
-    <v-col cols="12" >
-      <v-btn color="error" width="100%" @click="files = []">Resetear</v-btn>
+  <v-row class="my-2">
+    <v-col cols="6">
+      <v-text-field 
+      v-model="store.form.departamento" 
+      hide-details="auto" 
+      label="Departamento"/>    
+    </v-col>
+
+    <v-col cols="6">
+      <v-text-field
+        v-model="store.form.razon" 
+        hide-details="auto" 
+        label="Razón"/>
+    </v-col>
+
+    <v-col  cols="12" class="d-flex justify-center align-center">
+        <v-tooltip hide-details="auto"   text="Eliminar todo">
+          <template v-slot:activator="{ props }">
+            <v-btn @click="files = []" color="error" icon="mdi-delete-forever" v-bind="props"></v-btn>
+          </template>
+        </v-tooltip>
     </v-col>
   </v-row>
 
   <v-card
+    position="relative"
     class="d-flex justify-center align-center"
     style="overflow: auto;" 
     border="colorLink lg"
     height="400"
     @dragover="dragover"
     @dragleave="dragleave"
-    @drop="drop" 
-  >
+    @drop="drop" >
     <input
       style="display: none;"
       type="file"
@@ -42,7 +60,12 @@
       ref="file"
       accept=".pdf,.jpg,.jpeg,.png"
     />
+    
 
+
+
+
+    
     <label v-if="files.length < 1" for="fileInput" class="file-label" style="cursor: pointer;">
       <div v-if="isDragging">Suelta el Archivo aqui</div>
       <div v-else>Arrastra el achivo aqui o <u>click</u> para subir el archivo</div>
@@ -74,26 +97,36 @@
 
   </v-card>
 
-  <v-row align="center" justify="center" class="mt-12">
+  <v-row align="center" justify="center" class="">
     <v-col cols="4" md="3" lg="2" >
       <v-card :color="tamanoFiles >= 10 ? 'error' : 'success'" elevation="10" class=" text-center" >{{ tamanoFiles+"MB" }}</v-card>
     </v-col>
     <v-col cols="12" >
-      <v-btn :disabled="tamanoFiles >= 10" color="primary" width="100%" @click="enviarArchivos">Enviar</v-btn>
+      <v-btn :disabled="tamanoFiles >= 10 || files.length === 0 || (store.form.departamento.length === 0 || store.form.razon.length === 0)"
+        color="primary" width="100%" 
+        @click="enviarArchivos">
+        Enviar
+      </v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script setup>
 import JSZip from 'jszip';
- import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver';
+import {useTest1Store} from '~/stores/test/test_1'
+
+const store = useTest1Store()
 
  const extensionesImagenes = {
   ".xlsx": "/images/officeImages/excel.png",
+  ".xls": "/images/officeImages/excel.png",
   ".rar": "/images/officeImages/rar.png",
   ".zip": "/images/officeImages/rar.png", // La misma imagen para .rar y .zip
+  ".7z": "/images/officeImages/rar.png", // La misma imagen para .rar y .zip
   ".pdf": "/images/officeImages/pdf.png",
-  ".docx": "/images/officeImages/word.png"
+  ".docx": "/images/officeImages/word.png",
+  ".doc": "/images/officeImages/word.png"
 };
 
 const isDragging = ref(false);
@@ -161,7 +194,9 @@ const enviarArchivos = async()=>{
 
   console.log(contenidoZip)
 
-  saveAs(contenidoZip, "archivos_comprimidos.rar");
+  // saveAs(contenidoZip, "archivos_comprimidos.rar");
+
+  store.enviarArchivo({archivo:contenidoZip})
 
 }
 

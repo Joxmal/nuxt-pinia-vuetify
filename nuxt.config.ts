@@ -27,7 +27,8 @@ export default defineNuxtConfig({
 
   runtimeConfig:{
     public:{
-      POCKETBASE_URL: process.env.POCKETBASE_URL
+      POCKETBASE_URL: process.env.POCKETBASE_URL,
+      POCKETBASE_TEST: process.env.POCKETBASE_TEST
     }
   },
 })

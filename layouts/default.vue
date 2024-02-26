@@ -150,6 +150,7 @@ const listaNavegacion = {
   },
   testing:{
     1:{ icon:'mdi-map-marker-star-outline', value:'testing_1', path:'/dashboard/testing'},
+    2:{ icon:'mdi-map-marker-star-outline', value:'testing_2', path:'/dashboard/testing/testing_2'},
   },
 
 }
