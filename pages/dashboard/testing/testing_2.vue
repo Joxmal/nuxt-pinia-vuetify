@@ -20,6 +20,10 @@
 
 <script setup>
 import {useTest1Store} from '~/stores/test/test_1'
+definePageMeta({
+  middleware:'autenticacion'
+})
+
 const store = useTest1Store()
 
 

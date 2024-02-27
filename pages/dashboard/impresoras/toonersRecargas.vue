@@ -386,7 +386,9 @@ import {useToonersRecargasStore} from '~/stores/impresoras/toonerRecargas'
 import {useToonerModeloStore} from '~/stores/impresoras/toonerModelo'
 import {convertirFechaUTC,obtenerPrimerDiaMes,obtenerUltimoDiaMes} from "~/assets/funciones_reuzables/times"
 
-
+definePageMeta({
+  middleware:'autenticacion'
+})
 const storeToonersRecargas = useToonersRecargasStore()
 const storeToonersModelos = useToonerModeloStore()
 

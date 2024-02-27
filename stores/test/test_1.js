@@ -36,15 +36,24 @@ export const useTest1Store = defineStore('useTest1Store', {
         },
 
         async enviarArchivo({archivo}){
+            this.cargando = true
+
             const form = {...this.form}
             form.documento = archivo
             console.log(this.pb)
             console.log(form)
             console.log(useRuntimeConfig().public.POCKETBASE_TEST)
+
+            this.cargando = false
+            this.notificacion("envioExitoso")
+
             try {
                 const record = await this.pb.collection('archivo').create(form);
                 console.log(record)
             } catch (error) {
+                this.cargando = false
+                this.notificacion("ocurrioUnError")
+
                 console.error(error)
                 console.error(error.response)
             }
@@ -52,6 +61,7 @@ export const useTest1Store = defineStore('useTest1Store', {
 
         async verArchivos(){
             try {
+                this.cargando = true
                 const records = await this.pb.collection('archivo').getFullList({
                     sort: '-created',
                 });
@@ -63,10 +73,13 @@ export const useTest1Store = defineStore('useTest1Store', {
                     ulrArchivos.push(url+"?download=1")
                     archivo.documento =  url+"?download=1"
                 })
+                this.cargando = false
 
                 console.log(records)
                 return records
             } catch (error) {
+                this.cargando = false
+                this.notificacion("ocurrioUnError")
                 console.error(error)
             }
 

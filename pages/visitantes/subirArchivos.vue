@@ -4,7 +4,7 @@
 
 <script setup>
   definePageMeta({
-    middleware:'autenticacion'
+    layout:false,
   })
 
   
