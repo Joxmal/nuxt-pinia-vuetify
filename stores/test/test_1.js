@@ -5,7 +5,7 @@ import PocketBase from 'pocketbase'
 
 export const useTest1Store = defineStore('useTest1Store', {
     state: () => ({
-        pb: new PocketBase(useRuntimeConfig().public.POCKETBASE_TEST),
+        pb: new PocketBase(useRuntimeConfig().public.POCKETBASE_URL),
         
         form:{
             "departamento": "",
@@ -42,7 +42,7 @@ export const useTest1Store = defineStore('useTest1Store', {
             form.documento = archivo
             console.log(this.pb)
             console.log(form)
-            console.log(useRuntimeConfig().public.POCKETBASE_TEST)
+            console.log(useRuntimeConfig().public.POCKETBASE_URL)
 
             this.cargando = false
             this.notificacion("envioExitoso")
@@ -65,13 +65,21 @@ export const useTest1Store = defineStore('useTest1Store', {
                 const records = await this.pb.collection('archivo').getFullList({
                     sort: '-created',
                 });
+                console.log(records)
+                
+                //obtener token de seguridad
+                const token = await this.pb.files.getToken();
+                console.log(token)
+
+
                 const ulrArchivos = []
+
 
                 records.forEach((archivo,index)=>{
                     const firstFilename = archivo.documento;
-                    const url = this.pb.files.getUrl(archivo,firstFilename)
+                    const url = this.pb.files.getUrl(archivo,firstFilename,{token})
                     ulrArchivos.push(url+"?download=1")
-                    archivo.documento =  url+"?download=1"
+                    archivo.documento =  url
                 })
                 this.cargando = false
 

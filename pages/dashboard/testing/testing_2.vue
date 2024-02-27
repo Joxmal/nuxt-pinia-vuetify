@@ -32,4 +32,5 @@ const archivos = ref()
 onBeforeMount(async()=>{
   archivos.value = await store.verArchivos()
 })
+
 </script>

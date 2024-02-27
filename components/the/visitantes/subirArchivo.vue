@@ -105,11 +105,13 @@
     
       <v-row align="center" justify="center" class="">
         <v-col cols="4" md="3" lg="2" >
-          <v-card :color="tamanoFiles >= 10 ? 'error' : 'success'" elevation="10" class=" text-center" >{{ tamanoFiles+"MB" }}</v-card>
+          <v-card :color="tamanoFiles >= 20 ? 'error' : 'success'" elevation="10" class=" text-center" >{{ tamanoFiles+"MB" }}</v-card>
         </v-col>
         <v-divider class="border-opacity-0" ></v-divider>
         <v-col cols="10" >
-          <v-btn :disabled="tamanoFiles >= 10 || files.length === 0 || (store.form.departamento.length === 0 || store.form.razon.length === 0)"
+          <v-btn 
+            :loading="loadinButton" 
+            :disabled="tamanoFiles >= 20 || files.length === 0 || (store.form.departamento.length === 0 || store.form.razon.length === 0) || loadinButton === true"
             color="primary" width="100%" 
             @click="enviarArchivos">
             Enviar
@@ -125,98 +127,103 @@
     
     
     
-    <script setup>
-    import JSZip from 'jszip';
-    import {useTest1Store} from '~/stores/test/test_1'
-    
-    const store = useTest1Store()
-    
-    const extensionesImagenes = {
-      ".xlsx": "/images/officeImages/excel.png",
-      ".xls": "/images/officeImages/excel.png",
-      ".rar": "/images/officeImages/rar.png",
-      ".zip": "/images/officeImages/rar.png", // La misma imagen para .rar y .zip
-      ".7z": "/images/officeImages/rar.png", // La misma imagen para .rar y .zip
-      ".pdf": "/images/officeImages/pdf.png",
-      ".docx": "/images/officeImages/word.png",
-      ".doc": "/images/officeImages/word.png"
-    };
-    
-    const isDragging = ref(false);
-    const files = ref([]);
-    
-    const onChange = () => {
-      files.value.push(...fileInput.files);
-    };
-    
-    const dragover = (e) => {
-      e.preventDefault();
-      isDragging.value = true;
-    };
-    
-    const dragleave = () => {
-      isDragging.value = false;
-    };
-    
-    const drop = (e) => {
-      e.preventDefault();
-      fileInput.files = e.dataTransfer.files;
-      onChange();
-      isDragging.value = false;
-    };
-    
-    const remove = (i) => {
-      files.value.splice(i, 1);
-    };
-    
-    const generateURL = (file) => {
-      console.log(file)
-    
-    
-      let fileSrc = URL.createObjectURL(file);
-      setTimeout(() => {
-        URL.revokeObjectURL(fileSrc);
-      }, 1000);
-    
-      const extension = file.name.substring(file.name.lastIndexOf('.'));
-      const imagenArchivo = extensionesImagenes[extension] || fileSrc ;
-    
-      console.log(imagenArchivo)
-      return imagenArchivo;
-    };
-    
-    const enviarArchivos = async()=>{
-      console.log(files.value.length)
-      console.log(files.value)
-    
-      const totalSize = files.value.reduce((total, item) => total + item.size, 0);
-      console.log(totalSize)
-    
-      if(totalSize > 10000000){
-        alert("No puede enviar mas de 10MB de en peso de archivos")
-        return
-      }
-      
-      const zip = new JSZip();
-    
-      files.value.forEach((archivo) => {
-        zip.file(archivo.name, archivo);
-      });
-    
-      const contenidoZip = await zip.generateAsync({ type: "blob",compression:'DEFLATE',compressionOptions:{level:9}});
-    
-      console.log(contenidoZip)
-    
-      // saveAs(contenidoZip, "archivos_comprimidos.rar");
-    
-      store.enviarArchivo({archivo:contenidoZip})
-    
-    }
-    
-    const tamanoFiles = ref(0)
-    watch(files, () => {
-      const totalSize = files.value.reduce((total, item) => total + item.size, 0);
-      const megabytes = totalSize / (1024 * 1024);
-      tamanoFiles.value = megabytes.toFixed(2)
-    },{deep:true,flush:'post'})
-    </script>
+<script setup>
+import JSZip from 'jszip';
+import {useTest1Store} from '~/stores/test/test_1'
+
+const store = useTest1Store()
+
+const extensionesImagenes = {
+  ".xlsx": "/images/officeImages/excel.png",
+  ".xls": "/images/officeImages/excel.png",
+  ".rar": "/images/officeImages/rar.png",
+  ".zip": "/images/officeImages/rar.png", // La misma imagen para .rar y .zip
+  ".7z": "/images/officeImages/rar.png", // La misma imagen para .rar y .zip
+  ".pdf": "/images/officeImages/pdf.png",
+  ".docx": "/images/officeImages/word.png",
+  ".doc": "/images/officeImages/word.png"
+};
+
+const isDragging = ref(false);
+const files = ref([]);
+
+const onChange = () => {
+  files.value.push(...fileInput.files);
+};
+
+const dragover = (e) => {
+  e.preventDefault();
+  isDragging.value = true;
+};
+
+const dragleave = () => {
+  isDragging.value = false;
+};
+
+const drop = (e) => {
+  e.preventDefault();
+  fileInput.files = e.dataTransfer.files;
+  onChange();
+  isDragging.value = false;
+};
+
+const remove = (i) => {
+  files.value.splice(i, 1);
+};
+
+const generateURL = (file) => {
+  console.log(file)
+
+
+  let fileSrc = URL.createObjectURL(file);
+  setTimeout(() => {
+    URL.revokeObjectURL(fileSrc);
+  }, 1000);
+
+  const extension = file.name.substring(file.name.lastIndexOf('.'));
+  const imagenArchivo = extensionesImagenes[extension] || fileSrc ;
+
+  console.log(imagenArchivo)
+  return imagenArchivo;
+};
+
+const loadinButton = ref(false)
+const enviarArchivos = async()=>{
+  loadinButton.value = true
+  console.log(files.value.length)
+  console.log(files.value)
+
+  const totalSize = files.value.reduce((total, item) => total + item.size, 0);
+  console.log(totalSize)
+
+  if(totalSize > 20971520){
+    alert("No puede enviar mas de 20MB de en peso de archivos")
+    return
+  }
+  
+  const zip = new JSZip();
+
+  files.value.forEach((archivo) => {
+    zip.file(archivo.name, archivo);
+  });
+
+  const contenidoZip = await zip.generateAsync({ type: "blob",compression:'DEFLATE',compressionOptions:{level:9}});
+
+  console.log(contenidoZip)
+
+  // saveAs(contenidoZip, "archivos_comprimidos.rar");
+
+  await store.enviarArchivo({archivo:contenidoZip})
+  loadinButton.value = false
+
+
+}
+
+const tamanoFiles = ref(0)
+
+watch(files, () => {
+  const totalSize = files.value.reduce((total, item) => total + item.size, 0);
+  const megabytes = totalSize / (1024 * 1024);
+  tamanoFiles.value = megabytes.toFixed(2)
+},{deep:true,flush:'post'})
+</script>
