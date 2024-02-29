@@ -24,6 +24,7 @@
     />  
   </v-slide-x-transition>
 </div>
+
 <!-- Dialogo que muestra los detalles de cada toner -->
 <DialogGeneralSimple id-boton="MostrarDetallesTonerRecargas" name-boton="adds" :ocultar-boton="true">
     <template #contenido>
@@ -166,6 +167,8 @@
         </CardImage>
       </v-col>
     </v-row>
+
+
     <v-container>
       <v-row>
         <v-col cols="12" md="6">
@@ -186,7 +189,7 @@
             type="number"
             label="Recargas"
             min="0" max="100"
-            hint="Marca del Tooner"
+            hint="Si esta nuevo colocar (0), si ya llego usado del exterior coloque su Nro"
             persistent-hint
             v-model="storeToonersRecargas.formToonerRecarga.nro_regargas"
           >
@@ -261,6 +264,16 @@
         hide-details="auto"
         label="nro Item"
         v-model="storeToonersRecargas.FiltrotonerRecarga.nro_item"
+      />
+    </v-col>
+    <v-col cols="12" md="2">
+      <v-text-field
+        density="compact"
+        hide-details="auto"
+        label="Nro Recargas"
+        type="number"
+        min="0"
+        v-model="storeToonersRecargas.FiltrotonerRecarga.nro_regargas"
       />
     </v-col>
 

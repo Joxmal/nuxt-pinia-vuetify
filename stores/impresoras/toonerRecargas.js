@@ -40,6 +40,7 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
         },
 
         FiltrotonerRecarga:{
+            nro_regargas:"",
             nro_item:null,
             marca:null,
             modelo:null,
@@ -65,7 +66,7 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
     // fecha_entrada >= "2024-02-21" && fecha_entrada <= "2024-02-22"
     getters:{
         filtroBusquedaRecargaToner() {
-            const { nro_item, marca, modelo, departamento, tonerInactivo,rangoFechas } = this.FiltrotonerRecarga;
+            const { nro_item, marca, modelo, departamento, tonerInactivo,rangoFechas,nro_regargas } = this.FiltrotonerRecarga;
 
             const {desde,hasta,activo} = rangoFechas
             
@@ -74,12 +75,16 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
                 filterBuscar = ""
             }
 
-            if (marca === null && modelo === null && departamento === null  && tonerInactivo === false && nro_item === null) {
+            if (marca === null && modelo === null && departamento === null  && tonerInactivo === false && nro_item === null && nro_regargas.length === 0) {
                 filterBuscar = `fecha_entrada >= "${desde} 00:00:00.000Z" && fecha_entrada <= "${hasta} 23:59:59.999Z" `;
                 if(!activo){
                     filterBuscar = ""
                 }
             } else {
+                if (nro_regargas > 0 ) {
+                    filterBuscar += `nro_regargas = "${nro_regargas}" && `;
+                }
+
                 if (marca !== null) {
                     filterBuscar += `tooner_modelo.marca = "${marca}"`;
                 }

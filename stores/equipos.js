@@ -205,12 +205,15 @@ export const useEquiposStore = defineStore('useEquiposStore', {
             let listadoImagenes =[]
             if (objeto && objeto.imagenes && Array.isArray(objeto.imagenes)) {
                 for (let i = 0; i < objeto.imagenes.length; i++) {
-                    listadoImagenes.push(`${useRuntimeConfig().public.POCKETBASE_URL}api/files/${objeto.collectionId}/${objeto.id}/${objeto.imagenes[i]}`);
+                    listadoImagenes.push(`${useRuntimeConfig().public.POCKETBASE_URL}/api/files/${objeto.collectionId}/${objeto.id}/${objeto.imagenes[i]}`);
                 }
                 return listadoImagenes
             } else {
                 return [];
             }
+
+
+
         },
         resetearForm(){
             this.form.piso=null
