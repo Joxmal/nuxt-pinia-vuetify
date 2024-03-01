@@ -41,9 +41,10 @@
           <v-list-item @click="MostrarMenu('asitencias'),drawer= true" prepend-icon="mdi-desktop-classic" value="asitencias"/>
 
           <v-list-item @click="MostrarMenu('impresoras'),drawer= true" prepend-icon="mdi-printer-outline" value="impresoras"/>
+          
+          <v-list-item @click="MostrarMenu('desincorporar'),drawer= true" prepend-icon="mdi-monitor-off" value="impresoras"/>
 
           <!-- <v-list-item @click="MostrarMenu('sistemas'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/> -->
-
 
           <v-list-item @click="MostrarMenu('testing'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/>
         </v-list>
@@ -86,6 +87,11 @@
 
           <!-- testing -->
           <nuxt-link v-show="ViewMenu=='testing'" :class="listaNavegacion.class"  :to="lista.path" v-for="lista in listaNavegacion.testing" :key="lista.value" style="text-decoration: none;">
+            <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
+          </nuxt-link>
+
+          <!-- desincorporar -->
+          <nuxt-link v-show="ViewMenu=='desincorporar'" :class="listaNavegacion.class"  :to="lista.path" v-for="lista in listaNavegacion.desincorporar" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value"/>
           </nuxt-link>
         </v-list>
@@ -151,6 +157,10 @@ const listaNavegacion = {
   testing:{
     1:{ icon:'mdi-map-marker-star-outline', value:'testing_1', path:'/dashboard/testing'},
     2:{ icon:'mdi-map-marker-star-outline', value:'testing_2', path:'/dashboard/testing/testing_2'},
+  },
+  desincorporar:{
+    1:{ icon:'mdi-chart-bar', value:'Estadisticas', path:'/dashboard/desincorporar'},
+    2:{ icon:'mdi-monitor-off', value:'Desincorporar', path:'/dashboard/desincorporar/crear'},
   },
 
 }

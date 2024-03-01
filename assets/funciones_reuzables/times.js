@@ -27,3 +27,28 @@ export function obtenerUltimoDiaMes(){
 
   return fechaFormateada
 }
+
+export function obtenerDiaActual(){
+  const fechaActual = new Date();
+  const año = fechaActual.getFullYear();
+  const mes = fechaActual.getMonth() + 1; // Los meses se cuentan desde 0, por lo que se suma 1
+  const día = fechaActual.getDate();
+
+  const fechaFormateada = `${año}-${mes}-${día}`;
+  return fechaFormateada
+}
+
+export function obtenerFechaHoraActual(){
+  const fechaActual = new Date();
+
+  // fechaActual.setHours(8, 0, 0, 0); // Establecer la hora a las 8 am
+
+  const anio = fechaActual.getFullYear();
+  const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+  const dia = String(fechaActual.getDate()).padStart(2, '0');
+  const horas = String(fechaActual.getHours()).padStart(2, '0');
+  const minutos = String(fechaActual.getMinutes()).padStart(2, '0');
+
+  const fechaHoraActual = `${anio}-${mes}-${dia}T${horas}:${minutos}`;
+  return fechaHoraActual;
+}

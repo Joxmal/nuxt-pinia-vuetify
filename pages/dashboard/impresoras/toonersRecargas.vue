@@ -496,8 +496,6 @@ onBeforeMount(async()=>{
 })
 
 onMounted(()=>{
-  setTimeout(() => {
-  }, 2000);
 })
 const {toonerModeloRecarga,FiltrotonerRecarga} = storeToRefs(storeToonersRecargas)
 
