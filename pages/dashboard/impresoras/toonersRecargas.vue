@@ -236,7 +236,7 @@
 <!-- buscador -->
 <v-form @submit.prevent>
   <v-row align="center" align-content="center" justify="center">
-    <v-col style="border: 2px solid rgb(54, 177, 218);border-radius: 30px; overflow: ;" cols="8" sm="3"
+    <v-col style="border: 2px solid rgb(54, 177, 218);border-radius: 30px;" cols="8" sm="3"
       class="d-flex justify-center flex-column text-center pa-2 font-weight-bold">
       <div class="d-flex justify-center align-center ">
         <v-checkbox v-model="FiltrotonerRecarga.rangoFechas.activo" :density="'compact'" :hide-details="'auto'"/>Fecha de entrada

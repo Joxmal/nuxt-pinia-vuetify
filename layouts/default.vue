@@ -159,8 +159,8 @@ const listaNavegacion = {
     2:{ icon:'mdi-map-marker-star-outline', value:'testing_2', path:'/dashboard/testing/testing_2'},
   },
   desincorporar:{
-    1:{ icon:'mdi-chart-bar', value:'Estadisticas', path:'/dashboard/desincorporar'},
-    2:{ icon:'mdi-monitor-off', value:'Desincorporar', path:'/dashboard/desincorporar/crear'},
+    1:{ icon:'mdi-monitor-off', value:'Desincorporar', path:'/dashboard/desincorporar/crear'},
+    // 2:{ icon:'mdi-chart-bar', value:'Estadisticas', path:'/dashboard/desincorporar'},
   },
 
 }

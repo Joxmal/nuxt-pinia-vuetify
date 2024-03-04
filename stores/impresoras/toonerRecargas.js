@@ -20,7 +20,6 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
         },
         descripsionTonerListaRecarga:null,
 
-
         formToonerRecarga:{
             "nro_item": null,
             "tooner_modelo": null,
@@ -52,8 +51,6 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
                 hasta:null,
             }
         },
-
-
 
         cargando:false,
         envioExitoso:false,
@@ -140,7 +137,7 @@ export const useToonersRecargasStore = defineStore('useToonersRecargasStore', {
         formatearForm(){
             this.formToonerRecarga.nro_item = null
             this.formToonerRecarga.tooner_modelo = null
-            this.formToonerRecarga.nro_regargas= 1
+            this.formToonerRecarga.nro_regargas= 0
             this.formToonerRecarga.fecha_entrada =""
             this.formToonerRecarga.activo = true
             this.formToonerRecarga.descripsion = ""
