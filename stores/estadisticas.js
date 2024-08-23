@@ -63,11 +63,6 @@ export const useEstadisticas = defineStore('useEstadisticas', {
             ? filter = ``
             : filter = `creador.name = "${avatarNombre}"`
 
-            useStoreConexion().avatarRole === 'superUser'
-            ? alert('es superuser')
-            : alert('no es superuser')
-
-
           const pb = new PocketBase(this.pb_url)
           try {
             const {items,page,perPage,totalItems,totalPages} = await pb.collection('reportes').getList(1, 30000, {
