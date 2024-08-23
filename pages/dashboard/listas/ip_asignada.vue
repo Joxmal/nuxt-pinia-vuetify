@@ -1,6 +1,6 @@
 <template>
 <table-general 
-    titulo_table="IP asignada al usuario"
+    titulo_table="Lista de Funcionarios"
     :mostrar_alert_delete="store.iconDelete"
     :listaItems="store.mapeoLista" 
     :titulos="titulos" 
@@ -13,7 +13,7 @@
          :icon="icono_EDitar_Crear"
          :modoEditar="modoEditar"
          :titulo_dialog="modoTitulo"
-         boton_titulo="NUEVA ASIGNACION"
+         boton_titulo="NUEVO FUNCIONARIO"
          :mostrar_alert_create="store.iconCreated"
          @editarDialogForm="editarListaDatos"
          @crear="crearListaDatos(data)"
@@ -158,6 +158,11 @@ function crearListaDatos(data){
         "departamento": data.departamento,
         "cedula": data.cedula
     }
+
+    if (!datosDB.departamento || !datosDB.usuario) {
+        return alert(`Faltan datos: ${!datosDB.departamento ? 'departamento' : ''} ${!datosDB.usuario ? 'usuario' : ''}`.trim());
+    }
+
     store.crearListaDatos(datosDB)
     resetData()
 }

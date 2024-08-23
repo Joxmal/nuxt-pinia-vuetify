@@ -18,7 +18,6 @@
       v-else
       sticky
       :hover="true"
-      :height="400"
       :fixed-header="true"
       density="compact"
       :headers="props.titulos"
