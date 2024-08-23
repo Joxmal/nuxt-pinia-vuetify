@@ -1,10 +1,16 @@
 <template>
-  
-  <v-row >
+
+  <DevOnly>
+    <pre>
+      {{$storeUser.$state}}
+    </pre>
+  </DevOnly>
+
+  <v-row>
     <v-col cols="12" md="6">
       <v-card height="450"   class="mx-auto">
         <v-card-title class=" text-center font-weight-black text-h5 text-secondary">
-          Asistencias Totaltes
+          Asistencias Totales
         </v-card-title>
         <v-divider :thickness="3" class="text-blue border-opacity-100"></v-divider>
         <ChartJsDoughnutPorcentaje
@@ -29,7 +35,9 @@
     </v-col>
   </v-row>
 <v-divider :thickness="3" class="text-blue border-opacity-100 my-5"></v-divider>
-<v-row >
+
+<!-- v-if="$storeUser.$state.avatarRole === 'superUser'" -->
+<v-row>
     <v-col cols="12" md="12">
       <v-card height="450"   class="mx-auto">
         <v-card-title class=" text-center font-weight-black text-h5 text-secondary">
@@ -49,6 +57,7 @@
 definePageMeta({
   middleware:'autenticacion'
 })
+const $storeUser = useStoreConexion()
 
 const viewCharts = ref(false)
 

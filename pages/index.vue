@@ -3,18 +3,11 @@
     <v-container class="d-flex justify-center">
 
         <AlertError 
-        mensaje="error al iniciar sesion"
+        mensaje="error al iniciar sesión"
         class="d-flex rounded-pill " 
         style="position:fixed ;" v-if="store.errorInicio"/>
           <!-- login del sistema -->
         <Login/>
-
-        <v-btn
-          to="/visitantes/subirArchivos" 
-          icon="mdi-file-plus-outline" 
-          color="success">
-        </v-btn>
-
     </v-container>
   </v-app>
 </template>

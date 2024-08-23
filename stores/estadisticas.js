@@ -55,18 +55,34 @@ export const useEstadisticas = defineStore('useEstadisticas', {
     actions:{
       // obtener todas las asistencias
         async obtenerDatosReportes(){
+
+          const {avatarNombre}= useStoreConexion()
+
+          let filter
+          useStoreConexion().avatarRole === 'superUser'
+            ? filter = ``
+            : filter = `creador.name = "${avatarNombre}"`
+
+            useStoreConexion().avatarRole === 'superUser'
+            ? alert('es superuser')
+            : alert('no es superuser')
+
+
           const pb = new PocketBase(this.pb_url)
           try {
             const {items,page,perPage,totalItems,totalPages} = await pb.collection('reportes').getList(1, 30000, {
-              filter: "",
+              filter: filter,
               sort: '-created',
               expand:'creador',
             });
             this.listaReportes = items
+
+            console.log(items)
           } catch (error) {
             console.error(error)
           }
         },
+
       // obtener todos los equipos
         async obtenerDatosEquipos(){
         const pb = new PocketBase(this.pb_url)
@@ -82,6 +98,7 @@ export const useEstadisticas = defineStore('useEstadisticas', {
           console.error(error)
         }
       },
+
       ///esta lista es solo de ASISTENCIAS ordena
       ordenar(){
           const resultado = {};
@@ -113,6 +130,7 @@ export const useEstadisticas = defineStore('useEstadisticas', {
           this.ListaReportesFiltrada = resultado
           return resultado
       },
+
       ///esta lista es solo de ASISTENCIAS
       listaDeTrabajadores() {
         const lista = { ...this.ListaReportesFiltrada };
