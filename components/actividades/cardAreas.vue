@@ -130,7 +130,7 @@ const titulos = [
   },
   {
     key: "description",
-    title: "Descripsión",
+    title: "Descripción",
     align: "center",
     sortable: false,
   },
