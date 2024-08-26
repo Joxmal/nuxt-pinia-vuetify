@@ -56,8 +56,10 @@
           >
             mdi-pencil
           </v-icon>
+
           <v-icon
             size="small"
+            end
             @click="$emit('eliminar',item.id)"
           >
             mdi-delete
@@ -81,6 +83,10 @@
     'loading'
 
   ])
+  onMounted(()=>{
+    console.log(props.listaItems)
+
+  })
 
   const emit = defineEmits([
   'editar','eliminar'

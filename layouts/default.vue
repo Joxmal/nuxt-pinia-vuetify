@@ -142,7 +142,8 @@ const listaNavegacion = {
   listas:{
     1:{ icon:'mdi-office-building-cog-outline', value:'Items', path:'/dashboard/listas/items'},
     2:{ icon:'mdi-account', value:'Usuarios', path:'/dashboard/listas/ip_asignada'}, 
-    3:{ icon:'mdi-desktop-tower-monitor', value:'equipos', path:'/dashboard/listas/equipos'}, 
+    3:{ icon:'mdi-desktop-tower-monitor', value:'Equipos', path:'/dashboard/listas/equipos'}, 
+    3:{ icon:'mdi-multicast', value:'Actividades', path:'/dashboard/listas/actividades'}, 
   },
   asitencias:{
     1:{ icon:'mdi-file-chart', value:'asistencia', path:'/dashboard/reportes/generarAsistencia'},

@@ -6,7 +6,7 @@
 
     <template v-slot:default="{ isActive }">
       <v-card position="relative">
-        <v-form @submit.prevent validate-on="input"> 
+        <v-form ref="form" @submit.prevent validate-on="input"> 
           <v-btn v-if="botonResetFormulario" @click="$emit('resetearFormulario')" position="absolute" location="top right" class="ma-2" color="primary" variant="plain" border>Reset</v-btn>
           <alert-error style="position: fixed; right: 1rem; top: 0.4rem;" v-show="prop.iconError" mensaje="error"/>
           <alert-success
@@ -36,7 +36,7 @@
                 type="submit"
                 color="yellow-darken-1"
                 variant="tonal"
-                @click="$emit('editarDialogForm')">
+                @click="validarFormulario('editar')">
                 Editar
               </v-btn>
     
@@ -44,7 +44,7 @@
                 type="submit"
                 color="green"
                 variant="tonal"
-                @click="$emit('crear')">
+                @click="validarFormulario('crear')">
                 Crear
               </v-btn>
             </div>
@@ -71,12 +71,28 @@ const prop = defineProps([
   "classBtn" // estilo del btn que abre el dialogo
 ])
 
-defineEmits([
+const emit = defineEmits([
   'crear',
   'modoCrear',
   'editarDialogForm',
   'cerrar'
 ])
+
+const form = ref(null); // Referencia al formulario
+
+const validarFormulario = async (accion) => {
+  const {valid:isValid} = await form.value.validate(); // Validar el formulario
+  if (isValid) {
+    // Emitir el evento correspondiente según la acción
+    if (accion === 'editar') {
+      emit('editarDialogForm');
+    } else {
+      emit('crear');
+    }
+  } else {
+    console.log("Formulario no válido"); // Manejo de errores (opcional)
+  }
+};
 
 
 </script>

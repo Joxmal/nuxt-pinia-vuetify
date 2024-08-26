@@ -17,8 +17,7 @@
          :mostrar_alert_create="store.iconCreated"
          @editarDialogForm="editarListaDatos"
          @crear="crearListaDatos(data)"
-         @modoCrear="cambiarCreacion"
-        >
+         @modoCrear="cambiarCreacion">
             <template #contenido>
                 <v-container>
                     <v-row>

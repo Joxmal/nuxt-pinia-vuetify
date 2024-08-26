@@ -16,6 +16,8 @@ export const useStoreConexion = defineStore('useStoreConexion', {
         avatarNombre:'',
         avatarImagen: '',
         avatarRole:'',
+        areas:[],
+
 
         //lista de los usuarios
         usuariosLista:''
@@ -43,11 +45,13 @@ export const useStoreConexion = defineStore('useStoreConexion', {
 
         async inciarSesion(credenciales){
             try {
-                console.log(credenciales)
-                console.log(this.pb_url)
                 const pb = new PocketBase(this.pb_url)
-                const authData = await pb.collection('users').authWithPassword((credenciales.username).trim(),credenciales.password);
-                
+                const authData = await pb.collection('users').authWithPassword((credenciales.username).trim(),credenciales.password,{
+                    expand:`areas`
+                });
+
+                this.areas = authData.record.expand.areas.map(area => ({id:area.id, nombre:area.nombre}))
+
                 this.verificarAutenticacion()
                 this.obtenerListaUsuarios()
 
@@ -58,8 +62,6 @@ export const useStoreConexion = defineStore('useStoreConexion', {
             
                 // imagen del avatar
                 this.avatarImagen = `${this.pb_url}/api/files/${authData.record.collectionId}/${authData.record.id}/${authData.record.avatar}?thumb=150x300`
-                console.log(this.pb_url)
-                console.log(this.avatarImagen)
                 this.avatarNombre = `${authData.record.name}`
                 this.avatarRole = `${authData.record.role}`
                 this.avatarID = `${authData.record.id}`
