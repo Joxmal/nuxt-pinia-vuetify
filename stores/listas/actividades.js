@@ -21,6 +21,8 @@ export const useListasActividadesStore = defineStore('useListasActividadesStore'
     BD_procesada_listaAtividades: {},
 
     //formulario para crear/editar
+
+    formId:'', //ID del formulario seleccionado
     form:{
       area:null,
       tarea:null,
@@ -90,11 +92,12 @@ export const useListasActividadesStore = defineStore('useListasActividadesStore'
           sort: '-created',
           expand: `area`
         });
-        console.log(records)
 
         this.BD_listaAtividades = records
 
-        records.forEach((tarea, index) => {
+        this.BD_procesada_listaAtividades = {}
+          
+        this.BD_listaAtividades.forEach((tarea, index) => {
           const areaId= tarea.expand.area.id
           const areaNombre = tarea.expand.area.nombre; // Obtener el nombre del área
           const tareaId = tarea.id; // Obtener el ID de la tarea
@@ -117,9 +120,10 @@ export const useListasActividadesStore = defineStore('useListasActividadesStore'
             description: tareaDescription
           };
         });
-
+  
         this.notificaciones.cargando = false
-
+    
+        
       } catch (error) {
         console.error(error)
       this.notificaciones.cargando = false
@@ -137,10 +141,36 @@ export const useListasActividadesStore = defineStore('useListasActividadesStore'
         const record = await pb.collection('Tareas_areas').create(dataForm);
         console.log('creado',record )
         this.count_reload++
+        this.notificaciones.envioExitoso = true
+        setTimeout(() => {
+          this.notificaciones.envioExitoso = false 
+        }, 1000);
       } catch (error) {
-        console.error(error?.message)
+        console.error(error?.response)
+        if(error?.response?.data?.area.message === "Value must be unique." && error?.response?.data?.tarea.message === "Value must be unique." ){
+          alert('Esta Tarea Esta Repetida')
+        }
       }
-    },  
+    },
+
+    async editarActividad({data}){
+      const dataForm = {...data}
+      
+      dataForm.area = this.buscarIdAreaPorNombre(data.area)
+
+      try {
+        const record = await pb.collection('Tareas_areas').update(this.formId, dataForm);
+        console.log(record)
+        this.notificaciones.editarExitoso = true
+        setTimeout(() => {
+          this.notificaciones.editarExitoso = false
+        }, 2000);
+
+        this.count_reload++
+      } catch (error) {
+        console.error(error)
+      }
+    },
 
     async eliminarActividad({id}){
       if (!confirm('¿Desea Eliminar esta asistencia?')) return
@@ -187,6 +217,14 @@ export const useListasActividadesStore = defineStore('useListasActividadesStore'
         return this.BD_procesada_listaAtividades[areaNombre].id;
       } else {
         return `No se encontró el área: ${areaNombre}`;
+      }
+    },
+
+    resetearFormulario(){
+      this.form = {
+        area:null,
+        tarea:null,
+        description:null
       }
     }
     

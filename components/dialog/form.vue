@@ -1,7 +1,14 @@
 <template>
   <v-dialog max-width="900px" persistent>
     <template v-slot:activator="{ props } ">
-      <v-btn v-show="!prop.ocultar_boton" :style="classBtn" v-bind="props" color="indigo-lighten-5" @click="$emit('modoCrear')" :id="prop.id_boton || 'boton-dialogo'" > {{ boton_titulo || "NUEVO" }}</v-btn>
+      <v-btn 
+        v-show="!prop.ocultar_boton" 
+        :style="classBtn" 
+        v-bind="props" 
+        color="indigo-lighten-5" 
+        @click="$emit('modoCrear')" 
+        :id="prop.id_boton || 'boton-dialogo'" > {{ boton_titulo || "NUEVO" }}
+      </v-btn>
     </template>
 
     <template v-slot:default="{ isActive }">
@@ -75,7 +82,8 @@ const emit = defineEmits([
   'crear',
   'modoCrear',
   'editarDialogForm',
-  'cerrar'
+  'cerrar',
+  'resetearFormulario'
 ])
 
 const form = ref(null); // Referencia al formulario
@@ -93,6 +101,12 @@ const validarFormulario = async (accion) => {
     console.log("Formulario no válido"); // Manejo de errores (opcional)
   }
 };
+
+const myButton = ref(null)
+
+defineExpose({
+  myButton
+})
 
 
 </script>
