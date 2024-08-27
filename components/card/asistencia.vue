@@ -67,8 +67,8 @@
     store.form.funcionario = props.funcionario
     store.form.horaEntrada = props.horaEntrada
     store.form.horaSalida = props.horaSalida
-    store.form.fechaEntrada = props.fechaEntrada
-    store.form.fechaSalida = props.fechaSalida
+    store.form.fechaEntrada = convertDateFormatWithTimezone(props.fechaEntrada)
+    store.form.fechaSalida = convertDateFormatWithTimezone(props.fechaSalida)
     store.form.descripsion = props.descripsion
     store.form.status = props.status
 
@@ -80,12 +80,17 @@
   }
 
   function abrirDialogoEditar(){
+    console.log('props:', props)
+
     store.DialogoDescripsion(props.descripsion)
     const element = document.getElementById('boton-dialogo')
     element.click()
 
     store.ID_asistencia_editar= props.idAsistencia
     store.modoEditar = true
+
+
+
 
     //cambiar formulario
     store.form.creador=props.creador
@@ -95,8 +100,8 @@
     store.form.funcionario = props.funcionario
     store.form.horaEntrada = props.horaEntrada
     store.form.horaSalida = props.horaSalida
-    store.form.fechaEntrada = props.fechaEntrada
-    store.form.fechaSalida = props.fechaSalida
+    store.form.fechaEntrada = convertDateFormatWithTimezone(props.fechaEntrada)
+    store.form.fechaSalida = convertDateFormatWithTimezone(props.fechaSalida)
     store.form.descripsion = props.descripsion
     store.form.status = props.status
 
@@ -104,5 +109,21 @@
 
   function recibe(valor){
     console.log(valor)
+  }
+
+  function convertDateFormatWithTimezone(dateString, offsetHours=-4) {
+    // Parsea la fecha
+    const date = new Date(dateString);
+
+    // Ajusta la hora según el desplazamiento de la zona horaria
+    const adjustedDate = new Date(date.getTime() + (offsetHours * 60 * 60 * 1000));
+
+    // Obtiene la fecha y hora en formato ISO
+    const isoString = adjustedDate.toISOString();
+
+    // Extrae la fecha y hora hasta los minutos
+    const convertedString = isoString.slice(0, 16);
+
+    return convertedString;
   }
   </script>

@@ -166,10 +166,6 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       const fechaHoraActual = `${anio}-${mes}-${dia}T${horas}:${minutos}`;
       return fechaHoraActual;
     }
-
-    
-
-
   },
   actions:{
     resetearReporte(){
@@ -208,6 +204,7 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       this.form.creador= useStoreConexion().avatarID
 
       const data = {...this.form}
+
       data.fechaEntrada = new Date(data.fechaEntrada).toISOString()
       data.fechaSalida = new Date(data.fechaSalida).toISOString()
 
@@ -235,8 +232,14 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
     },
 
     async editarReporte(){
+      const data = {...this.form}
+
+      data.fechaEntrada = new Date(data.fechaEntrada).toISOString()
+      data.fechaSalida = new Date(data.fechaSalida).toISOString()
+
       const pb = new PocketBase(this.pb_url)
-      const record = await pb.collection('reportes').update(this.ID_asistencia_editar, this.form);
+      const record = await pb.collection('reportes').update(this.ID_asistencia_editar, data);
+
       console.log(record)
       console.log("editado con exito")
 
