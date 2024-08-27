@@ -16,9 +16,9 @@
   <div v-if="props.loading === false"><s-v-g-spinner-frames class="text-h1 w-100"/></div>
     <v-data-table 
       v-else
-      sticky
-      :hover="true"
       :fixed-header="true"
+      
+      :hover="true"
       density="compact"
       :headers="props.titulos"
       :items="props.listaItems"

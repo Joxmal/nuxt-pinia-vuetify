@@ -47,9 +47,18 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
     //ID de la asistencia al editar
     ID_asistencia_editar:'id',
-    modoEditar:false,
+    modoEditar:false, 
 
-    tipoReporte:['PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'],
+    tipoReporte:[
+      'PREVENTIVO',
+      'CORRECTIVO',
+      'ASIST. TÉCNICA',
+      'RESPALDO',
+      'ASIST. EXTERNO',
+      'CABLEADO',
+      'PUNTO DE RED',
+      'OPERATIVOS ESP.'
+    ],
 
     //seleccion del id de creacion (para buscar en la bd a partir de la ID del usuario)
     seleccionUsuario:useStoreConexion().avatarID,
@@ -60,7 +69,15 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
     totalPage:5,
 
     //filtros de busqueda para la base de datos
-    tipoReporteFiltro:['TODOS','PREVENTIVO','CORRECTIVO','CABLEADO','ASIST. EXTERNO','ASIST. INTERNO','ASIST. TÉCNICA','RESPALDO','OPERATIVOS ESP.'], 
+    tipoReporteFiltro:['TODOS',
+      'PREVENTIVO',
+      'CORRECTIVO',
+      'ASIST. TÉCNICA',
+      'RESPALDO',
+      'ASIST. EXTERNO',
+      'CABLEADO',
+      'PUNTO DE RED',
+      'OPERATIVOS ESP.'], 
     variablesFiltro:{
       filtroCreador: `creador="${useStoreConexion().avatarID}"`,
       tipoAsistencia:'TODOS',
