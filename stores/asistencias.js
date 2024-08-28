@@ -376,11 +376,10 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
   },
 
   generarPDF(){
-    const doc = new jsPDF('p', 'mm', 'letter')
+    const doc = new jsPDF({ orientation: 'landscape', format: 'a4' });
 
 
     
-
     const columns = [`trabajador`,`tipoReporte`,`Departamento`,`funcionario`,`fechaInicio`,`fechaSalida`,`NroItem`]
 
     let data = this.asistenciaLista_Usuario.items
@@ -391,35 +390,43 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       item.funcionario,
       new Date(item.fechaEntrada).toLocaleDateString(), 
       new Date(item.fechaSalida).toLocaleDateString(),
-      item.item,
+      item.item === '' ? 'X' : item.item  ,
     ]));
 
 
     autoTable(doc,{
-      startY:20,
-      margin:{horizontal:10},
-      styles: { overflow: "linebreak" },
-      bodyStyles: { valign: "top" },
+      startY:15,
+      margin:{horizontal:5},
+      theme:'grid',
+      headStyles:{fontSize:12,fillColor:'#AEB6EE',textColor:'black',lineColor:'black'},
+      styles: { overflow: "ellipsize",halign:'center' },
+      bodyStyles: { valign:'bottom',rowHeight: 5,textColor:'black' },
       showHead: "everyPage",
       didDrawPage: function (data) {
 
-          // Header
-          doc.setFontSize(20);
-          doc.setTextColor(40);
-          doc.text("Reporte", 95,10);
+        // Header
+        doc.setFontSize(20);
+        doc.setTextColor(40);
+        const text = 'REPORTE';
+        const pageWidth = doc.internal.pageSize.width;
+        const textWidth = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+        const x = (pageWidth - textWidth) / 2;
+        doc.text(text, x, 10);
 
-          // Footer
-          const str = "pagina " + doc.internal.getNumberOfPages();
 
-          doc.setFontSize(10);
 
-          // jsPDF 1.4+ uses getWidth, <1.4 uses .width
-          const pageSize = doc.internal.pageSize;
-          const pageHeight = pageSize.height
-          ? pageSize.height
-          : pageSize.getHeight();
-          doc.text(str, data.settings.margin.left, pageHeight - 10);
-          },
+        // Footer
+        const str = "pagina " + doc.internal.getNumberOfPages();
+
+        doc.setFontSize(10);
+
+        // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+        const pageSize = doc.internal.pageSize;
+        const pageHeight = pageSize.height
+        ? pageSize.height
+        : pageSize.getHeight();
+        doc.text(str, data.settings.margin.left, pageHeight - 10);
+        },
       head:[columns],
       body: data
 
@@ -428,7 +435,15 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
     
     
     doc.addPage();
-    doc.text('CONTEO',95,15);
+    doc.setFontSize(20);
+    doc.setTextColor(40);
+    const text = 'CONTEO DE ASISTENCIAS GLOBALES';
+    const pageWidth = doc.internal.pageSize.width;
+    const textWidth = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+    const x = (pageWidth - textWidth) / 2;
+    doc.text(text, x, 10);
+
+
 
     let dataConteo = this.contadorTiposAsistencia
     dataConteo = Object.entries(dataConteo)
@@ -467,7 +482,7 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       headStyles:{ halign: 'center' },
       bodyStyles: { halign: 'center' },
       margin:{horizontal:10},
-      startY:50,
+      startY:40,
       // bodyStyles: { valign: "top" },
       // showHead: "everyPage",
       head:[['total']],
