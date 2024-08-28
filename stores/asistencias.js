@@ -7,6 +7,12 @@ import autoTable  from "jspdf-autotable";
 
 export const useAsistenciasStore = defineStore('useAsistenciasStore', {
   state: () => ({
+
+    preferencias_Usuario:{
+      vistaModoTabla:false
+    },
+
+
     pb_url: useRuntimeConfig().public.POCKETBASE_URL,
     listaTotalEmpleados_oficina: undefined,
     
@@ -41,9 +47,6 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
     //lista de asistencia
     asistenciaLista_Usuario: '',
     conteoTotalAsistencia:'',
-
-    //datos del dialogo
-    dialogoDescripsion:'',
 
     //ID de la asistencia al editar
     ID_asistencia_editar:'id',
@@ -165,6 +168,35 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
     
       const fechaHoraActual = `${anio}-${mes}-${dia}T${horas}:${minutos}`;
       return fechaHoraActual;
+    },
+
+    OrdenarlistaItemsDataTable(){
+      if(this.asistenciaLista_Usuario === '') return
+      const lista = this.asistenciaLista_Usuario.items.map((item)=>{
+       return{
+         "collectionId": item.collectionId,
+         "collectionName": item.collectionName,
+         "trabajador": this.buscarNombrePorID(item.creador),
+         "creador": item.creador,
+         "created": "2025-01-16 03:28:07.428Z",
+         "departamento": item.departamento,
+         "descripsion": item.descripsion,
+         "fechaEntrada_formateada":new Date(item.fechaEntrada).toLocaleDateString(),
+         "fechaSalida_formateada": new Date(item.fechaSalida).toLocaleDateString(),
+         fechaEntrada: item.fechaEntrada,
+         fechaSalida: item.fechaSalida,
+
+         "horaEntrada": obtenerHora(item.fechaEntrada),
+         "horaSalida": obtenerHora(item.fechaSalida),
+         "funcionario": item.funcionario,
+         "id": item.id,
+         "idAsistencia":item.id,
+         "item": item.item,
+         "status": item.status,
+         "tipoAsistencia": item.tipoReporte,
+       }
+     })
+      return lista
     }
   },
   actions:{
@@ -220,7 +252,7 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         this.resetearReporte()
         this.obtenerReporte()
       } catch (err) {
-        console.log(err.response)
+        console.error(err.response)
 
         this.iconError= true
         setTimeout(() => {
@@ -240,9 +272,6 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       const pb = new PocketBase(this.pb_url)
       const record = await pb.collection('reportes').update(this.ID_asistencia_editar, data);
 
-      console.log(record)
-      console.log("editado con exito")
-
       this.resetearReporte()
       this.obtenerReporte()
       this.ID_asistencia_editar =""
@@ -254,7 +283,6 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
         const pb = new PocketBase(this.pb_url)
         if (confirm('¿Desea Eliminar esta asistencia?')) {
           await pb.collection('reportes').delete(ID);
-          console.log("eliminado con exito")
 
           this.obtenerReporte()
 
@@ -262,38 +290,31 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
           return
         }
       } catch (error) {
-        console.log("ocurrio un error")
-        console.log(error.response)
+        console.error("ocurrio un error")
+        console.error(error.response)
       }
     },
 
     async obtenerReporte(){
-
       this.loadinCards= true
-
       try {
         const pb = new PocketBase(this.pb_url)
 
         let filterBuscar = this.filtroBusqueda
 
-        console.log(this.filtroBusqueda)
-
         const records = await pb.collection('reportes').getList(this.pagination, this.paginationItemsPorPagina, {
           sort: '-created',
           filter:filterBuscar
         });
-        console.log(records)
 
         this.asistenciaLista_Usuario= records
         this.conteoTotalAsistencia = records.totalItems
         this.totalPage= records.totalPages
 
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
-
       this.loadinCards= false
-
     },
 
     buscarNombrePorID(valor){
@@ -315,16 +336,10 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       
       const usuarioEncontrado = listaUsuarios.find(item => item.name === valor);
       if (usuarioEncontrado) {
-        console.log("lista de usuarios")
-        console.log(usuarioEncontrado.id)
         return usuarioEncontrado.id;
       }else{
         'sin Nombre'
       }
-    },
-
-    DialogoDescripsion(valor){
-      this.dialogoDescripsion = valor
     },
 
     //consulta a la bd por fecha (no se esta usando por ahora )
@@ -335,9 +350,8 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
           sort: '-created',
           filter:`fechaEntrada >= "2023-12-16" && fechaSalida <= "2023-12-23"`
         });
-        console.log(records)
       } catch (error) {
-        console.log(error.response)
+        console.error(error.response)
       }
     },
 
@@ -447,7 +461,7 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
     let dataConteo = this.contadorTiposAsistencia
     dataConteo = Object.entries(dataConteo)
-    console.log(dataConteo)
+  
     
     const separado = dataConteo.reduce((resultado, [nombre, valor]) => {
       resultado.strings.push(nombre);
@@ -455,7 +469,7 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
       return resultado;
     }, { strings: [], numeros: [] });
 
-    console.log(separado);
+
 
     autoTable(doc,{
       startY:20,
@@ -470,13 +484,13 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
 
     // otra tabla con el total
     let sumaTotal = 0
-    console.log(separado.numeros)
+
 
     for (let numero of separado.numeros) {
-      console.log(numero)
+
       sumaTotal += numero
     }
-    console.log(sumaTotal)
+
     autoTable(doc,{
       styles: { overflow: "linebreak" },
       headStyles:{ halign: 'center' },

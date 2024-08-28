@@ -4,7 +4,11 @@
 
   <v-card style="border: 2px solid rgb(15, 115, 246) !important; height: 334px;"   position="relative" class="rounded-lg pt-5" width="220">
     <v-card-title class="text-center">{{ props.tipoAsistencia }} </v-card-title>
-    <MenuDropdown @editar="abrirDialogoEditar" @eliminar="store.eliminarReporte(props.idAsistencia)" @descripcion="abrirDialogoDescripsion" />
+    <MenuDropdown 
+      @editar="abrirDialogoEditar(props)" 
+      @eliminar="store.eliminarReporte(props.idAsistencia)" 
+      @descripcion="abrirDialogoDescripsion(props)" 
+    />
     <v-card-text class="d-flex ma-n2 flex-column justify-center" >
 
       <div  class="d-flex flex-wrap ga-1 justify-space-around font-weight-black">
@@ -51,79 +55,9 @@
 </template>
   <script setup>
   import { useAsistenciasStore } from '~/stores/asistencias'
+  import { abrirDialogoDescripsion, abrirDialogoEditar } from '~/utils/asistencia/asistencia';
 
   const props = defineProps(['idAsistencia','departamento','fechaEntrada','fechaSalida','horaEntrada','horaSalida','tipoAsistencia','creador','funcionario','status','descripsion','item'])
 
   const store = useAsistenciasStore()
-
-  function abrirDialogoDescripsion(){
-    store.DialogoDescripsion(props.descripsion)
-    const element = document.getElementById('boton-descripsion')
-    element.click()
-
-    store.form.item = props.item
-    store.form.tipoReporte = props.tipoAsistencia
-    store.form.departamento = props.departamento
-    store.form.funcionario = props.funcionario
-    store.form.horaEntrada = props.horaEntrada
-    store.form.horaSalida = props.horaSalida
-    store.form.fechaEntrada = convertDateFormatWithTimezone(props.fechaEntrada)
-    store.form.fechaSalida = convertDateFormatWithTimezone(props.fechaSalida)
-    store.form.descripsion = props.descripsion
-    store.form.status = props.status
-
-    store.ID_asistencia_editar= props.idAsistencia
-    
-
-    store.nombreCardAsistencia = store.buscarNombrePorID(props.creador)
-
-  }
-
-  function abrirDialogoEditar(){
-    console.log('props:', props)
-
-    store.DialogoDescripsion(props.descripsion)
-    const element = document.getElementById('boton-dialogo')
-    element.click()
-
-    store.ID_asistencia_editar= props.idAsistencia
-    store.modoEditar = true
-
-
-
-
-    //cambiar formulario
-    store.form.creador=props.creador
-    store.form.item = props.item
-    store.form.tipoReporte = props.tipoAsistencia
-    store.form.departamento = props.departamento
-    store.form.funcionario = props.funcionario
-    store.form.horaEntrada = props.horaEntrada
-    store.form.horaSalida = props.horaSalida
-    store.form.fechaEntrada = convertDateFormatWithTimezone(props.fechaEntrada)
-    store.form.fechaSalida = convertDateFormatWithTimezone(props.fechaSalida)
-    store.form.descripsion = props.descripsion
-    store.form.status = props.status
-
-  }
-
-  function recibe(valor){
-    console.log(valor)
-  }
-
-  function convertDateFormatWithTimezone(dateString, offsetHours=-4) {
-    // Parsea la fecha
-    const date = new Date(dateString);
-
-    // Ajusta la hora según el desplazamiento de la zona horaria
-    const adjustedDate = new Date(date.getTime() + (offsetHours * 60 * 60 * 1000));
-
-    // Obtiene la fecha y hora en formato ISO
-    const isoString = adjustedDate.toISOString();
-
-    // Extrae la fecha y hora hasta los minutos
-    const convertedString = isoString.slice(0, 16);
-
-    return convertedString;
-  }
   </script>
