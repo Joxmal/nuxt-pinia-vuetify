@@ -17,7 +17,7 @@
     <v-data-table 
       v-else
       :fixed-header="true"
-      
+      :style="{maxHeight:'120dvh'}"
       :hover="true"
       density="compact"
       :headers="props.titulos"
