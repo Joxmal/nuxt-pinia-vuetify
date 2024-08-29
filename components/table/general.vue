@@ -84,7 +84,6 @@
 
   ])
   onMounted(()=>{
-    console.log(props.listaItems)
 
   })
 

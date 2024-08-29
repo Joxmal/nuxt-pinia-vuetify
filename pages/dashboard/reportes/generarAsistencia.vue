@@ -192,11 +192,11 @@
   <v-row align="center" align-content="center" justify="center">
     <div>
       <v-switch
-      v-model="store.preferencias_Usuario.vistaModoTabla"
+      v-model="preferences.asistencia.vistaModoTabla"
       inset
       density="compact"
       base-color="primary"
-      :color="store.preferencias_Usuario.vistaModoTabla === false ? 'secondary' : 'green' "
+      :color="preferences.asistencia.vistaModoTabla === false ? 'secondary' : 'green' "
       hide-details
       prepend-icon="mdi-card-text"
       append-icon="mdi-table-large"
@@ -206,7 +206,7 @@
   </v-row>
   <hr class="my-5">
 
-  <v-card v-if="store.preferencias_Usuario.vistaModoTabla === false" height="70vh" position="relative"
+  <v-card v-if="preferences.asistencia.vistaModoTabla === false" height="70vh" position="relative"
     class="py-10 overflow-auto bg-none rounded d-flex flex-wrap justify-center ga-2">
     <div v-if="store.loadinCards" class="d-flex justify-center align-center text-h1 h-gull w-full">
       <SVGSpinnerFrames />
@@ -230,7 +230,7 @@
   </v-card>
 
       <!-- tabla para las asistencias -->
-      <div v-if="store.preferencias_Usuario.vistaModoTabla === true">
+      <div v-if="preferences.asistencia.vistaModoTabla === true">
       <table-general
         titulo_table="Asistencias"
         
@@ -242,10 +242,6 @@
       >
       </table-general>
     </div>
-
-    <template> 
-      {{console.log(store.asistenciaLista_Usuario.items)}}
-    </template>
 
   <div class="d-flex justify-space-between align-center pa-2" style="position: relative">
     <v-pagination class="mx-auto" :total-visible="7" v-model="pagination" :length="store.totalPage"></v-pagination>
@@ -275,10 +271,15 @@
 
 <script setup>
 import { useAsistenciasStore } from "~/stores/asistencias";
+import { usePersistStore } from "~/stores/PersistStore"; 
 import { useDisplay } from "vuetify";
 import { abrirDialogoEditar } from "~/utils/asistencia/asistencia";
 
 const store = useAsistenciasStore();
+
+const storePersistent = usePersistStore()
+
+const { preferences } = storeToRefs(storePersistent)
 
 definePageMeta({
   middleware: "autenticacion",

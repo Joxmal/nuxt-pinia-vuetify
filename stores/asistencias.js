@@ -307,6 +307,8 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
           filter:filterBuscar
         });
 
+        console.log(filterBuscar)
+
         this.asistenciaLista_Usuario= records
         this.conteoTotalAsistencia = records.totalItems
         this.totalPage= records.totalPages

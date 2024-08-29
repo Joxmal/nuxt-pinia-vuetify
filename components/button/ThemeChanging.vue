@@ -1,33 +1,34 @@
 <template>
-  <v-switch
-        inset
-        density="compact"
-        v-model="valor"
-        base-color="primary"
-        :color="valor != false ? 'secondary' : 'red' "
-        hide-details
-        append-icon="mdi-weather-night"
-        prepend-icon="mdi mdi-white-balance-sunny"
+    <label for="switch" >
+        <v-switch
+            id="switch"
+          hide-details
+          density="compact"
+          v-model="storePersistent.preferences.modoOscuro"
+          base-color="primary"
+          :color="storePersistent.preferences.modoOscuro != false ? 'secondary' : 'red'"
         >
+          <template v-slot:prepend>
+            <label for="switch">
+              <v-icon>mdi mdi-white-balance-sunny</v-icon>
+            </label>
+          </template>
         
-    </v-switch>
+          <template v-slot:append>
+            <label for="switch">
+              <v-icon>mdi-weather-night</v-icon>
+            </label>
+          </template>
+        </v-switch>
+
+    </label>
 </template>
   
 <script setup>
-import { useTheme } from 'vuetify'
 
-const valor = ref(true)
+import { usePersistStore } from "~/stores/PersistStore"; 
 
-const theme = useTheme()
-
-function toggleTheme () {
-    theme.global.name.value = theme.global.current.value.dark ? 'customLightTheme' : 'myCustomDARKTheme'
-}
+const storePersistent = usePersistStore()
 
 
-
-
-watch(valor,()=>{
-    toggleTheme ()
-})
 </script>
