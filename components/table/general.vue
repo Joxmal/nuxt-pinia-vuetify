@@ -14,7 +14,8 @@
   
 
   <div v-if="props.loading === false"><s-v-g-spinner-frames class="text-h1 w-100"/></div>
-    <v-data-table 
+    <v-data-table
+      class="daTableGeneral"
       v-else
       :fixed-header="true"
       :style="{maxHeight:'120dvh'}"
@@ -22,7 +23,8 @@
       density="compact"
       :headers="props.titulos"
       :items="props.listaItems"
-      :search="search">
+      :search="search"
+      >
   
       <template v-slot:top>
         <v-toolbar
@@ -69,11 +71,11 @@
     </v-data-table>
   
   </v-card>
-  </template>
+</template>
   
   
   
-  <script setup>
+<script setup>
   
   const props = defineProps([
     'titulo_table',
@@ -98,4 +100,8 @@
   
   
   
-  </script>
+</script>
+
+<style>
+.daTableGeneral table td + td { border-left:1px solid #dddddd; }
+</style>

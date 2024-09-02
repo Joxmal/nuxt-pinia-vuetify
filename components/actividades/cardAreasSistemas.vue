@@ -79,6 +79,18 @@
                   </v-col>
 
                   <v-col cols="12">
+                    <v-textField
+                      :rules="ruleNoEmpty"
+                      label="URL"
+                      hint="url del sistema"
+                      persistent-hint
+                      v-model="form.url"
+                      required
+                    >
+                    </v-textField>
+                  </v-col>
+
+                  <v-col cols="12">
                     <v-textarea
                       :rules="ruleNoEmpty"
                       v-model="form.description"
@@ -119,23 +131,29 @@ const titulos = [
     width:200,
   },
   {
+    key: "url",
+    title: "Url",
+    sortable: true,
+    align: "center",
+  },
+  {
     key: "description",
     title: "Descripción",
     align: "center",
     sortable: false,
   },
-  { key: "actions", title: "Acciones", align: "center" },
+  { key: "actions", title: "Acciones", align: "center",sortable: false, },
 ];
 
 onMounted(async () => {
-  await storeSistemas.obtenerActvidades();
+  await storeSistemas.obtenerActvidadesSistemas();
 });
 
 watch(
   () => storeSistemas.count_reload,
   async (newValue) => {
     // Realiza las acciones que desees cuando la propiedad cambie
-    await storeSistemas.obtenerActvidades();
+    await storeSistemas.obtenerActvidadesSistemas();
   }
 );
 
@@ -169,6 +187,7 @@ function AbrirModoEditar(data) {
   form.value.area = data.area;
   form.value.sistema = data.tarea;
   form.value.description = data.description;
+  form.value.url = data.url;
 
   modoEditar.value = true;
 

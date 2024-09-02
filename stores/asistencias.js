@@ -20,6 +20,8 @@ export const useAsistenciasStore = defineStore('useAsistenciasStore', {
     mapeo:false,
 
     //formulario de creacion--edicion SE EUTILIZA EN LA DESCRIPSION (VA CAMBIANDO)
+    formArea:useStoreConexion().areas[0],
+    //
     form : {
       creador:useStoreConexion().avatarID,
       item:'',

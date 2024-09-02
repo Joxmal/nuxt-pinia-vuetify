@@ -48,7 +48,7 @@
     </template>
   </dialog-form>
   <!-- ---------- -->
-  <!-- //dilogo de edicion y creacion -->
+  <!--dilogo de edicion y creacion -->
   <dialog-form :boton-reset-formulario="true" titulo_dialog="ASISTENCIA" boton_titulo="NUEVA ASISTENCIA"
     :iconError="store.iconError" :mostrar_alert_create="store.iconCreate" @crear="store.crearReporte()"
     @editarDialogForm="store.editarReporte()" @modo-crear="store.modoEditar = false"
@@ -56,26 +56,39 @@
     <template #contenido>
       <v-container>
         <v-row>
-          <v-col cols="12" md="6">
-            <v-text-field label="Nro de bien" v-model="store.form.item">
-            </v-text-field>
+          <v-col cols="12" v-if="useStoreConexion().areas.length > 1"> 
+            <v-select 
+              :items="useStoreConexion().areas" 
+              item-title="nombre"
+              item-value="id"
+              density="compact"
+              label="Area Para la asistencia"
+              return-object 
+              v-model="store.formArea"
+            />
           </v-col>
 
           <v-col cols="12" md="6">
-            <v-autocomplete label="Tipo de Asistencia" hint="Tipo de Asistencia" persistent-hint open-text="abrir"
+            <v-text-field density="compact" label="Nro de bien" v-model="store.form.item">
+            </v-text-field>
+          </v-col>
+
+
+          <v-col cols="12" md="6">
+            <v-autocomplete density="compact" label="Tipo de Asistencia" hint="Tipo de Asistencia" persistent-hint open-text="abrir"
               close-text="cerrar" :items="store.tipoReporte" v-model="store.form.tipoReporte">
             </v-autocomplete>
           </v-col>
 
           <v-col cols="12" md="6">
-            <v-autocomplete label="departamento" hint="departamento al cual se le realizo la asistencia" persistent-hint
+            <v-autocomplete density="compact" label="departamento" hint="departamento al cual se le realizo la asistencia" persistent-hint
               open-text="abrir" close-text="cerrar" :items="useListasStore().listaDepartamento"
               v-model="store.form.departamento">
             </v-autocomplete>
           </v-col>
 
           <v-col cols="12" md="6">
-            <v-autocomplete label="Funcionario" :items="store.listaTotalEmpleados_oficina[store.form.departamento]
+            <v-autocomplete density="compact" label="Funcionario" :items="store.listaTotalEmpleados_oficina[store.form.departamento]
               " v-model="store.form.funcionario">
             </v-autocomplete>
           </v-col>
@@ -345,9 +358,7 @@ watch(pagination, () => {
 });
 
 
-// datos para la taabla
-
-
+// datos para la taablas
 const titulos = [
     { key: 'trabajador',
      title: 'Trabajador',
@@ -369,7 +380,4 @@ const titulos = [
     { key: 'status', title: 'Estatus' },
     { key: 'actions', title: 'Acciones' },
 ]
-
-
-
 </script>

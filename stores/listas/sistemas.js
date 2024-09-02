@@ -28,7 +28,8 @@ export const useListasSistemasStore = defineStore('useListasSistemasStore', {
     form:{
       area:null,
       sistema:null,
-      description:null
+      description:null,
+      url:null
     },
 
 
@@ -60,7 +61,8 @@ export const useListasSistemasStore = defineStore('useListasSistemasStore', {
             area: area,
             tarea: tarea.nombre,
             description: tarea.description,
-            id: tarea.id
+            id: tarea.id,
+            url:tarea.url
           });
         }
       }
@@ -85,13 +87,15 @@ export const useListasSistemasStore = defineStore('useListasSistemasStore', {
     }
   },
   actions: {
-    async obtenerActvidades() {
+    async obtenerActvidadesSistemas() {
       this.notificaciones.cargando = true
       try {
         const records = await pb.collection(this.TABLA_NAME).getFullList({
           sort: '-created',
           expand: `area`
         });
+
+        console.log('records',records)
 
         this.BD_listaAtividades = records
 
@@ -103,6 +107,7 @@ export const useListasSistemasStore = defineStore('useListasSistemasStore', {
           const tareaId = sistema.id; // Obtener el ID de la tarea
           const tareaDescription = sistema.description || ''; // Obtener la descripción de la tarea
           const tareaNombre = sistema.sistema
+          const urlSistema = sistema.url
 
           // Si el área no existe en actividades, inicializarla
           if (!this.BD_procesada_listaAtividades[areaNombre]) {
@@ -117,9 +122,12 @@ export const useListasSistemasStore = defineStore('useListasSistemasStore', {
           this.BD_procesada_listaAtividades[areaNombre].tareas[index + 1] = {
             nombre: `${tareaNombre}`,
             id: tareaId,
-            description: tareaDescription
+            description: tareaDescription,
+            url:urlSistema
           };
         });
+
+        console.log('this.BD_procesada_listaAtividades',this.BD_procesada_listaAtividades)
   
         this.notificaciones.cargando = false
     
@@ -224,7 +232,8 @@ export const useListasSistemasStore = defineStore('useListasSistemasStore', {
       this.form = {
         area:null,
         tarea:null,
-        description:null
+        description:null,
+        url:null
       }
     }
     
