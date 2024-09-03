@@ -114,7 +114,7 @@ const titulos = [
     { key: 'creado', title: 'Creado'},
     { key: 'cedula', title: 'Cedula'},
     { key: 'actions', title: 'Actions' },
-    { key: 'id', title: 'system'},
+    // { key: 'id', title: 'system'},
 ]
 //datos para el form
 const data = reactive({
