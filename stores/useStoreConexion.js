@@ -67,8 +67,16 @@ export const useStoreConexion = defineStore('useStoreConexion', {
                 this.avatarID = `${authData.record.id}`
 
                 useAsistenciasStore().seleccionUsuario = useStoreConexion().avatarID
-                useListasStore().obtenerListas()
+                await useListasStore().obtenerListas()
 
+
+                //guardar actividad del usuario en la bd
+                const dataSessionesIniciadas={
+                        "field":authData.record.id,
+                        "ip": "test"
+                }
+                const record = await pb.collection('sesiones_iniciadas').create(dataSessionesIniciadas);
+                
             } catch (error) {
                 console.error(error)
                 this.errorInicio = true
