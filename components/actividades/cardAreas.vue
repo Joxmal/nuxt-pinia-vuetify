@@ -1,4 +1,6 @@
 <template>
+    <pre>
+  </pre>
   <AlertPaquete
     :cargando="notificaciones.cargando"
     :ocurrioUnError="notificaciones.ocurrioUnError"
@@ -103,6 +105,7 @@
   </v-card>
 
   <v-btn color="primary">count</v-btn>
+
 </template>
 
 <script setup>

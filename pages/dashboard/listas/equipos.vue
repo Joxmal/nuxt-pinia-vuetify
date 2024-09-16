@@ -99,7 +99,7 @@
 
         <v-col cols="12" md="4">
           <v-autocomplete
-            label="CPU"
+            label="Procesador"
             :items="useListasStore().listaCPU"
             :rules="ruleNoEmpty"
             hint="colocar el CPU de la pc"
