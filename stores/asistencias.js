@@ -5,6 +5,11 @@ import autoTable from "jspdf-autotable";
 
 export const useAsistenciasStore = defineStore("useAsistenciasStore", {
   state: () => ({
+    count_reload_sistemas:0,
+
+    //datos para la tabla de las asisencia de sistemas
+    dataTabla:[],
+
     preferencias_Usuario: {
       vistaModoTabla: false,
     },
@@ -16,7 +21,9 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
     mapeo: false,
 
     //formulario de creacion--edicion SE EUTILIZA EN LA DESCRIPSION (VA CAMBIANDO)
-    formArea: useStoreConexion().areas[1],
+    formArea: {
+      nombre:null
+    },
 
     //form-sistemas
     // {{useListasActividadesStore().BD_procesada_listaAtividades.Sistemas}}
@@ -525,7 +532,7 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
 
       window.open(doc.output("bloburl"), "_blank");
     },
-
+    ///sistemas
     async crearReporteSistemas() {
       const data = { ...this.formSistemas };
 
@@ -542,11 +549,14 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
           this.iconCreate = false;
         }, 2000);
 
+
         this.formSistemas = {
           actividad: null,
           sistema: null,
           descripcion: null,
         };
+
+        this.count_reload_sistemas++
       } catch (error) {
         console.error(error);
         this.iconError = true;
@@ -555,5 +565,31 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
         }, 2000);
       }
     },
+
+    async obtenerReportesSistemas(){
+      try {
+        const pb = new PocketBase(this.pb_url);
+        const records = await pb.collection('reportes_sitemas').getFullList({
+          sort: '-created',
+          expand:'creador,actividad,sistema'
+       });
+       console.log(records)
+       this.dataTabla = records
+      } catch (error) {
+        
+      }
+    },
+
+    async eliminarReportesSistemas(id){
+      const confirmar = confirm("¿Desea Eliminar esta asistencia?")
+      if(!confirmar) return
+      try {
+        const pb = new PocketBase(this.pb_url);
+        await pb.collection('reportes_sitemas').delete(id);
+       this.count_reload_sistemas++
+      } catch (error) {
+        console.error(error)
+      }
+    }
   },
 });

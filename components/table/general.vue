@@ -67,6 +67,14 @@
             mdi-delete
           </v-icon>
       </template>
+      
+      <template v-if="!props['expanded-row']" v-slot:expanded-row="{ columns, item }">
+        <tr>
+          <td class="text-blue-darken-1 text-subtitle-1 font-weight-bold text-center py-1" :colspan="columns.length">
+            {{item.description}}
+          </td>
+        </tr>
+      </template>
   
     </v-data-table>
   
@@ -82,8 +90,8 @@
     'mostrar_alert_delete',
     'listaItems',
     'titulos',
-    'loading'
-
+    'loading',
+    'expanded-row'
   ])
   onMounted(()=>{
 
