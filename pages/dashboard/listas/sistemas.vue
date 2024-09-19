@@ -22,8 +22,7 @@
 
     <ActividadesCardAreasSistemas v-if="view === 'S'"/>
     <ActividadesCardAreas v-if="view === 'A'"/>
-    <SistemasEstatusCreate/>
-    
+    <SistemasEstatusCreate v-if="view === 'E'" />
 </template>
 
 <script setup>

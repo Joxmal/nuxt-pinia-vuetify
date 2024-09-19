@@ -1,12 +1,14 @@
 <template>
-  <pre>
-    {{ store.data_DB }}
-  </pre>
   <dialog-form
     :boton-reset-formulario="true"
     titulo_dialog="Crear"
     boton_titulo="CREAR"
     @crear="store.createEstatus()"
+    @editarDialogForm="store.updateEstatus(editar_ID)"
+    @cerrar="modoEditar=false"
+    @resetearFormulario="store.resetearForm()"
+    :modo-editar="modoEditar"
+    id_boton="CrearStatusAsistencia"
   >
     <template #contenido>
       <v-container>
@@ -48,8 +50,9 @@
     titulo_table="Asistencias"
     :titulos="headers"
     :listaItems="store.data_DB "
-    @editar="console.log($event)"
+    @editar="component_modoEditar"
     @eliminar="store.deleteEstatus($event)"
+    
   >
   </table-general>
 </template>
@@ -58,7 +61,6 @@
 <script setup>
 import { useEstatusSistemasStore } from '~/stores/sistemas/estatus';
 const store = useEstatusSistemasStore()
-
 
 const headers = [
   {
@@ -71,6 +73,9 @@ const headers = [
     title: "Estado",
     value: (item) => item.activo ? 'Activado': 'Desactivado' ,
     sortable: true,
+    cellProps:(item)=>{
+      return { class: item.item.activo ? 'text-success' : 'text-warning' }
+    }
   },
   {
     value: (item) => new Date(item.created).toLocaleDateString(),
@@ -88,4 +93,25 @@ const headers = [
 onMounted(()=>{
   store.getEstatus()
 })
+
+watch(
+  () => store.count_reload_status,
+  (newValue) => {
+    store.getEstatus();
+  }
+);
+
+const modoEditar= ref(false)
+const editar_ID = ref('')
+function component_modoEditar(data){
+  modoEditar.value = true
+  console.log(data)
+  document.getElementById('CrearStatusAsistencia').click()
+
+  store.form.nombre = data.nombre
+  store.form.activo = data.activo
+  editar_ID.value = data.id
+}
+
+
 </script>

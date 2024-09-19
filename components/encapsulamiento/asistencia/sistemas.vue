@@ -87,7 +87,7 @@
             <v-select
               label="Estado de la asistencia"
               density="compact"
-              :items="[transformarItems]"
+              :items="transformarItems"
               item-value="id"
               item-title="nombre"
               v-model="formSistemas.estatus"
@@ -109,8 +109,6 @@
     @eliminar="store.eliminarReportesSistemas($event)"
   >
   </table-general>
-  <pre>
-  </pre>
 </template>
 
 <script setup>
@@ -221,5 +219,5 @@ const headers = [
 ];
 
 
-const transformarItems = computed(()=> storeEstatusSistemasS.data_DB.find(item => item.activo === true))
+const transformarItems = computed(()=> storeEstatusSistemasS.data_DB.filter(item => item.activo === true))
 </script>
