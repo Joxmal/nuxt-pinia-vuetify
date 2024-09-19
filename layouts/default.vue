@@ -143,7 +143,6 @@ const listaNavegacion = {
     1:{ icon:'mdi-office-building-cog-outline', value:'Items', path:'/dashboard/listas/items'},
     2:{ icon:'mdi-account', value:'Usuarios', path:'/dashboard/listas/ip_asignada'}, 
     3:{ icon:'mdi-desktop-tower-monitor', value:'Equipos', path:'/dashboard/listas/equipos'}, 
-    4:{ icon:'mdi-multicast', value:'Actividades', path:'/dashboard/listas/actividades'}, 
     5:{ icon:'mdi-multicast', value:'Sistemas', path:'/dashboard/listas/sistemas'}, 
   },
   asitencias:{

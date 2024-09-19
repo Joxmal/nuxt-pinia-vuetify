@@ -56,6 +56,9 @@ importers:
       vue-chartjs:
         specifier: ^5.3.1
         version: 5.3.1(chart.js@4.4.4)(vue@3.4.38)
+      vue3-toastify:
+        specifier: ^0.2.3
+        version: 0.2.3(vue@3.4.38)
       vuedraggable:
         specifier: ^4.1.0
         version: 4.1.0(vue@3.4.38)
@@ -3598,6 +3601,15 @@ packages:
     resolution: {integrity: sha512-sv6wmNKx2j3aqJQDMxLFzs/u/mjA9Z5LCgy6BE0f7yFWMjrPLnS/sPNn8ARY/FXw6byV18EFutn5lTO6+UsV5A==}
     peerDependencies:
       vue: ^3.2.0
+
+  vue3-toastify@0.2.3:
+    resolution: {integrity: sha512-Gsv/wWFYsAzhXFE+JCoL7KAUYvzl9AaGPykkDtT073RWiz1vqtdDFcHENU26ga0tbY42Q51yJr4en/ymQD0OGg==}
+    engines: {node: '>=20', npm: '>=9.0.0'}
+    peerDependencies:
+      vue: '>=3.2.0'
+    peerDependenciesMeta:
+      vue:
+        optional: true
 
   vue@3.4.38:
     resolution: {integrity: sha512-f0ZgN+mZ5KFgVv9wz0f4OgVKukoXtS3nwET4c2vLBGQR50aI8G0cqbFtLlX9Yiyg3LFGBitruPHt2PxwTduJEw==}
@@ -7554,6 +7566,10 @@ snapshots:
   vue-router@4.4.3(vue@3.4.38):
     dependencies:
       '@vue/devtools-api': 6.6.3
+      vue: 3.4.38
+
+  vue3-toastify@0.2.3(vue@3.4.38):
+    optionalDependencies:
       vue: 3.4.38
 
   vue@3.4.38:

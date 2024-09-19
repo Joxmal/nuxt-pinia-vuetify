@@ -492,6 +492,8 @@ import { useDisplay } from "vuetify";
 import { abrirDialogoEditar } from "~/utils/asistencia/asistencia";
 import { useListasActividadesStore } from "~/stores/listas/actividades";
 import { useListasSistemasStore } from "~/stores/listas/sistemas";
+import { useEstatusSistemasStore } from "~/stores/sistemas/estatus";
+const storeEstatusSistemasS = useEstatusSistemasStore()
 
 const store = useAsistenciasStore();
 
@@ -546,6 +548,7 @@ onMounted(() => {
   );
 
   store.obtenerReportesSistemas()
+  storeEstatusSistemasS.getEstatus()
 });
 
 //select de los usuarios
