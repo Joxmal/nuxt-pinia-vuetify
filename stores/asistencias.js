@@ -581,20 +581,33 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
         useNuxtApp().$toast.error('Ocurrio un error')
       }
     },
-    async editarReportesSistemas(data){
+    async editarReportesSistemas(id){
       const dataForm = {...this.formSistemas}
       dataForm.fechaEntrada = new Date(dataForm.fechaEntrada).toISOString();
       dataForm.fechaSalida = new Date(dataForm.fechaSalida).toISOString();
 
       delete dataForm.creador
-      console.log('ID',data)
+      console.log('ID',id)
       console.log('dataForm',dataForm)
       const pb = new PocketBase(this.pb_url);
-      return
       try {
         const record = await pb.collection("reportes_sitemas").update(id,dataForm);
+        useNuxtApp().$toast.success('Editado con exito')
+        this.count_reload_sistemas++
       } catch (error) {
-        
+        useNuxtApp().$toast.error('Ocurrio un error')
+      console.error(error)
+      }
+    },
+
+    resetearReporteSistemas(){
+      this.formSistemas ={
+        actividad: "",
+        sistema: "",
+        descripcion: null,
+        fechaEntrada: null,
+        fechaSalida: null,
+        estatus:''
       }
     }
   },

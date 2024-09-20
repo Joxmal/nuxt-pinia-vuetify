@@ -8,6 +8,7 @@
     @cerrar="modoEditar=false"
     :modo-editar="modoEditar"
     @editarDialogForm="store.editarReportesSistemas(IDSelecionada)"
+    @resetearFormulario="store.resetearReporteSistemas()"
   >
     <template #contenido>
       <v-container>
