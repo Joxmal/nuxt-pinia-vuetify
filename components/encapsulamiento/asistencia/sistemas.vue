@@ -4,6 +4,10 @@
     titulo_dialog="NUEVA ASISTENCIA DE SISTEMAS"
     boton_titulo="CREAR"
     @crear="store.crearReporteSistemas()"
+    id_boton="boton_asistencia_sistemas"
+    @cerrar="modoEditar=false"
+    :modo-editar="modoEditar"
+    @editarDialogForm="store.editarReportesSistemas(IDSelecionada)"
   >
     <template #contenido>
       <v-container>
@@ -105,13 +109,14 @@
     titulo_table="Asistencias"
     :titulos="headers"
     :listaItems="itemsTable"
-    @editar="console.log($event)"
+    @editar="component_modoEditar"
     @eliminar="store.eliminarReportesSistemas($event)"
   >
   </table-general>
 </template>
 
 <script setup>
+import { convertirFechaUTC } from "~/assets/funciones_reuzables/times";
 import { useAsistenciasStore } from "~/stores/asistencias";
 import { useListasActividadesStore } from "~/stores/listas/actividades";
 import { useListasSistemasStore } from "~/stores/listas/sistemas";
@@ -167,10 +172,12 @@ const itemsTable = computed(() => {
         fechaSalida: item.fechaSalida,
         id: item.id,
         description: item.descripcion,
+        estatus:item.expand.estatus.nombre,
         data: {
           creador: item.expand.creador,
           actividad: item.expand.actividad,
           sistema: item.expand.sistema,
+          estatus:item.expand.estatus
         },
       };
     });
@@ -190,7 +197,6 @@ watch(
 const headers = [
   {
     key: "creador",
-    data: "",
     title: "Creador",
     sortable: true,
   },
@@ -202,6 +208,11 @@ const headers = [
   {
     key: "sistema",
     title: "Sistema",
+    sortable: true,
+  },
+  {
+    key: "estatus",
+    title: "Estatus",
     sortable: true,
   },
   {
@@ -217,7 +228,23 @@ const headers = [
   { key: "actions", title: "Acciones" },
   { title: "", key: "data-table-expand" },
 ];
+const modoEditar= ref(false)
+const IDSelecionada = ref()
+function component_modoEditar(data){
+  console.log("dataTable",data)
 
+  modoEditar.value = true
+  document.getElementById('boton_asistencia_sistemas').click()
+
+  store.formSistemas.actividad = data.data.actividad.id
+  store.formSistemas.descripcion = data.description
+  store.formSistemas.fechaEntrada = convertirFechaUTC(data.fechaEntrada)
+  store.formSistemas.fechaSalida = convertirFechaUTC(data.fechaSalida)
+  store.formSistemas.sistema = data.data.sistema.id
+  store.formSistemas.estatus = data.data.estatus.id
+
+  IDSelecionada.value = data.id
+}
 
 const transformarItems = computed(()=> storeEstatusSistemasS.data_DB.filter(item => item.activo === true))
 </script>

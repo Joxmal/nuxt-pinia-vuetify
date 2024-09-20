@@ -540,30 +540,17 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
       data.creador = useStoreConexion().avatarID;
       data.fechaEntrada = new Date(data.fechaEntrada).toISOString();
       data.fechaSalida = new Date(data.fechaSalida).toISOString();
-
+      
+      
       try {
         const pb = new PocketBase(this.pb_url);
         const record = await pb.collection("reportes_sitemas").create(data);
-
-        this.iconCreate = true;
-        setTimeout(() => {
-          this.iconCreate = false;
-        }, 2000);
-
-
-        this.formSistemas = {
-          actividad: null,
-          sistema: null,
-          descripcion: null,
-        };
+        useNuxtApp().$toast.success('Creada con exito')
 
         this.count_reload_sistemas++
       } catch (error) {
+        useNuxtApp().$toast.error('Ocurrio un error')
         console.error(error);
-        this.iconError = true;
-        setTimeout(() => {
-          this.iconError = false;
-        }, 2000);
       }
     },
 
@@ -572,7 +559,7 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
         const pb = new PocketBase(this.pb_url);
         const records = await pb.collection('reportes_sitemas').getFullList({
           sort: '-created',
-          expand:'creador,actividad,sistema'
+          expand:'creador,actividad,sistema,estatus'
        });
        console.log(records)
        this.dataTabla = records
@@ -588,8 +575,26 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
         const pb = new PocketBase(this.pb_url);
         await pb.collection('reportes_sitemas').delete(id);
        this.count_reload_sistemas++
+       useNuxtApp().$toast.success('Eliminado con exito')
       } catch (error) {
         console.error(error)
+        useNuxtApp().$toast.error('Ocurrio un error')
+      }
+    },
+    async editarReportesSistemas(data){
+      const dataForm = {...this.formSistemas}
+      dataForm.fechaEntrada = new Date(dataForm.fechaEntrada).toISOString();
+      dataForm.fechaSalida = new Date(dataForm.fechaSalida).toISOString();
+
+      delete dataForm.creador
+      console.log('ID',data)
+      console.log('dataForm',dataForm)
+      const pb = new PocketBase(this.pb_url);
+      return
+      try {
+        const record = await pb.collection("reportes_sitemas").update(id,dataForm);
+      } catch (error) {
+        
       }
     }
   },
