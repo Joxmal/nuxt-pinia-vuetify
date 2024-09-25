@@ -1,103 +1,55 @@
 <template>
-  <dialog-form
-    :boton-reset-formulario="true"
-    titulo_dialog="NUEVA ASISTENCIA DE SISTEMAS"
-    boton_titulo="CREAR"
-    @crear="store.crearReporteSistemas()"
-    id_boton="boton_asistencia_sistemas"
-    @cerrar="modoEditar=false"
-    :modo-editar="modoEditar"
-    @editarDialogForm="store.editarReportesSistemas(IDSelecionada)"
-    @resetearFormulario="store.resetearReporteSistemas()"
-  >
+  <dialog-form :boton-reset-formulario="true" titulo_dialog="NUEVA ASISTENCIA DE SISTEMAS" boton_titulo="CREAR"
+    @crear="store.crearReporteSistemas()" id_boton="boton_asistencia_sistemas" @cerrar="modoEditar = false"
+    :modo-editar="modoEditar" @editarDialogForm="store.editarReportesSistemas(IDSelecionada)"
+    @resetearFormulario="store.resetearReporteSistemas()">
     <template #contenido>
       <v-container>
         <v-row>
           <v-col cols="6">
-            <v-select
-              density="compact"
-              label="Sistema"
-              :items="mapeoSistemas"
-              item-value="id"
-              item-title="nombre"
-              v-model="formSistemas.sistema"
-            />
+            <v-select density="compact" label="Sistema" :items="mapeoSistemas" item-value="id" item-title="nombre"
+              v-model="formSistemas.sistema" />
           </v-col>
           <v-col cols="6">
-            <v-select
-              label="Actividad"
-              density="compact"
-              :items="mapeoActividadesSistemas"
-              item-value="id"
-              item-title="nombre"
-              v-model="formSistemas.actividad"
-            />
+            <v-select label="Actividad" density="compact" :items="mapeoActividadesSistemas" item-value="id"
+              item-title="nombre" v-model="formSistemas.actividad" />
           </v-col>
-  
+
+          <v-col cols="12">
+            <v-autocomplete label="Departamento" density="compact" :items="useListasStore().listaDepartamento"
+              item-value="id" item-title="nombre" v-model="store.formSistemas.departamento" />
+          </v-col>
+
           <v-col cols="12" sm="6">
-            <v-card
-              style="border: 2px solid rgb(6, 143, 255)"
-              variant="elevated"
-              class="pa-1"
-            >
+            <v-card style="border: 2px solid rgb(6, 143, 255)" variant="elevated" class="pa-1">
               <v-card-title class="text-center">fecha de entrada</v-card-title>
               <v-divider :thickness="3" class="border-opacity-50"></v-divider>
-              <v-sheet
-                class="mt-2 d-flex flex-column justify-center align-center font-weight-black"
-              >
-                <input
-                  class="mx-auto"
-                  type="datetime-local"
-                  min="2023-01-01"
-                  max="2024-12-30"
-                  v-model="formSistemas.fechaEntrada"
-                />
+              <v-sheet class="mt-2 d-flex flex-column justify-center align-center font-weight-black">
+                <input class="mx-auto" type="datetime-local" min="2023-01-01" max="2024-12-30"
+                  v-model="formSistemas.fechaEntrada" />
               </v-sheet>
             </v-card>
           </v-col>
-  
+
           <v-col cols="12" sm="6">
-            <v-card
-              style="border: 2px solid rgb(6, 143, 255)"
-              variant="elevated"
-              class="pa-1"
-            >
+            <v-card style="border: 2px solid rgb(6, 143, 255)" variant="elevated" class="pa-1">
               <v-card-title class="text-center">fecha de Salida</v-card-title>
               <v-divider :thickness="3" class="border-opacity-50"></v-divider>
-              <v-sheet
-                class="mt-2 d-flex flex-column justify-center align-center font-weight-black"
-              >
-                <input
-                  class="mx-auto"
-                  type="datetime-local"
-                  min="2023-01-01"
-                  max="2024-12-30"
-                  v-model="formSistemas.fechaSalida"
-                />
+              <v-sheet class="mt-2 d-flex flex-column justify-center align-center font-weight-black">
+                <input class="mx-auto" type="datetime-local" min="2023-01-01" max="2024-12-30"
+                  v-model="formSistemas.fechaSalida" />
               </v-sheet>
             </v-card>
           </v-col>
-  
+
           <v-col cols="12">
-            <v-textarea
-              rows="3"
-              clearable
-              label="Descripción"
-              variant="outlined"
-              v-model="formSistemas.descripcion"
-            >
+            <v-textarea rows="3" clearable label="Descripción" variant="outlined" v-model="formSistemas.descripcion">
             </v-textarea>
           </v-col>
-          <v-col cols="12" >
-            <v-select
-              label="Estado de la asistencia"
-              density="compact"
-              :items="transformarItems"
-              item-value="id"
-              item-title="nombre"
-              v-model="formSistemas.estatus"
-              >
-              
+          <v-col cols="12">
+            <v-select label="Estado de la asistencia" density="compact" :items="transformarItems" item-value="id"
+              item-title="nombre" v-model="formSistemas.estatus">
+
             </v-select>
           </v-col>
         </v-row>
@@ -105,14 +57,8 @@
     </template>
   </dialog-form>
 
-  <table-general
-    expanded-row
-    titulo_table="Asistencias"
-    :titulos="headers"
-    :listaItems="itemsTable"
-    @editar="component_modoEditar"
-    @eliminar="store.eliminarReportesSistemas($event)"
-  >
+  <table-general expanded-row titulo_table="Asistencias" :titulos="headers" :listaItems="itemsTable"
+    @editar="component_modoEditar" @eliminar="store.eliminarReportesSistemas($event)">
   </table-general>
 </template>
 
@@ -173,12 +119,13 @@ const itemsTable = computed(() => {
         fechaSalida: item.fechaSalida,
         id: item.id,
         description: item.descripcion,
-        estatus:item.expand.estatus.nombre,
+        estatus: item.expand.estatus.nombre,
+        departamento: item.departamento,
         data: {
           creador: item.expand.creador,
           actividad: item.expand.actividad,
           sistema: item.expand.sistema,
-          estatus:item.expand.estatus
+          estatus: item.expand.estatus
         },
       };
     });
@@ -217,6 +164,11 @@ const headers = [
     sortable: true,
   },
   {
+    key: "departamento",
+    title: "Departamento",
+    sortable: true,
+  },
+  {
     value: (item) => new Date(item.fechaEntrada).toLocaleDateString(),
     key: "fechaEntrada",
     title: "Fecha Entrada",
@@ -229,10 +181,10 @@ const headers = [
   { key: "actions", title: "Acciones" },
   { title: "", key: "data-table-expand" },
 ];
-const modoEditar= ref(false)
+const modoEditar = ref(false)
 const IDSelecionada = ref()
-function component_modoEditar(data){
-  console.log("dataTable",data)
+function component_modoEditar(data) {
+  console.log("dataTable", data)
 
   modoEditar.value = true
   document.getElementById('boton_asistencia_sistemas').click()
@@ -243,9 +195,10 @@ function component_modoEditar(data){
   store.formSistemas.fechaSalida = convertirFechaUTC(data.fechaSalida)
   store.formSistemas.sistema = data.data.sistema.id
   store.formSistemas.estatus = data.data.estatus.id
+  store.formSistemas.departamento = data.departamento
 
   IDSelecionada.value = data.id
 }
 
-const transformarItems = computed(()=> storeEstatusSistemasS.data_DB.filter(item => item.activo === true))
+const transformarItems = computed(() => storeEstatusSistemasS.data_DB.filter(item => item.activo === true))
 </script>

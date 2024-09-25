@@ -128,8 +128,8 @@
             <v-col cols="12" md="6">
               <v-autocomplete
                 density="compact"
-                label="departamento"
-                hint="departamento al cual se le realizo la asistencia"
+                label="Departamento"
+                hint="Departamento al cual se le realiza la asistencia"
                 persistent-hint
                 open-text="abrir"
                 close-text="cerrar"
