@@ -609,7 +609,9 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
         descripcion: null,
         fechaEntrada: null,
         fechaSalida: null,
-        estatus:''
+        estatus:'',
+        funcionario:'',
+        departamento:null
       }
     }
   },

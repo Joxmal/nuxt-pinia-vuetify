@@ -208,6 +208,7 @@ function component_modoEditar(data) {
   store.formSistemas.sistema = data.data.sistema.id
   store.formSistemas.estatus = data.data.estatus.id
   store.formSistemas.departamento = data.departamento
+  store.formSistemas.funcionario = data.funcionario
 
   IDSelecionada.value = data.id
 }
