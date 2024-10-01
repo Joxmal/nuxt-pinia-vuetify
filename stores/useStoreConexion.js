@@ -5,6 +5,8 @@ import PocketBase from 'pocketbase'
 
 export const useStoreConexion = defineStore('useStoreConexion', {
     state: () => ({
+        seleccionVistaIndex : 'E',  // E estadisticas, OR operativos Recientes
+
         pb_url: useRuntimeConfig().public.POCKETBASE_URL,
 
         pb_Valid : false,

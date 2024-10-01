@@ -56,6 +56,9 @@ importers:
       vue-chartjs:
         specifier: ^5.3.1
         version: 5.3.1(chart.js@4.4.4)(vue@3.4.38)
+      vue-confetti-explosion:
+        specifier: ^1.0.2
+        version: 1.0.2(vue@3.4.38)
       vue3-toastify:
         specifier: ^0.2.3
         version: 0.2.3(vue@3.4.38)
@@ -3576,6 +3579,12 @@ packages:
     peerDependencies:
       chart.js: ^4.1.1
       vue: ^3.0.0-0 || ^2.7.0
+
+  vue-confetti-explosion@1.0.2:
+    resolution: {integrity: sha512-80OboM3/6BItIoZ6DpNcZFqGpF607kjIVc5af56oKgtFmt5yWehvJeoYhkzYlqxrqdBe0Ko4Ie3bWrmLau+dJw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      vue: ^3.0.5
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -7548,6 +7557,10 @@ snapshots:
   vue-chartjs@5.3.1(chart.js@4.4.4)(vue@3.4.38):
     dependencies:
       chart.js: 4.4.4
+      vue: 3.4.38
+
+  vue-confetti-explosion@1.0.2(vue@3.4.38):
+    dependencies:
       vue: 3.4.38
 
   vue-demi@0.14.10(vue@3.4.38):
