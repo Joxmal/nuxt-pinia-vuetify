@@ -35,7 +35,8 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
       fechaEntrada: null,
       fechaSalida: null,
       estatus:'',
-      departamento:''
+      departamento:'',
+      funcionario:''
     },
 
     //

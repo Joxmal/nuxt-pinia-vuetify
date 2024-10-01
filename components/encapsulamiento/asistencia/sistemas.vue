@@ -15,9 +15,15 @@
               item-title="nombre" v-model="formSistemas.actividad" />
           </v-col>
 
-          <v-col cols="12">
+          <v-col cols="6" md="12">
             <v-autocomplete label="Departamento" density="compact" :items="useListasStore().listaDepartamento"
               item-value="id" item-title="nombre" v-model="store.formSistemas.departamento" />
+          </v-col>
+
+          <v-col cols="6" md="12">
+            <v-autocomplete density="compact" label="Funcionario" :items="store.listaTotalEmpleados_oficina[store.formSistemas.departamento]
+              " v-model="store.formSistemas.funcionario">
+            </v-autocomplete>
           </v-col>
 
           <v-col cols="12" sm="6">
@@ -121,6 +127,7 @@ const itemsTable = computed(() => {
         description: item.descripcion,
         estatus: item.expand.estatus.nombre,
         departamento: item.departamento,
+        funcionario: item.funcionario,
         data: {
           creador: item.expand.creador,
           actividad: item.expand.actividad,
@@ -166,6 +173,11 @@ const headers = [
   {
     key: "departamento",
     title: "Departamento",
+    sortable: true,
+  },
+  {
+    key: "funcionario",
+    title: "Funcionario",
     sortable: true,
   },
   {
