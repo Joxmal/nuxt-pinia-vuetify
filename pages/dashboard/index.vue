@@ -57,8 +57,8 @@
     </v-row>
   </v-card>
 
-  <v-card flat>
-    <h1 class="text-center">PROXIMAMENTE</h1>
+  <v-card flat v-if="$storeUser.seleccionVistaIndex === 'AR'">
+    <LazyTheOperativosEspeciales />
   </v-card>
 
 </template>
