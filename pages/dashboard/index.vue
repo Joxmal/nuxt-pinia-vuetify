@@ -1,6 +1,4 @@
 <template>
-
-  <ConfettiVersion1 />
   <v-card flat>
     <v-row justify="center" class="my-2">
       <v-btn-toggle border elevation="10" group tag="hola" density="comfortable" rounded="10" color="primary"
