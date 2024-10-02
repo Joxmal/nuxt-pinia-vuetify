@@ -15,7 +15,8 @@
   <dialog-general-simple id-boton="dialogIMages">
     <template #contenido>
       <v-carousel show-arrows="hover">
-        <v-carousel-item v-for="image in imagesSelected" :key="image" :src="image" cover></v-carousel-item>
+        <v-carousel-item :src="image" v-for="image in imagesSelected" :key="image">
+        </v-carousel-item>
       </v-carousel>
     </template>
   </dialog-general-simple>
@@ -37,3 +38,9 @@ function estructurarDialog(images: string[]) {
   imagesSelected.value = images
 }
 </script>
+
+<style scoped>
+.mobile {
+  object-fit: fill;
+}
+</style>
