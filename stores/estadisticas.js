@@ -112,7 +112,7 @@ export const useEstadisticas = defineStore('useEstadisticas', {
                     "PUNTO DE RED":0,
                     "ASIST. EXTERNO":0,
                     "ASIST. TÉCNICA":0,
-                    "LABOR SOCIAL":0,
+                    "ACT. NO PROGRAMADA":0,
                     RESPALDO:0,
                     "OPERATIVOS ESP.":0,
                     total: 0

@@ -81,7 +81,7 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
       "CABLEADO",
       "PUNTO DE RED",
       "OPERATIVOS ESP.",
-      "LABOR SOCIAL",
+      "ACT. NO PROGRAMADA",
     ],
 
     //seleccion del id de creacion (para buscar en la bd a partir de la ID del usuario)
@@ -103,7 +103,7 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
       "CABLEADO",
       "PUNTO DE RED",
       "OPERATIVOS ESP.",
-      "LABOR SOCIAL",
+      "ACT. NO PROGRAMADA",
     ],
     variablesFiltro: {
       filtroCreador: `creador="${useStoreConexion().avatarID}"`,
