@@ -129,9 +129,9 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
 
       if (rango.activo) {
         if (filtroCreador === 'creador="jlpwz10ms03on6z"') {
-          filterBuscar += `(fechaEntrada >= "${rango.desde}" && fechaSalida <= "${rango.hasta}")`;
+          filterBuscar += `(fechaEntrada >= "${rango.desde} 00:00:00.000Z" && fechaSalida <= "${rango.hasta} 23:59:59.999Z")`;
         } else {
-          filterBuscar += `creador="${this.seleccionUsuario}" && (fechaEntrada >= "${rango.desde}" && fechaSalida <= "${rango.hasta}")`;
+          filterBuscar += `creador="${this.seleccionUsuario}" && (fechaEntrada >= "${rango.desde} 00:00:00.000Z" && fechaSalida <= "${rango.hasta} 23:59:59.999Z")`;
         }
 
         if (tipoAsistencia !== "TODOS") {
