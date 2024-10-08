@@ -46,6 +46,8 @@ export const useStoreConexion = defineStore('useStoreConexion', {
         },
 
         async inciarSesion(credenciales){
+			    const toastId = useNuxtApp().$toast.loading("Iniciando Sesión");
+
             try {
                 const pb = new PocketBase(this.pb_url)
                 const authData = await pb.collection('users').authWithPassword((credenciales.username).trim(),credenciales.password,{
@@ -78,13 +80,20 @@ export const useStoreConexion = defineStore('useStoreConexion', {
                         "ip": "test"
                 }
                 const record = await pb.collection('sesiones_iniciadas').create(dataSessionesIniciadas);
-                
+                useNuxtApp().$toast.remove(toastId);
             } catch (error) {
                 console.error(error)
                 this.errorInicio = true
                 setTimeout(() => {
                     this.errorInicio = false
                 }, 2000);
+                useNuxtApp().$toast.update(toastId, {
+                    render: "ERROR al iniciar sesión ",
+                    type: "error",
+                    isLoading: false,
+                    closeOnClick:true,
+                    autoClose: 5000,
+                });
             }
             
         },

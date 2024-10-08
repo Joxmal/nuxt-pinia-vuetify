@@ -88,7 +88,7 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
     seleccionUsuario: useStoreConexion().avatarID,
 
     //paginacion para ver las cards
-    paginationItemsPorPagina: 50,
+    paginationItemsPorPagina: 300,
     pagination: 1,
     totalPage: 5,
 
@@ -329,7 +329,7 @@ export const useAsistenciasStore = defineStore("useAsistenciasStore", {
         const records = await pb
           .collection("reportes")
           .getList(this.pagination, this.paginationItemsPorPagina, {
-            sort: "-created",
+            sort: "-fechaEntrada",
             filter: filterBuscar,
           });
 

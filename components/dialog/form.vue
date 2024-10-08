@@ -22,7 +22,7 @@
           <small>*siga las instrucciones</small>
 
           <v-card-actions>
-            <v-row v-if="!prop.ocultarBotones">
+            <v-row dense v-if="!prop.ocultarBotones">
               <v-col cols="12" v-if="botonResetFormulario">
                 <v-btn block @click="$emit('resetearFormulario')" class="ma-2" color="primary" variant="outlined"
                   border>Reset
@@ -46,7 +46,6 @@
                   Crear
                 </v-btn>
               </v-col>
-
             </v-row>
           </v-card-actions>
         </v-form>

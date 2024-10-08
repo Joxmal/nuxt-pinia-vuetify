@@ -55,6 +55,8 @@ export const useEstadisticas = defineStore('useEstadisticas', {
     actions:{
       // obtener todas las asistencias
         async obtenerDatosReportes(){
+			    const toastId = useNuxtApp().$toast.loading("Cargando");
+
 
           const {avatarNombre}= useStoreConexion()
 
@@ -71,9 +73,16 @@ export const useEstadisticas = defineStore('useEstadisticas', {
               expand:'creador',
             });
             this.listaReportes = items
-
+            
+            useNuxtApp().$toast.remove(toastId);
             console.log(items)
           } catch (error) {
+            useNuxtApp().$toast.update(toastId, {
+              render: "Error al Cargar los reportes",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
             console.error(error)
           }
         },
