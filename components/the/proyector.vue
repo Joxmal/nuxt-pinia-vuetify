@@ -27,10 +27,14 @@ const dataPosicionActual = ref({
   responsable: ''
 })
 
-watch(
-  () => storeProyector.ubicacionOficina,
-  (newValue) => {
-    if (storeProyector.ubicacionOficina) {
+
+
+
+onMounted(async () => {
+  await storeProyector.obtenerAsistencias()
+
+  setTimeout(() => {
+    if (storeProyector.ubicacionOficina === true) {
       dataPosicionActual.value.departamento = 'INFORMATICA'
       dataPosicionActual.value.responsable = '------'
     } else {
@@ -38,11 +42,9 @@ watch(
       dataPosicionActual.value.departamento = storeProyector.UbicacionActualProyector?.departamento
       dataPosicionActual.value.responsable = storeProyector.UbicacionActualProyector?.responsable
     }
-  }, { immediate: true }
-);
 
-onMounted(async () => {
-  await storeProyector.obtenerAsistencias()
+  }, 1000);
+
 })
 
 </script>
