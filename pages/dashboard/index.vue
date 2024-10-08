@@ -8,7 +8,7 @@
         </v-btn>
         <v-btn :value="'AR'"><!-- Actividades -->
           <v-icon>mdi-multicast</v-icon>
-          OPERATIVOS RECIENTES
+          OPERATIVOS
         </v-btn>
         <v-btn :value="'PRO'"><!-- proyector -->
           <v-icon>mdi-projector</v-icon>
