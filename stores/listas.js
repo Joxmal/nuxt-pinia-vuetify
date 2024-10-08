@@ -7,6 +7,7 @@ export const useListasStore = defineStore('useListasStore', {
     state: () => ({
         pb_url:useRuntimeConfig().public.POCKETBASE_URL,
         listas:[],
+        listaDepartamento:[],
         //json de cada area
         jsonDepartamentos:[],
         jsonCpu:[],

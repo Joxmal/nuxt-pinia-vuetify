@@ -4,8 +4,8 @@ export interface GetProyectorDTO {
 	created: Date;
 	departamento: string;
 	descripsion: string;
-	fecha_entrada: Date;
-	fecha_salida: Date;
+	fecha_entrada: Date | string;
+	fecha_salida: Date | string;
 	id: string;
 	responsable: string;
 	tlf: number;

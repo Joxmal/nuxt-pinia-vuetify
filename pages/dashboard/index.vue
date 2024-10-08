@@ -10,6 +10,10 @@
           <v-icon>mdi-multicast</v-icon>
           OPERATIVOS RECIENTES
         </v-btn>
+        <v-btn :value="'PRO'"><!-- proyector -->
+          <v-icon>mdi-projector</v-icon>
+          PROYECTOR
+        </v-btn>
       </v-btn-toggle>
     </v-row>
   </v-card>
@@ -61,10 +65,13 @@
     <LazyTheOperativosEspeciales />
   </v-card>
 
+  <v-card flat v-if="$storeUser.seleccionVistaIndex === 'PRO'">
+    <TheProyector />
+  </v-card>
+
 </template>
 
 <script setup>
-
 definePageMeta({
   middleware: 'autenticacion'
 })
