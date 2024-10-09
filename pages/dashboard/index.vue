@@ -3,16 +3,17 @@
     <v-row justify="center" class="my-2">
       <v-btn-toggle border elevation="10" group tag="hola" density="comfortable" rounded="10" color="primary"
         mandatory="force" v-model="$storeUser.seleccionVistaIndex">
-        <v-btn prepend-icon="mdi:list-status" :value="'E'"> <!-- Estatus -->
-          ESTADISTICAS
+        <v-btn :value="'E'"> <!-- Estatus -->
+          <v-icon> mdi-list-status</v-icon>
+
         </v-btn>
         <v-btn :value="'AR'"><!-- Actividades -->
           <v-icon>mdi-multicast</v-icon>
-          OPERATIVOS
+
         </v-btn>
         <v-btn :value="'PRO'"><!-- proyector -->
           <v-icon>mdi-projector</v-icon>
-          PROYECTOR
+
         </v-btn>
       </v-btn-toggle>
     </v-row>
@@ -72,6 +73,11 @@
 </template>
 
 <script setup>
+import { useProyectorStore } from '~/stores/proyector/proyectorStorage';
+
+const storeProyector = useProyectorStore()
+
+
 definePageMeta({
   middleware: 'autenticacion'
 })
@@ -86,6 +92,7 @@ onBeforeMount(async () => {
   await useEstadisticas().obtenerDatosEquipos()
 
   await useEstadisticas().obtenerResumenEquipos()
+  await storeProyector.obtenerAsistencias()
   viewCharts.value = true
 })
 

@@ -1,10 +1,12 @@
 <template>
-  {{ storeProyector.ubicacionOficina }}
-  <hr>
-  <pre>
-    {{ storeProyector.UbicacionActualProyector }}
-  </pre>
-  <hr>
+  <dev-only>
+    {{ storeProyector.ubicacionOficina }}
+    <hr>
+    <pre>
+      {{ storeProyector.UbicacionActualProyector }}
+    </pre>
+    <hr>
+  </dev-only>
 
 
   <dialog-form @editarDialogForm="storeProyector.editarReporte(IDSelecionada)" @cerrar="modoEditar = false"
