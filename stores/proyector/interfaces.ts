@@ -10,4 +10,5 @@ export interface GetProyectorDTO {
 	responsable: string;
 	tlf: number;
 	updated: Date;
+	actual: boolean;
 }

@@ -59,24 +59,42 @@
           </v-col>
 
           <v-col cols="12" md="12">
-            <v-text-field type="number" density="compact" label="Telefono"
-              hint="Departamento al cual se le realiza la asistencia" persistent-hint open-text="abrir"
-              v-model="formProyector.tlf">
+            <v-text-field type="number" density="compact" label="Telefono" hint="Telefono del responsable"
+              persistent-hint open-text="abrir" v-model="formProyector.tlf">
             </v-text-field>
           </v-col>
-
 
           <v-col cols="12">
             <v-textarea rows="3" clearable label="Descripción" variant="outlined" v-model="formProyector.descripsion">
             </v-textarea>
           </v-col>
+
+          <v-row justify="center">
+
+            <v-switch width="110" id="switch" hide-details density="compact" v-model="formProyector.actual"
+              base-color="red" :color="formProyector.actual != false ? 'green' : 'red'">
+
+              <template v-slot:append>
+                <label for="switch">
+                  <v-icon>mdi-receipt-text-check-outline</v-icon>
+                </label>
+              </template>
+
+              <template v-slot:prepend>
+                <label for="switch" :value="false">
+                  <v-icon>mdi-tag-remove</v-icon>
+                </label>
+              </template>
+            </v-switch>
+
+          </v-row>
         </v-row>
       </v-container>
     </template>
   </dialog-form>
 
-  <table-general expanded-row titulo_table="Asistencias" :titulos="headers" :listaItems="itemsTable"
-    @editar="component_modoEditar" @eliminar="storeProyector.eliminarReporte($event)">
+  <table-general :row-props="rowProps" expanded-row titulo_table="Asistencias" :titulos="headers"
+    :listaItems="itemsTable" @editar="component_modoEditar" @eliminar="storeProyector.eliminarReporte($event)">
   </table-general>
 </template>
 
@@ -87,6 +105,17 @@ import { useListasStore } from '~/stores/listas';
 
 const storeListas = useListasStore()
 
+function rowProps(data: any) {
+  if (data.item.actual) {
+    return {
+      class: 'text-success'
+    }
+  } else {
+    return {
+      class: 'text-warning'
+    }
+  }
+}
 
 const headers = [
   {
@@ -105,14 +134,14 @@ const headers = [
     sortable: true,
   },
   {
-    value: (item: any) => new Date(item.fechaEntrada).toLocaleDateString(),
-    key: "fechaEntrada",
-    title: "Fecha Entrada",
-  },
-  {
     value: (item: any) => new Date(item.fechaSalida).toLocaleDateString(),
     key: "fechaSalida",
     title: "Fecha Salida",
+  },
+  {
+    value: (item: any) => item.fechaEntrada === '' ? 'XXXXXX' : new Date(item.fechaEntrada).toLocaleDateString(),
+    key: "fechaEntrada",
+    title: "Fecha Entrada",
   },
   { key: "actions", title: "Acciones" },
   { title: "", key: "data-table-expand" },
@@ -130,6 +159,7 @@ const itemsTable = computed(() => {
         description: item.descripsion,
         departamento: item.departamento,
         funcionario: item.responsable,
+        actual: item.actual
       };
     });
     return data;
@@ -158,6 +188,7 @@ interface RowTable {
   description: string;
   departamento: string;
   funcionario: string;
+  actual: boolean
 }
 
 
@@ -183,6 +214,7 @@ function component_modoEditar(data: RowTable) {
   storeProyector.formProyector.departamento = data.departamento
   storeProyector.formProyector.responsable = data.funcionario
   storeProyector.formProyector.tlf = data.tlf
+  storeProyector.formProyector.actual = data.actual
 
   IDSelecionada.value = data.id
 }

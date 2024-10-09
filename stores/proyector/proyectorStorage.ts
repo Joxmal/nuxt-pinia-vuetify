@@ -18,6 +18,7 @@ export const useProyectorStore = defineStore("useProyectorStore", {
 			responsable: "",
 			tlf: null as string | null | number,
 			descripsion: "",
+			actual: false,
 		},
 
 		// false si no se encuentra en la oficna y true si lo esta
@@ -26,7 +27,9 @@ export const useProyectorStore = defineStore("useProyectorStore", {
 	getters: {
 		UbicacionActualProyector(): GetProyectorDTO | null {
 			const ultimo =
-				this.getProyectorDto.length > 0 ? this.getProyectorDto[0] : null;
+				this.getProyectorDto.length > 0
+					? this.getProyectorDto.find((item) => item.actual === true)
+					: null;
 			if (!ultimo) return null;
 
 			if (ultimo.fecha_entrada === "") {
