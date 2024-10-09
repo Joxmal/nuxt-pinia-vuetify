@@ -6,13 +6,12 @@
 
 
   <v-card position="relative" border elevation="20" class="d-flex flex-column justify-center">
-
+    <v-btn to="/dashboard/reportes/proyector" elevation="10" color="primary" variant="tonal"> Cargar Data</v-btn>
     <v-icon :class="dataPosicionActual.classText" class="mx-auto pulsing-button" size="300">{{ dataPosicionActual.icon
       }}</v-icon>
     <v-row>
       <v-col>
         <h1 class="text-center">
-
           {{ dataPosicionActual.departamento }}
           <hr>
           {{ dataPosicionActual.responsable }}
@@ -21,6 +20,8 @@
     </v-row>
 
   </v-card>
+
+  <hr>
 
 
 </template>
@@ -39,7 +40,7 @@ const dataPosicionActual = ref({
 })
 
 onMounted(async () => {
-  await storeProyector.obtenerAsistencias();
+
   await observarCambio(); // Call after fetching data
 });
 
