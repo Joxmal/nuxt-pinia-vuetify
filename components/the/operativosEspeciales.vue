@@ -15,7 +15,7 @@
   <dialog-general-simple id-boton="dialogIMages">
     <template #contenido>
       <v-carousel show-arrows="hover">
-        <v-carousel-item :src="image" v-for="image in imagesSelected" :key="image">
+        <v-carousel-item class="w-100 h-100" :src="image" v-for="image in imagesSelected" :key="image">
         </v-carousel-item>
       </v-carousel>
     </template>

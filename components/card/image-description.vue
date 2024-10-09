@@ -1,6 +1,6 @@
 <template>
-  <v-card @click="$emit('abrirDialog', props.images)" class="w-100 " min-height="240">
-    <v-img :src="props.images[0]" aspect-ratio="1" class="bg-grey-lighten-2" height="125" cover>
+  <v-card @click="$emit('abrirDialog', props.images)" class="w-100" min-height="240">
+    <v-img :src="props.images[0]" aspect-ratio="1" class="bg-grey-lighten-2" height="295" cover>
     </v-img>
     <v-card-title class="text-h6">
       {{ props.title }}
