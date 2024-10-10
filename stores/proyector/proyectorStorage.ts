@@ -50,7 +50,7 @@ export const useProyectorStore = defineStore("useProyectorStore", {
 				const records = await this.pb
 					.collection("reportes_proyector")
 					.getFullList<GetProyectorDTO>({
-						sort: "-created",
+						sort: "-fecha_salida",
 						perPage: 20000,
 					});
 

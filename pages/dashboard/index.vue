@@ -13,7 +13,6 @@
         </v-btn>
         <v-btn :value="'PRO'"><!-- proyector -->
           <v-icon>mdi-projector</v-icon>
-
         </v-btn>
       </v-btn-toggle>
     </v-row>

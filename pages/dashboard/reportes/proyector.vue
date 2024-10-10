@@ -146,6 +146,7 @@ const headers = [
   { key: "actions", title: "Acciones" },
   { title: "", key: "data-table-expand" },
 ];
+
 const itemsTable = computed(() => {
   console.log(storeProyector.getProyectorDto);
 

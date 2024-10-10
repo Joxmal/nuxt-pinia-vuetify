@@ -3,9 +3,31 @@
     {{ storeProyector.UbicacionActualProyector }}
   </div>
 
-
+  <dialog-general-simple name-boton="Historial" :ocultar-boton="false">
+    <template #contenido>
+      <v-timeline class="bg-primary opacity-80" align="start" side="end">
+        <v-timeline-item v-for="proyector in storeProyector.getProyectorDto.slice(0, 10)"
+          :dot-color="proyector.actual ? 'success' : 'error'" size="small">
+          {{ console.log("proyector", proyector) }}
+          <div class="d-flex">
+            <strong class="me-4">{{ new Date(proyector.fecha_salida).toLocaleDateString() }}</strong>
+            <div>
+              <strong>{{ proyector.departamento }}</strong>
+              <div class="text-body2">
+                {{ proyector.responsable }} | tlf: {{ proyector.tlf }}
+              </div>
+              <div class="text-body2">
+                {{ proyector.descripsion }}
+              </div>
+            </div>
+          </div>
+        </v-timeline-item>
+      </v-timeline>
+    </template>
+  </dialog-general-simple>
 
   <v-card position="relative" border elevation="20" class="d-flex flex-column justify-center">
+
     <v-btn to="/dashboard/reportes/proyector" elevation="10" color="primary" variant="tonal"> Cargar Data</v-btn>
     <v-icon :class="dataPosicionActual.classText" class="mx-auto pulsing-button" size="300">{{ dataPosicionActual.icon
       }}</v-icon>
@@ -18,7 +40,6 @@
         </h1>
       </v-col>
     </v-row>
-
   </v-card>
 
   <hr>
