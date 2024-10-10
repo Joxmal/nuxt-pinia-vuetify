@@ -12,10 +12,11 @@
     </v-fade-transition>
   </v-container>
 
-  <dialog-general-simple id-boton="dialogIMages">
+  <dialog-general-simple class=" " id-boton="dialogIMages">
     <template #contenido>
-      <v-carousel show-arrows="hover">
-        <v-carousel-item class="w-100 h-100" :src="image" v-for="image in imagesSelected" :key="image">
+      <v-carousel class="mx-auto w-100 rounded " :style="{ backgroundColor: 'rgba(var(--v-theme-primary), 0.5)' }"
+        how-arrows="hover">
+        <v-carousel-item class=" w-100 h-100" :src="image" v-for="image in imagesSelected" :key="image">
         </v-carousel-item>
       </v-carousel>
     </template>

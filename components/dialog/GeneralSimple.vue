@@ -4,9 +4,10 @@
             {{ props.nameBoton }}
         </v-btn>
     </div>
-    <v-dialog v-model="dialog" max-width="1300px">
+    <v-dialog v-model="dialog">
         <slot name="contenido">
         </slot>
+
     </v-dialog>
 </template>
 
