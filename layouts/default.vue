@@ -84,13 +84,13 @@
           </nuxt-link>
 
 
-          <dev-only>
-            <!-- testing -->
-            <nuxt-link v-show="ViewMenu == 'testing'" :class="listaNavegacion.class" :to="lista.path"
-              v-for="lista in listaNavegacion.testing" :key="lista.value" style="text-decoration: none;">
-              <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value" />
-            </nuxt-link>
-          </dev-only>
+
+          <!-- testing -->
+          <nuxt-link v-show="ViewMenu == 'testing'" :class="listaNavegacion.class" :to="lista.path"
+            v-for="lista in listaNavegacion.testing" :key="lista.value" style="text-decoration: none;">
+            <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value" />
+          </nuxt-link>
+
 
           <!-- desincorporar -->
           <nuxt-link v-show="ViewMenu == 'desincorporar'" :class="listaNavegacion.class" :to="lista.path"
