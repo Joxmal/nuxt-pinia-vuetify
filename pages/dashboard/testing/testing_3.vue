@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Escanea un Código QR</h1>
-    <TestingCamara />
+    <TestingCamara_2 />
   </div>
 </template>
 

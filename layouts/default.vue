@@ -40,10 +40,10 @@
             value="inventario" />
           <!-- <v-list-item @click="MostrarMenu('sistemas'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/> -->
 
-          <dev-only>
-            <v-list-item @click="MostrarMenu('testing'), drawer = true" prepend-icon="mdi-sitemap-outline"
-              value="sistemas" />
-          </dev-only>
+
+          <v-list-item @click="MostrarMenu('testing'), drawer = true" prepend-icon="mdi-sitemap-outline"
+            value="sistemas" />
+
         </v-list>
       </v-navigation-drawer>
 

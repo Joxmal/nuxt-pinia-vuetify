@@ -38,6 +38,7 @@
     "vite-plugin-vuetify": "^2.0.4",
     "vue-chartjs": "^5.3.1",
     "vue-confetti-explosion": "^1.0.2",
+    "vue-qrcode-reader": "^5.5.11",
     "vue3-toastify": "^0.2.3",
     "vuedraggable": "^4.1.0",
     "vuetify": "^3.7.0",
