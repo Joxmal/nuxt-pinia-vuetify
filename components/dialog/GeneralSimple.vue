@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-        <v-btn v-show="!ocultarBoton" :id="idBoton" color="primary" @click="dialog = true">
+        <v-btn v-show="!ocultarBoton" :id="idBoton" color="primary" @click="dialog = true, $emit('botonDialog')">
             {{ props.nameBoton }}
         </v-btn>
     </div>
@@ -13,6 +13,8 @@
 
 
 <script setup>
+
+const emit = defineEmits(['botonDialog'])
 
 const props = defineProps({
     nameBoton: {

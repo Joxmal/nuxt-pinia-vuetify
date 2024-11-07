@@ -35,6 +35,9 @@
           <v-list-item @click="MostrarMenu('desincorporar'), drawer = true" prepend-icon="mdi-monitor-off"
             value="desincorporar" />
 
+
+          <v-list-item @click="MostrarMenu('inventario'), drawer = true" prepend-icon="mdi-archive"
+            value="inventario" />
           <!-- <v-list-item @click="MostrarMenu('sistemas'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/> -->
 
           <dev-only>
@@ -94,6 +97,13 @@
             v-for="lista in listaNavegacion.desincorporar" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value" />
           </nuxt-link>
+
+          <!-- desincorporar -->
+          <nuxt-link v-show="ViewMenu == 'inventario'" :class="listaNavegacion.class" :to="lista.path"
+            v-for="lista in listaNavegacion.inventario" :key="lista.value" style="text-decoration: none;">
+            <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value" />
+          </nuxt-link>
+
         </v-list>
 
       </v-navigation-drawer>
@@ -130,14 +140,13 @@ const listaNavegacion = {
   general: {
     1: { icon: 'mdi-newspaper', value: 'noticias', path: '/dashboard/general/noticias' },
     2: { icon: 'mdi-folder-plus', value: 'numeros' },
-    3: { icon: 'mdi-alert-decagram', value: 'importante' },
     4: { icon: 'mdi-test-tube', value: 'pruebas', path: '/dashboard/general/pruebas' },
     5: { icon: 'mdi-test-tube', value: 'pruebas2', path: '/dashboard/general/pruebas' },
   },
+
   listas: {
     1: { icon: 'mdi-office-building-cog-outline', value: 'Items', path: '/dashboard/listas/items' },
     2: { icon: 'mdi-account', value: 'Usuarios', path: '/dashboard/listas/ip_asignada' },
-    3: { icon: 'mdi-desktop-tower-monitor', value: 'Equipos', path: '/dashboard/listas/equipos' },
     5: { icon: 'mdi-multicast', value: 'Sistemas', path: '/dashboard/listas/sistemas' },
   },
   asitencias: {
@@ -154,14 +163,19 @@ const listaNavegacion = {
     2: { icon: 'mdi-water-alert', value: 'Recargas', path: '/dashboard/impresoras/toonersRecargas' },
     3: { icon: 'mdi-chart-bar', value: 'Estadisticas', path: '/dashboard/impresoras/estadisticas' },
   },
-  testing: {
-    1: { icon: 'mdi-map-marker-star-outline', value: 'testing_1', path: '/dashboard/testing' },
-    2: { icon: 'mdi-map-marker-star-outline', value: 'testing_2', path: '/dashboard/testing/testing_2' },
-  },
   desincorporar: {
     1: { icon: 'mdi-monitor-off', value: 'Desincorporar', path: '/dashboard/desincorporar/crear' },
     // 2:{ icon:'mdi-chart-bar', value:'Estadisticas', path:'/dashboard/desincorporar'},
   },
+  testing: {
+    1: { icon: 'mdi-map-marker-star-outline', value: 'testing_1', path: '/dashboard/testing' },
+    2: { icon: 'mdi-map-marker-star-outline', value: 'testing_2', path: '/dashboard/testing/testing_2' },
+    2: { icon: 'mdi-map-marker-star-outline', value: 'testing_3', path: '/dashboard/testing/testing_3' },
+  },
+  inventario: {
+    1: { icon: 'mdi-archive', value: 'Modelos', path: '/dashboard/inventario/modelos' },
+    2: { icon: 'mdi-tag', value: 'Tags', path: '/dashboard/inventario/tags' }
+  }
 
 }
 
