@@ -36,13 +36,15 @@
             value="desincorporar" />
 
 
+          <v-list-item @click="MostrarMenu('documentos'), drawer = true" prepend-icon="mdi-file-document"
+            value="documentos" />
+
           <v-list-item @click="MostrarMenu('inventario'), drawer = true" prepend-icon="mdi-archive"
             value="inventario" />
           <!-- <v-list-item @click="MostrarMenu('sistemas'),drawer= true" prepend-icon="mdi-sitemap-outline" value="sistemas"/> -->
 
-
-          <v-list-item @click="MostrarMenu('testing'), drawer = true" prepend-icon="mdi-sitemap-outline"
-            value="sistemas" />
+          <v-list-item @click="MostrarMenu('archivos'), drawer = true" prepend-icon="mdi-sitemap-outline"
+            value="archivos" />
 
         </v-list>
       </v-navigation-drawer>
@@ -70,7 +72,6 @@
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value" />
           </nuxt-link>
 
-
           <!-- sistemas -->
           <nuxt-link v-show="ViewMenu == 'sistemas'" :class="listaNavegacion.class" :to="lista.path"
             v-for="lista in listaNavegacion.sistemas" :key="lista.value" style="text-decoration: none;">
@@ -83,14 +84,11 @@
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value" />
           </nuxt-link>
 
-
-
-          <!-- testing -->
-          <nuxt-link v-show="ViewMenu == 'testing'" :class="listaNavegacion.class" :to="lista.path"
-            v-for="lista in listaNavegacion.testing" :key="lista.value" style="text-decoration: none;">
+          <!-- Archivos -->
+          <nuxt-link v-show="ViewMenu == 'archivos'" :class="listaNavegacion.class" :to="lista.path"
+            v-for="lista in listaNavegacion.archivos" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value" />
           </nuxt-link>
-
 
           <!-- desincorporar -->
           <nuxt-link v-show="ViewMenu == 'desincorporar'" :class="listaNavegacion.class" :to="lista.path"
@@ -101,6 +99,12 @@
           <!-- desincorporar -->
           <nuxt-link v-show="ViewMenu == 'inventario'" :class="listaNavegacion.class" :to="lista.path"
             v-for="lista in listaNavegacion.inventario" :key="lista.value" style="text-decoration: none;">
+            <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value" />
+          </nuxt-link>
+
+          <!-- documentos -->
+          <nuxt-link v-show="ViewMenu == 'documentos'" :class="listaNavegacion.class" :to="lista.path"
+            v-for="lista in listaNavegacion.documentos" :key="lista.value" style="text-decoration: none;">
             <v-list-item :append-icon="lista.icon" :title="lista.value" :value="lista.value" />
           </nuxt-link>
 
@@ -163,14 +167,16 @@ const listaNavegacion = {
     2: { icon: 'mdi-water-alert', value: 'Recargas', path: '/dashboard/impresoras/toonersRecargas' },
     3: { icon: 'mdi-chart-bar', value: 'Estadisticas', path: '/dashboard/impresoras/estadisticas' },
   },
+  documentos: {
+    1: { icon: 'mdi-file-document', value: 'documentos', path: '/dashboard/documentos' },
+  },
   desincorporar: {
     1: { icon: 'mdi-monitor-off', value: 'Desincorporar', path: '/dashboard/desincorporar/crear' },
     // 2:{ icon:'mdi-chart-bar', value:'Estadisticas', path:'/dashboard/desincorporar'},
   },
-  testing: {
-    1: { icon: 'mdi-map-marker-star-outline', value: 'testing_1', path: '/dashboard/testing' },
-    2: { icon: 'mdi-map-marker-star-outline', value: 'testing_2', path: '/dashboard/testing/testing_2' },
-    2: { icon: 'mdi-map-marker-star-outline', value: 'testing_3', path: '/dashboard/testing/testing_3' },
+  archivos: {
+    1: { icon: 'mdi-map-marker-star-outline', value: 'Subir', path: '/dashboard/testing' },
+    2: { icon: 'mdi-map-marker-star-outline', value: 'Descargar', path: '/dashboard/testing/testing_2' },
   },
   inventario: {
     1: { icon: 'mdi-archive', value: 'Modelos', path: '/dashboard/inventario/modelos' },
